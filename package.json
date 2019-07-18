@@ -4,18 +4,18 @@
   "description": "A clean, responsive documentation template theme for JSDoc 3 inspired by lodash and minami",
   "main": "publish.js",
   "scripts": {
+    "dev": "nodemon --config nodemon.json",
     "test": "jsdoc -c fixtures/fixtures.conf.json",
-    "sync": "browser-sync start -s ../fixtures-doc -f ../fixtures-doc --reload-delay 1000 --no-ui --no-notify",
-    "watch": "watch-run -d 1000 -p tmpl/**,static/** \"npm run test\""
+    "sync": "browser-sync start -s ../fixtures-doc -f ../fixtures-doc --reload-delay 1000 --no-ui --no-notify"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/clenemt/docdash.git"
   },
   "devDependencies": {
-    "jsdoc": "latest",
     "browser-sync": "latest",
-    "watch-run": "latest"
+    "jsdoc": "latest",
+    "nodemon": "^1.19.1"
   },
   "author": "Clement Moron <clement.moron@gmail.com>",
   "license": "Apache-2.0",
@@ -27,5 +27,8 @@
     "publish.js",
     "static",
     "tmpl"
-  ]
+  ],
+  "dependencies": {
+    "@daisypayments/petals": "^0.1.33"
+  }
 }
