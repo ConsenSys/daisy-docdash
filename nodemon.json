@@ -5,7 +5,7 @@
     "static",
     "publish.js"
   ],
-  "ext": "js,css",
+  "ext": "js,tmpl,css",
   "delay": "500",
   "verbose": true
 }
