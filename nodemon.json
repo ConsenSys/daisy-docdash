@@ -2,7 +2,8 @@
   "exec": "( cd ../daisy-sdk && yarn jsdoc )",
   "watch": [
     "tmpl",
-    "static"
+    "static",
+    "publish.js"
   ],
   "ext": "js,css",
   "delay": "500",

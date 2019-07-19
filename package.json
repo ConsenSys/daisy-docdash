@@ -28,7 +28,4 @@
     "static",
     "tmpl"
   ],
-  "dependencies": {
-    "@daisypayments/petals": "^0.1.33"
-  }
 }

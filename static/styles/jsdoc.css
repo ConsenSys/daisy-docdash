@@ -1,4 +1,12 @@
-@import url(https://fonts.googleapis.com/css?family=Montserrat:400,700);
+@import url(https://fonts.googleapis.com/css?family=Rubik:400,700);
+
+
+:root {
+  --daisy-purple: #545bc4;
+  --light-gray: #E0E1E5;
+  --dark-gray: #5B5E6D;
+  --darkest-gray: #323648;
+}
 
 * {
   box-sizing: border-box
@@ -13,8 +21,7 @@ body {
   color: #4d4e53;
   background-color: white;
   margin: 0 auto;
-  padding: 0 20px;
-  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 16px;
 }
 
@@ -24,7 +31,7 @@ img {
 
 a,
 a:active {
-  color: #606;
+  color: var(--daisy-purple);
   text-decoration: none;
 }
 
@@ -33,11 +40,13 @@ a:hover {
 }
 
 article a {
+  color: var(--dark-gray);
   border-bottom: 1px solid #ddd;
 }
 
 article a:hover, article a:active {
-  border-bottom-color: #222;
+  color: var(--daisy-purple);
+  border-bottom-color: var(--daisy-purple);
 }
 
 article .description a {
@@ -50,11 +59,7 @@ p, ul, ol, blockquote {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Montserrat', sans-serif;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  color: #000;
+  color: var(--darkest-gray);
   font-weight: 400;
   margin: 0;
 }
@@ -67,7 +72,7 @@ h1 {
 
 h1.page-title {
   font-size: 48px;
-  margin: 1em 30px;
+  margin: 1em 60px;
   line-height: 100%;
   word-wrap: break-word;
 }
@@ -89,21 +94,19 @@ h4 {
 }
 
 h4.name {
-  color: #fff;
-  background: #6d426d;
-  box-shadow: 0 .25em .5em #d3d3d3;
-  border-top: 1px solid #d3d3d3;
-  border-bottom: 1px solid #d3d3d3;
+  font-family: Consolas, Monaco, 'Andale Mono', monospace;
+  color: var(--darker-gray);
+  background: var(--light-gray);
   margin: 1.5em 0 0.5em;
-  padding: .75em 0 .75em 10px;
+  padding: 1em 0 1em 10px;
 }
 
 h4.name a {
-  color: #fc83ff;
+  color: var(--daisy-purple);
 }
 
 h4.name a:hover {
-  border-bottom-color: #fc83ff;
+  border-bottom-color: var(--daisy-purple);
 }
 
 h5, .container-overview .subsection-title {
@@ -139,7 +142,7 @@ tt, code, kbd, samp {
 #main {
   float: right;
   min-width: 360px;
-  width: calc(100% - 240px);
+  width: calc(100% - 300px);
 }
 
 header {
@@ -149,7 +152,7 @@ header {
 section {
   display: block;
   background-color: #fff;
-  padding: 0 0 0 30px;
+  padding: 0 0 0 60px;
 }
 
 .variation {
@@ -158,7 +161,7 @@ section {
 
 .signature-attributes {
   font-size: 60%;
-  color: #eee;
+  color: var(--darker-gray);
   font-style: italic;
   font-weight: lighter;
 }
@@ -166,42 +169,83 @@ section {
 nav {
   float: left;
   display: block;
-  width: 250px;
+  width: 300px;;
   background: #fff;
   overflow: auto;
   position: fixed;
   height: 100%;
+  box-shadow: 0 0 0.5rem #9da5ab;
+}
+
+nav #logo {
+  height: auto;
+  width: 160px;
+  margin-right: 12px;
 }
 
 nav #nav-search{
-    width: 210px;
+    /* width: 210px;
     height: 30px;
     padding: 5px 10px;
-    font-size: 12px;
+    font-size: 14px;
     line-height: 1.5;
     border-radius: 3px;
     margin-right: 20px;
-    margin-top: 20px;
+    margin-top: 20px; */
+    display: flex;
+    box-sizing: border-box;
+    position: relative;
+    min-height: 3em;
+    width: 100%;
+    padding: 5px 10px;
+    background-color: white;
+
+    font-size: 16px;
+  
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 8px;
+    border-color: var(--light-gray);
+    outline: none;
+}
+
+nav #nav-search:focus-within {
+    border-color: #69A2FA;
+    box-shadow: inset 0 1px 2px rgba(27, 31, 35, 0.075),
+      0 0 0 0.1em rgba(3, 102, 214, 0.3);
 }
 
 nav.wrap a{
     word-wrap: break-word;
 }
 
+nav header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background: var(--daisy-purple);
+  height: 150px;
+  padding: 25px 10px 25px 10px;
+}
+
+nav section {
+  padding: 25px 20px 80px 20px;
+}
+
 nav h3 {
-  margin-top: 12px;
   font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-weight: 700;
   line-height: 24px;
-  margin: 15px 0 10px;
+  margin: 30px 0 0 0;
   padding: 0;
-  color: #000;
+  color: var(--darkest-gray);
 }
 
 nav ul {
-  font-family: 'Lucida Grande', 'Lucida Sans Unicode', arial, sans-serif;
   font-size: 100%;
   line-height: 17px;
   padding: 0;
@@ -211,16 +255,15 @@ nav ul {
 
 nav ul a,
 nav ul a:active {
-  font-family: 'Montserrat', sans-serif;
   line-height: 18px;
-  padding: 0;
+  padding: 25px 0 10px 0;
   display: block;
-  font-size: 12px;
+  font-size: 20px;
 }
 
 nav a:hover,
 nav a:active {
-  color: #606;
+  color: var(--daisy-purple);
 }
 
 nav > ul {
@@ -228,7 +271,7 @@ nav > ul {
 }
 
 nav > ul > li > a {
-  color: #606;
+  color: var(--daisy-purple);
   margin-top: 10px;
 }
 
@@ -239,7 +282,8 @@ nav ul ul a {
 
 nav ul ul a,
 nav ul ul a:active {
-  padding-left: 20px
+  font-size: 16px;
+  padding: 10px 0 0 20px;
 }
 
 nav h2 {
@@ -250,12 +294,12 @@ nav h2 {
 
 nav > h2 > a {
    margin: 10px 0 -10px;
-   color: #606 !important;
+   color: var(--daisy-purple) !important;
 }
 
 footer {
   color: hsl(0, 0%, 28%);
-  margin-left: 250px;
+  margin-left: 300px;;
   display: block;
   padding: 15px;
   font-style: italic;
@@ -284,19 +328,15 @@ footer {
 }
 
 .type-signature {
-  color: #CA79CA
+  color: var(--darker-gray);
 }
 
 .type-signature:last-child {
-  color: #eee;
-}
-
-.name, .signature {
-  font-family: Consolas, Monaco, 'Andale Mono', monospace
+  color: var(--darker-gray);
 }
 
 .signature {
-    color: #fc83ff;
+    color: var(--darker-gray);
 }
 
 .details {
@@ -462,7 +502,7 @@ thead tr, thead tr {
 }
 
 span.param-type, .params td .param-type, .param-type dd {
-   color: #606;
+   color: var(--daisy-purple);
   font-family: Consolas, Monaco, 'Andale Mono', monospace
 }
 
@@ -513,7 +553,7 @@ span.param-type, .params td .param-type, .param-type dd {
   position: relative;
   width: 2.5em;
   height: .3125rem;
-  background: #000;
+  background: var(--darkest-gray);
   transition: 0.3s;
   border-radius: 2.5rem;
 }
@@ -522,7 +562,7 @@ span.param-type, .params td .param-type, .param-type dd {
   content: "";
   height: .3125rem;
   width: 2.5rem;
-  background: #000;
+  background: var(--darkest-gray);
   position: absolute;
   z-index: -1;
   transition: 0.3s 0.25s;
@@ -620,13 +660,13 @@ html[data-search-mode] .level-hide {
 
   nav {
     background: #FFF;
-    width: 250px;
+    width: 300px;;
     height: 100%;
     position: fixed;
     top: 0;
     right: 0;
     bottom: 0;
-    left: -250px;
+    left: -300px;;
     z-index: 3;
     padding: 0 10px;
     transition: left 0.2s;
@@ -664,8 +704,4 @@ html[data-search-mode] .level-hide {
   display: inline-block;
   margin-left: -14px;
   margin-right: 5px;
-}
-
-#disqus_thread{
-    margin-left: 30px;
 }
