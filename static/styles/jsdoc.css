@@ -34,6 +34,7 @@ a,
 a:active {
   color: var(--daisy-purple);
   text-decoration: none;
+  overflow-wrap: break-word;
 }
 
 a:hover {
@@ -57,6 +58,7 @@ article .description a {
 p, ul, ol, blockquote {
   margin-bottom: 1em;
   line-height: 160%;
+  overflow-wrap: break-word;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -424,6 +426,7 @@ footer {
 .prettyprint {
   font-size: 14px;
   overflow: auto;
+  background-color: #0d152a;
 }
 
 .prettyprint.source {
@@ -507,6 +510,10 @@ thead tr, thead tr {
    background-color: #fff;
    font-weight: bold;
    border-bottom: 1px solid #ddd;
+}
+
+.params-container {
+  overflow: auto;
 }
 
 .params .type {
@@ -704,8 +711,8 @@ html[data-search-mode] .level-hide {
     bottom: 0;
     left: -300px;;
     z-index: 3;
-    padding: 0 10px;
     transition: left 0.2s;
+    box-shadow: none;
   }
 
   .navicon-button {
@@ -719,10 +726,11 @@ html[data-search-mode] .level-hide {
   #main {
     width: 100%;
     min-width: 360px;
+    padding: 0 10px;
   }
 
   #main h1.page-title {
-    margin: 1em 0;
+    margin: 2.2em 0 1em 0;
   }
 
   #main section {
