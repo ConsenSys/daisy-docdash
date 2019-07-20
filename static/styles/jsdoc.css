@@ -299,9 +299,9 @@ nav ul a:active {
   font-size: 20px;
 }
 
-nav a:hover,
-nav a:active {
-  color: var(--daisy-purple);
+nav ul ul a:hover,
+nav ul ul a:active {
+  color: var(--dark-gray);
 }
 
 nav > ul {
@@ -512,6 +512,7 @@ thead tr, thead tr {
    border-bottom: 1px solid #ddd;
 }
 
+.props-container,
 .params-container {
   overflow: auto;
 }
