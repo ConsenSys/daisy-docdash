@@ -1,14 +1,12 @@
-# Docdash
-[![Build Status](https://api.travis-ci.org/clenemt/docdash.png?branch=master)](https://travis-ci.org/clenemt/docdash) [![npm version](https://badge.fury.io/js/docdash.svg)](https://badge.fury.io/js/docdash) [![license](https://img.shields.io/npm/l/docdash.svg)](LICENSE.md)
+# Daisy-Docdash
+ [![license](https://img.shields.io/npm/l/docdash.svg)](LICENSE.md)
 
 A clean, responsive documentation template theme for JSDoc 3.
 
-![docdash-screenshot](https://cloud.githubusercontent.com/assets/447956/13398144/4dde7f36-defd-11e5-8909-1a9013302cb9.png)
-
-![docdash-screenshot-2](https://cloud.githubusercontent.com/assets/447956/13401057/e30effd8-df0a-11e5-9f51-66257ac38e94.jpg)
+![docdash-screenshot](/static/img/screenshot.png)
 
 ## Example
-See http://clenemt.github.io/docdash/ for a sample demo. :rocket:
+See https://docs.daisypayments.com/ for a sample demo
 
 ## Install
 
@@ -20,7 +18,7 @@ $ npm install docdash
 Clone repository to your designated `jsdoc` template directory, then:
 
 ```bash
-$ jsdoc entry-file.js -t path/to/docdash
+$ jsdoc entry-file.js -t path/to/daisy-docdash
 ```
 
 ## Usage (npm)
@@ -28,46 +26,41 @@ In your projects `package.json` file add a new script:
 
 ```json
 "script": {
-  "generate-docs": "node_modules/.bin/jsdoc -c jsdoc.json"
+  "jsdoc": "jsdoc -c jsdoc.conf.js"
 }
 ```
 
-In your `jsdoc.json` file, add a template option.
+In your `jsdoc.conf.js` file, add a template option.
 
 ```json
 "opts": {
-  "template": "node_modules/docdash"
+  "template": "path/to/daisy-docdash"
 }
 ```
 
-## Sample `jsdoc.json`
+## Sample `jsdoc.conf.js`
 See the config file for the [fixtures](fixtures/fixtures.conf.json) or the sample below.
 
-```json
-{
-    "tags": {
-        "allowUnknownTags": false
-    },
-    "source": {
-        "include": "../js",
-        "includePattern": ".js$",
-        "excludePattern": "(node_modules/|docs)"
-    },
-    "plugins": [
-        "plugins/markdown"
-    ],
-    "opts": {
-        "template": "assets/template/docdash/",
-        "encoding": "utf8",
-        "destination": "docs/",
-        "recurse": true,
-        "verbose": true
-    },
-    "templates": {
-        "cleverLinks": false,
-        "monospaceLinks": false
-    }
-}
+```js
+"use strict";
+
+module.exports = {
+  plugins: ["plugins/markdown"],
+  readme: "README",
+  sourceType: "module",
+
+  source: {
+    include: ["README.md", "browser", "common", "private"],
+  },
+  opts: {
+    readme: "README.md",
+    template: "../daisy-docdash/",
+    encoding: "utf8",
+    destination: "docs/",
+    recurse: true,
+    verbose: true,
+  },
+};
 ```
 
 ## Options
@@ -127,21 +120,10 @@ Docdash supports the following options:
 }
 ```
 
-Place them anywhere inside your `jsdoc.json` file.
-
-## Contributors
-
-[![0](https://sourcerer.io/fame/ar2rsawseen/clenemt/docdash/images/0)](https://sourcerer.io/fame/ar2rsawseen/clenemt/docdash/links/0)
-[![1](https://sourcerer.io/fame/ar2rsawseen/clenemt/docdash/images/1)](https://sourcerer.io/fame/ar2rsawseen/clenemt/docdash/links/1)
-[![2](https://sourcerer.io/fame/ar2rsawseen/clenemt/docdash/images/2)](https://sourcerer.io/fame/ar2rsawseen/clenemt/docdash/links/2)
-[![3](https://sourcerer.io/fame/ar2rsawseen/clenemt/docdash/images/3)](https://sourcerer.io/fame/ar2rsawseen/clenemt/docdash/links/3)
-[![4](https://sourcerer.io/fame/ar2rsawseen/clenemt/docdash/images/4)](https://sourcerer.io/fame/ar2rsawseen/clenemt/docdash/links/4)
-[![5](https://sourcerer.io/fame/ar2rsawseen/clenemt/docdash/images/5)](https://sourcerer.io/fame/ar2rsawseen/clenemt/docdash/links/5)
-[![6](https://sourcerer.io/fame/ar2rsawseen/clenemt/docdash/images/6)](https://sourcerer.io/fame/ar2rsawseen/clenemt/docdash/links/6)
-[![7](https://sourcerer.io/fame/ar2rsawseen/clenemt/docdash/images/7)](https://sourcerer.io/fame/ar2rsawseen/clenemt/docdash/links/7)
+Place them anywhere inside your `jsdoc.conf.js` or `jsdoc.json` file.
 
 ## Thanks
-Thanks to [lodash](https://lodash.com) and [minami](https://github.com/nijikokun/minami).
+Thanks to [docdash](https://github.com/clenemt/docdash), [lodash](https://lodash.com), and [minami](https://github.com/nijikokun/minami).
 
 ## License
 Licensed under the Apache License, version 2.0. (see [Apache-2.0](LICENSE.md)).

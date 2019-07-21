@@ -423,7 +423,9 @@ function linktoExternal(longName, name) {
  */
 
 function buildNav(members) {
-    var nav = '<h2><a href="index.html">Home</a></h2>';
+    var logo = '<a href="index.html"><img id="logo" src="https://s3.amazonaws.com/assets.daisypayments.com/white_logo.svg" alt="Home"/></a>';
+    var search = '<div class="daisy-input-container"><input type="text" id="nav-search" class="daisy-input" placeholder="Search" /><span class="label">Search</span></div>';
+    var nav = '<header>' + logo + '</header><section>' + search;
     var seen = {};
     var seenTutorials = {};
     var docdash = env && env.conf && env.conf.docdash || {};
@@ -471,7 +473,7 @@ function buildNav(members) {
             nav += '<h3>Global</h3><ul>' + globalNav + '</ul>';
         }
     }
-
+    nav += '</section>'
     return nav;
 }
 
