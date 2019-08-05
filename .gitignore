@@ -13,3 +13,4 @@ logs
 *.log
 jspm_packages
 .npm
+dist
