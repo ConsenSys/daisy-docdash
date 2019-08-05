@@ -7,6 +7,7 @@
   --gray: #979AA6;
   --dark-gray: #5B5E6D;
   --darkest-gray: #323648;
+  --blue-light: #69A2FA;
 }
 
 * {
@@ -41,17 +42,16 @@ a:hover {
   text-decoration: none;
 }
 
-article a {
-  color: var(--dark-gray);
-  border-bottom: 1px solid #ddd;
-}
-
-article a:hover, article a:active {
+#main a {
   color: var(--daisy-purple);
-  border-bottom-color: var(--daisy-purple);
 }
 
-article .description a {
+#main a:hover, #main a:active {
+  color: var(--daisy-purple);
+  border-bottom: 1px solid var(--daisy-purple);
+}
+
+#main .description a {
     word-break: break-word;
 }
 
@@ -59,6 +59,17 @@ p, ul, ol, blockquote {
   margin-bottom: 1em;
   line-height: 160%;
   overflow-wrap: break-word;
+}
+
+/* TODO: Replace with daisy-petal's blockquote when MDX is working */
+blockquote {
+  color: var(--darkest-gray);
+  background-color: var(--light-gray);
+  margin: 1em 0 2.5em 0;
+  padding: 0.7em 2em;
+  border-left-width: 2px;
+  border-left-style: solid;
+  border-color: var(--daisy-purple);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -125,6 +136,10 @@ h6 {
   font-style: italic;
 }
 
+hr {
+  margin: 3em 0;
+}
+
 tt, code, kbd, samp {
   font-family: Consolas, Monaco, 'Andale Mono', monospace;
   background: #f4f4f4;
@@ -146,6 +161,11 @@ tt, code, kbd, samp {
   float: right;
   min-width: 360px;
   width: calc(100% - 300px);
+}
+
+#main p,
+#main ul {
+  width: 70%;
 }
 
 header {
@@ -181,9 +201,13 @@ nav {
 }
 
 nav #logo {
+  margin-top: 9px;
+  color: #fff;
+}
+
+nav #logo img {
   height: auto;
   width: 160px;
-  margin: 9px 15px 0 0;
 }
 
 .daisy-input {
@@ -248,7 +272,7 @@ nav #logo {
 }
 
 nav #nav-search:focus-within {
-    border-color: #69A2FA;
+    border-color: var(--blue-light);
     box-shadow: inset 0 1px 2px rgba(27, 31, 35, 0.075),
       0 0 0 0.1em rgba(3, 102, 214, 0.3);
 }
@@ -264,7 +288,7 @@ nav header {
   align-items: center;
   color: white;
   background: var(--daisy-purple);
-  height: 90px;
+  height: 110px;
   padding: 25px 10px 25px 10px;
 }
 
@@ -337,7 +361,8 @@ nav > h2 > a {
 
 footer {
   color: hsl(0, 0%, 28%);
-  margin-left: 300px;;
+  margin-top: 10em;
+  margin-left: 300px;
   display: block;
   padding: 15px;
   font-style: italic;
@@ -435,6 +460,8 @@ footer {
   display: block;
   background-color: #0d152a;
   color: #aeaeae;
+  padding: 0;
+  border: none;
 }
 
 .prettyprint code {
@@ -487,13 +514,18 @@ footer {
    user-select: text;
 }
 
+/* Remove space between sibling code blocks, so that we can have different language blocks appear as one */
+.prettyprint + .prettyprint {
+  margin-top: -1em;
+}
+
 table {
   border-spacing: 0;
   border: 1px solid #ddd;
   border-collapse: collapse;
   border-radius: 3px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  width: 100%;
+  width: 95%;
   font-size: 14px;
   margin: 1em 0;
 }
@@ -546,7 +578,7 @@ thead tr, thead tr {
 }
 
 span.param-type, .params td .param-type, .param-type dd {
-   color: var(--daisy-purple);
+   color: var(--blue-light);
   font-family: Consolas, Monaco, 'Andale Mono', monospace
 }
 
@@ -727,19 +759,35 @@ html[data-search-mode] .level-hide {
   #main {
     width: 100%;
     min-width: 360px;
-    padding: 0 10px;
+    padding: 3em 10px;
   }
 
   #main h1.page-title {
-    margin: 2.2em 0 1em 0;
+    margin: 1em 0;
   }
 
   #main section {
     padding: 0;
   }
 
+  #main p,
+  #main ul {
+    width: 100%;
+  }
+
+  table {
+    width: 100%;
+  }
+
   footer {
     margin-left: 0;
+  }
+}
+
+@media only screen and (min-width: 680px) and (max-width: 1300px) {
+  #main p,
+  #main ul {
+    width: 90%;
   }
 }
 
