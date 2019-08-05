@@ -423,7 +423,7 @@ function linktoExternal(longName, name) {
  */
 
 function buildNav(members) {
-    var logo = '<a href="index.html"><img id="logo" src="https://s3.amazonaws.com/assets.daisypayments.com/white_logo.svg" alt="Home"/></a>';
+    var logo = '<a href="index.html" id="logo"><img src="https://s3.amazonaws.com/assets.daisypayments.com/white_logo.svg" alt="Home"/> DOCS</a>';
     var search = '<div class="daisy-input-container"><input type="text" id="nav-search" class="daisy-input" placeholder="Search" /><span class="label">Search</span></div>';
     var nav = '<header>' + logo + '</header><section>' + search;
     var seen = {};
@@ -611,7 +611,15 @@ exports.publish = function(taffyData, opts, tutorials) {
 
             extraStaticFiles.forEach(function(fileName) {
                 var sourcePath = fs.toDir(filePath);
-                var toDir = fs.toDir( fileName.replace(sourcePath, outdir) );
+
+                if (sourcePath.includes('../')) {
+                    outsideSourcePath = sourcePath.replace(/\.\.\//gi, '');
+                    outsideOutdir = "daisy-docdash/" + outdir;
+                    var toDir = fs.toDir( fileName.replace(outsideSourcePath, outsideOutdir) );
+                } else {
+                    var toDir = fs.toDir( fileName.replace(sourcePath, outdir) );
+                }
+
                 fs.mkPath(toDir);
                 copyFile(fileName, path.join(toDir, path.basename(fileName)), function(err){if(err) console.err(err);});
             });
