@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>Tutorial: Getting Started with Daisy Widget - Documentation</title>
+    
+    
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    <header><a href="index.html" id="logo"><img src="https://s3.amazonaws.com/assets.daisypayments.com/white_logo.svg" alt="Home"/> DOCS</a></header><section><div class="daisy-input-container"><input type="text" id="nav-search" class="daisy-input" placeholder="Search" /><span class="label">Search</span></div><h3>Tutorials</h3><ul><li><a href="tutorial-Getting-Started.html">Getting Started with Daisy Widget</a></li></ul><h3>Classes</h3><ul><li><a href="module-browser-DaisySDK.html">DaisySDK</a><ul class='methods'><li data-type='method'><a href="module-browser-DaisySDK.html#getData">getData</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#getPlans">getPlans</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#getReceipts">getReceipts</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#getSubscription">getSubscription</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#getSubscriptions">getSubscriptions</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#loadToken">loadToken</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#prepareToken">prepareToken</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#submit">submit</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#submitCancel">submitCancel</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#sync">sync</a></li></ul></li><li><a href="module-common-Client.html">Client</a></li><li><a href="module-common-SubscriptionProductClient.html">SubscriptionProductClient</a><ul class='methods'><li data-type='method'><a href="module-common-SubscriptionProductClient.html#getData">getData</a></li><li data-type='method'><a href="module-common-SubscriptionProductClient.html#getPlans">getPlans</a></li><li data-type='method'><a href="module-common-SubscriptionProductClient.html#getReceipts">getReceipts</a></li><li data-type='method'><a href="module-common-SubscriptionProductClient.html#getSubscription">getSubscription</a></li><li data-type='method'><a href="module-common-SubscriptionProductClient.html#getSubscriptions">getSubscriptions</a></li><li data-type='method'><a href="module-common-SubscriptionProductClient.html#submit">submit</a></li><li data-type='method'><a href="module-common-SubscriptionProductClient.html#submitCancel">submitCancel</a></li></ul></li><li><a href="module-private-ServiceSubscriptions.html">ServiceSubscriptions</a><ul class='methods'><li data-type='method'><a href="module-private-ServiceSubscriptions.html#authorize">authorize</a></li><li data-type='method'><a href="module-private-ServiceSubscriptions.html#createInvitation">createInvitation</a></li><li data-type='method'><a href="module-private-ServiceSubscriptions.html#getData">getData</a></li><li data-type='method'><a href="module-private-ServiceSubscriptions.html#getPlans">getPlans</a></li><li data-type='method'><a href="module-private-ServiceSubscriptions.html#getReceipts">getReceipts</a></li><li data-type='method'><a href="module-private-ServiceSubscriptions.html#getSubscription">getSubscription</a></li><li data-type='method'><a href="module-private-ServiceSubscriptions.html#getSubscriptions">getSubscriptions</a></li><li data-type='method'><a href="module-private-ServiceSubscriptions.html#submit">submit</a></li><li data-type='method'><a href="module-private-ServiceSubscriptions.html#submitCancel">submitCancel</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-browser.html">browser</a></li><li><a href="module-common.html">common</a></li><li></li><li></li><li><a href="module-private.html">private</a></li><li></li><li></li></ul><h3>Externals</h3><ul><li><a href="external-_web3.eth.Contract_.html">web3.eth.Contract</a></li><li><a href="external-PromiEvent.html">PromiEvent</a></li></ul></section>
+</nav>
+
+<div id="main">
+    
+
+    <section>
+
+<article>
+    <h1>Getting Started with Daisy Widget</h1>
+<p>Daisy Widget is a library of React components that makes interacting with the full lifecycle of payments and subscriptions super easy. It is designed to be used within your project's existing frontend. This guide will go through creating a subscription signup flow, token approval flow, and cancellation flow.</p>
+<img src="./img/signup_flow.png" alt="Placeholder for ApproveInput, ApproveButton, SubscribeButton, and StepIndicator" width="543"/>
+<blockquote>
+<p>Daisy Widget is just one of three possible ways for your users to pay with Daisy. If you're looking for even more flexibility, you can build everything you need directly with <a href="https://docs.daisypayments.com/">Daisy SDK</a>. If you're looking for an almost-no-code solution, check out Invitations (documentation coming soon).</p>
+</blockquote>
+<hr>
+<h2>Installation and Set Up</h2>
+<p>Begin by adding the <code>@daisypayments/daisy-widget</code> package to your project. You must also add <code>web3@=1.0.0-beta.37</code> for the dependency <a href="https://github.com/ConsenSys/react-metamask"><code>react-metamask</code></a> to work (the specific version is important here).</p>
+<pre class="prettyprint source lang-nocode"><code>yarn add @daisypayments/daisy-widget web3@=1.0.0-beta.37
+</code></pre>
+<p>Next, Daisy Widget components require the use of two <a href="https://reactjs.org/docs/context.html">React Contexts</a>, <a href=""><code>MetaMaskContext</code></a> and <a href=""><code>DaisyContext</code></a>. We recommend wrapping your entire app with their respective Context Providers (in the order shown below):</p>
+<pre class="prettyprint source lang-js"><code>// Root of your React app
+
+import { MetaMaskContext, DaisyContext } from &quot;@daisypayments/daisy-widget&quot;;
+</code></pre>
+<pre class="prettyprint source lang-html"><code>&lt;MetaMaskContext.Provider immediate>
+  &lt;DaisyContext.Provider
+    value={{ identifier: &quot;acme-co-subscription-service-id&quot; }}
+  >
+    &lt;YourApp />
+  &lt;/DaisyContext.Provider>
+&lt;/MetaMaskContext.Provider>
+</code></pre>
+<p>We recommend that you pass <code>MetaMaskContext.Provider</code> the <code>immediate</code> prop, otherwise you are responsible for calling  <code>react-metamask</code>'s <code>openMetaMask()</code> function to authorize web3 access where needed. <code>DaisyContext.Provider</code> requires an object for the <code>value</code> prop, with the <code>identifier</code> key set to your subscription service's globally unique <code>id</code>.</p>
+<img src="./img/subscription-service-id.png" alt="Where to find your subscription service's id in the dashboard" width="700"/>
+<p>With that done, whenever you would like a component to access <a href="https://github.com/ConsenSys/react-metamask">MetaMask utilities</a> or the <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html">Daisy object</a>, you can provide them as props by simply wrapping the component with the <a href="https://reactjs.org/docs/higher-order-components.html">Higher-Order Components</a>, <code>withMetaMask()</code> and <code>withDaisy()</code>, in the order shown below:</p>
+<pre class="prettyprint source lang-js"><code>const EnhancedSubscriptionPage = withMetaMask(withDaisy(SubscriptionPage));
+</code></pre>
+<hr>
+<h2>Signing Up for a Subscription</h2>
+<p>Signing up for a subscription requires the <a href="/%5B#approve-button"><code>ApproveButton</code></a> and <a href="/#subscribe-button"><code>SubscribeButton</code></a> components, and the optional, but recommended <a href="/#approve-input"><code>ApproveInput</code></a>, <a href="/#step-indicator"><code>StepIndicator</code></a>, and <a href="/#toast"><code>Toast</code></a> components.</p>
+<img src="./img/signup_flow_parts.png" alt="Placeholder for ApproveInput boxed off as optional, ApproveButton and SubscribeButton boxed off as required, and StepIndicator boxed off as optional" width="621"/>
+<p><strong>Two buttons are needed because signing up is a two step process.</strong></p>
+<p>First, the user must make a transaction approving the subscription contract to transfer tokens from their wallet.</p>
+<p>Second, the user must sign the details of the subscription agreement using MetaMask.</p>
+<hr>
+<h3>Approval Step</h3>
+<p>Instantiate <code>ApproveButton</code>, passing the name of an existing plan within the subscription service as <code>plan</code>.</p>
+<pre class="prettyprint source lang-js"><code>// Signup page of your React app
+
+import { ApproveButton } from &quot;@daisypayments/daisy-widget&quot;;
+</code></pre>
+<pre class="prettyprint source lang-html"><code>&lt;ApproveButton plan=&quot;anvilMysteryBoxMonthly&quot; />
+</code></pre>
+<p>Clicking the button will open MetaMask and prompt the user to approve the number of tokens that the subscription contract is allowed to transfer from their wallet. The number of tokens to approve can be defined in one of three ways.</p>
+<p>The first, recommended way is to use Daisy Widget's <code>ApproveInput</code> component. <code>ApproveInput</code> provides the user an intuitive way of defining the approval amount in terms of either tokens or billing periods. The component accepts an optional <code>periods</code> prop to define the initial number of billing currentlyAllowedPeriods; its default value is 12.</p>
+<img src="./img/approve_input.png" alt="Placeholder for ApproveInput" width="322"/>
+<pre class="prettyprint source lang-js"><code>import { ApproveInput } from &quot;@daisypayments/daisy-widget&quot;;
+</code></pre>
+<pre class="prettyprint source lang-html"><code>&lt;ApproveInput plan=&quot;anvilMysteryBoxMonthly&quot; />
+</code></pre>
+<p>Second, if <code>ApproveInput</code> is not used, <code>ApproveButton</code> accepts an <code>approvalAmount</code> prop which sets the number of tokens to approve.</p>
+<pre class="prettyprint source lang-js"><code>import { ApproveButton } from &quot;@daisypayments/daisy-widget&quot;;
+</code></pre>
+<pre class="prettyprint source lang-html"><code>&lt;ApproveButton 
+  plan=&quot;anvilMysteryBoxMonthly&quot; 
+  approvalAmount=&quot;200&quot; 
+/>
+</code></pre>
+<p>Finally, if neither <code>ApproveInput</code> is used nor the <code>approvalAmount</code> prop defined, the number of tokens defaults to the amount needed to pay for 12 billing periods.</p>
+<p>If more than one of these three ways is provided, Daisy Widget assigns priority in the order they are listed above (e.g. the value from <code>ApproveInput</code> would overrule the <code>approvalAmount</code> prop).</p>
+<hr>
+<h3>Sign and Submit Step</h3>
+<p>Next, instantiate <code>SubscribeButton</code> and pass it the same <code>plan</code> name.</p>
+<pre class="prettyprint source lang-js"><code>// Signup page of your React app
+
+import { SubscribeButton } from &quot;@daisypayments/daisy-widget&quot;;
+</code></pre>
+<pre class="prettyprint source lang-html"><code>&lt;SubscribeButton plan=&quot;anvilMysteryBoxMonthly&quot; />
+</code></pre>
+<p>Clicking the button will open MetaMask and prompt the user to sign the details of the subscription agreement. Once signed, the agreement is sent to Daisy to be executed on the ethereum blockchain by one of two ways.</p>
+<p><strong>Backend Way:</strong> The first, recommended way is to pass a <code>handleSignedAgreement</code> prop to <code>SubscribeButton</code>. This handler is responsible for sending the signed agreement to your backend where it needs to be submitted with <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html#submit"><code>daisy.submit()</code></a>, and then returning the server response.</p>
+<pre class="prettyprint source lang-js"><code>const signedAgreementHandler = async submitArgs => {
+
+  try {
+    // Send signed agreement to backend which calls daisy.submit(), 
+    // stores the returned DaisyID, and then returns the response
+    const response = await fetch(&quot;/submit_agreement&quot;, {
+      method: &quot;POST&quot;,
+      body: JSON.stringify(submitArgs),
+      headers:{
+        &quot;Content-Type&quot;: &quot;application/json&quot;
+      }
+    })
+    return response;
+  } catch (error) {
+    ...
+  }
+}
+
+...
+</code></pre>
+<pre class="prettyprint source lang-html"><code>&lt;SubscribeButton
+  plan=&quot;anvilMysteryBoxMonthly&quot;
+  handleSignedAgreement={signedAgreementHandler}
+/>
+</code></pre>
+<p><strong>Frontend Way:</strong> If <code>handleSignedAgreement</code> is omitted, the agreement is submitted with <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html#submit"><code>daisy.submit()</code></a> immediately and <code>SubscribeButton</code>'s <code>handleSubscriptionCreation</code> prop is called with the server response.</p>
+<p><strong>Whether the agreement is submitted from your backend or frontend, it is very important to associate the returned <code>DaisyID</code> with the user at this step!</strong></p>
+<p>We recommend the <strong>Backend Way</strong> as it avoids any risk of <code>DaisyID</code> being lost when sent from the user's browser to your backend. But, if you choose not to use <code>handleSignedAgreement</code> and do the agreement submission entirely from the frontend, <strong>be sure to associate the response's <code>DaisyID</code> with the user in <code>handleSubscriptionCreation</code>!</strong></p>
+<pre class="prettyprint source lang-js"><code>// NOTE: Previous example preferred to this example!
+const subscriptionHandler = async subscription => {
+
+  try {
+    // Store user updated with daisyId on backend
+    const updatedUser = await fetch(&quot;/update_user&quot;, {
+      method: &quot;PATCH&quot;,
+      body: JSON.stringify({
+        ...this.props.user, 
+        daisyId: subscription.daisyId
+      }),
+      headers:{
+        &quot;Content-Type&quot;: &quot;application/json&quot;
+      }
+    })
+    ...
+  } catch (error) {
+    ...
+  }
+}
+
+...
+</code></pre>
+<pre class="prettyprint source lang-html"><code>&lt;SubscribeButton
+  plan=&quot;anvilMysteryBoxMonthly&quot;
+  handleSubscriptionCreation={subscriptionHandler}
+/>
+</code></pre>
+<p>And that's it! Your page is now ready to accept subscribers!<br>
+From here you will likely want to provide a way for existing subscribers to <a href="#token-approval">approve more tokens</a>, <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html#getSubscription">view their subscription details</a>, and <a href="#cancellation">cancel their subscription</a>.</p>
+<hr>
+<h2>Approving More Tokens</h2>
+<img src="./img/approving_tokens.png" alt="Placeholder for ApproveInput and ApproveButton" width="350"/>
+<p>Every billing period, the price of the plan will be subtracted from the amount of tokens the user has approved. Once all approved tokens have been spent, the user will need to
+approve more to continue the subscription. Luckily, doing so is easy. Simply display the same <code>ApproveInput</code> and <code>ApproveButton</code> components to subscribed users somewhere within your app. We recommend still including the <code>Toast</code> component on this page unless you want to be in charge of error handling, but <code>SubscribeButton</code> and <code>StepIndicator</code> should be left out.</p>
+<pre class="prettyprint source lang-js"><code>// Subscriber account page of your React app
+
+import { ApproveButton, ApproveInput, Toast } from &quot;@daisypayments/daisy-widget&quot;;
+</code></pre>
+<pre class="prettyprint source lang-html"><code>&lt;ApproveInput plan=&quot;anvilMysteryBoxMonthly&quot; />
+&lt;ApproveButton plan=&quot;anvilMysteryBoxMonthly&quot; />
+&lt;Toast />
+</code></pre>
+<hr>
+<h2>Cancelling a Subscription</h2>
+<p>Occasionally a user will need to cancel their subscription. Just as there are <code>ApproveButton</code> and <code>SubscribeButton</code> components, there is a <code>CancelButton</code> as well. Unlike the previous two buttons, <code>CancelButton</code> requires the <code>subscription</code> object as a prop in addition to the <code>plan</code> name. The <code>subscription</code> object can be obtained from <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html#getSubscription"><code>daisy.getSubscription()</code></a>.</p>
+<pre class="prettyprint source lang-js"><code>// Subscriber account page of your React app
+
+import { CancelButton } from &quot;@daisypayments/daisy-widget&quot;;
+
+const subscription = await daisy.getSubscription(this.props.user.daisyId);
+
+...
+</code></pre>
+<pre class="prettyprint source lang-html"><code>&lt;CancelButton
+  plan=&quot;anvilMysteryBoxMonthly&quot;
+  subscription={subscription}
+/>
+&lt;Toast />
+</code></pre>
+<p>Clicking the button will open MetaMask and prompt the user to sign the details of the cancellation.  Similar to <code>SubscribeButton</code>, the signed cancellation is sent to Daisy by one of two ways. Neither way is strongly preferred over the other as there is no fear of data loss, so feel free to use whichever suits your needs best.</p>
+<p><strong>Backend Way:</strong>  If you would like to handle submitting the signed cancellation with <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html#submitCancel"><code>daisy.submitCancel()</code></a> from your backend, a handler is exposed for you to do so, <code>handleSignedCancellation</code>. Once again, this handler is responsible for returning the server response.</p>
+<pre class="prettyprint source lang-js"><code>const handleCancel = async submitArgs => {
+
+  try {
+    // Send signed cancellation to backend, which calls 
+    // daisy.submitCancel(), and then returns the response
+    const response = await fetch(&quot;/submit_cancel&quot;, {
+      method: &quot;POST&quot;,
+      body: JSON.stringify(submitArgs),
+      headers:{
+        &quot;Content-Type&quot;: &quot;application/json&quot;
+      }
+    })
+    return response;
+  } catch (error) {
+    ...
+  }
+}
+
+...
+</code></pre>
+<pre class="prettyprint source lang-html"><code>&lt;CancelButton
+  plan=&quot;anvilMysteryBoxMonthly&quot;
+  subscription={subscription}
+  handleSignedCancellation={handleCancel}
+/>
+</code></pre>
+<p><strong>Frontend Way:</strong> If <code>handleSignedCancellation</code> is omitted, the agreement is submitted with <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html#submitCancel"><code>daisy.submitCancel()</code></a> immediately</p>
+<p>In both the <strong>Backend Way</strong> and the <strong>Frontend Way</strong>, if the <code>handleSubscriptionCancellation</code> prop is passed to <code>CancelButton</code>, it is called with the server response.</p>
+<hr>
+<h2>What is Required of the User?</h2>
+<p>A user on your site is interested in subscribing to your service. There are some prerequisites to signing up for non-fiat denominated subscriptions. What do they need?  The user must:</p>
+<ul>
+<li>Have <a href="https://metamask.io/">MetaMask</a> installed (for approving tokens and signing the subsciption agreement).</li>
+<li>Have enough of one of the subscription's accepted ERC20 tokens to pay for at least one billing period.</li>
+<li>Have enough ethereum to pay the gas fee of the approval step (a quite small amount).</li>
+</ul>
+<p>Luckily, if any of these requirements are not met, Daisy Widget can do the work of surfacing actionable error messages to the user for you with the optional <a href="/#toast">Toast component</a>.</p>
+<hr>
+<p>Still have questions after reading this guide? We encourage you to chat with us on slack at <a href="">#daisy-public</a>, <a href="">contact support</a>, or <a href="">drop our sales team a line</a>.</p>
+</article>
+
+</section>
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Mon Aug 05 2019 23:55:32 GMT-0400 (Eastern Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+<script src="scripts/search.js" defer></script>
+
+
+</body>
+</html>

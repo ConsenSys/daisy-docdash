@@ -7,7 +7,7 @@
     "dev": "nodemon --config nodemon.json",
     "test": "jsdoc -c fixtures/fixtures.conf.json",
     "build": "jsdoc -c jsdoc.conf.js",
-    "gh-pages": "gh-pages --add CNAME -d dist",
+    "gh-pages": "gh-pages --add CNAME -d docs",
     "deploy": "yarn run build && yarn run gh-pages",
     "sync": "browser-sync start -s ../fixtures-doc -f ../fixtures-doc --reload-delay 1000 --no-ui --no-notify"
   },

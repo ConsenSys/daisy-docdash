@@ -16,7 +16,7 @@ module.exports = {
   opts: {
     template: "./",
     encoding: "utf8",
-    destination: "dist/",
+    destination: "docs/",
     "tutorials": "../daisy-widget/docs/tutorials",
     recurse: true,
     verbose: true,
