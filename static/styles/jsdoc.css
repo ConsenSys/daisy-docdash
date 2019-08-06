@@ -65,6 +65,7 @@ p, ul, ol, blockquote {
 blockquote {
   color: var(--darkest-gray);
   background-color: var(--light-gray);
+  width: 70%;
   margin: 1em 0 2.5em 0;
   padding: 0.7em 2em;
   border-left-width: 2px;
@@ -137,7 +138,10 @@ h6 {
 }
 
 hr {
-  margin: 3em 0;
+  margin: 2em 0 0 0;
+  width: 90%;
+  border-top: none;
+  border-bottom-color: var(--light-gray);
 }
 
 tt, code, kbd, samp {
@@ -163,8 +167,8 @@ tt, code, kbd, samp {
   width: calc(100% - 300px);
 }
 
-#main p,
-#main ul {
+.tutorial > p,
+.tutorial > ul {
   width: 70%;
 }
 
@@ -176,6 +180,21 @@ section {
   display: block;
   background-color: #fff;
   padding: 0 0 0 60px;
+}
+
+section.tutorial { 
+  padding: 0;
+}
+
+article.tutorial { 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 3em;
+}
+
+article img {
+  margin: 1em 0;
 }
 
 .variation {
@@ -455,13 +474,14 @@ footer {
 }
 
 .prettyprint.source {
-  width: inherit;
+  width: 80%;
   line-height: 18px;
   display: block;
   background-color: #0d152a;
   color: #aeaeae;
   padding: 0;
   border: none;
+  border-radius: 5px;
 }
 
 .prettyprint code {
@@ -472,7 +492,7 @@ footer {
 }
 
 .prettyprint > code {
-  padding: 15px;
+  padding: 25px 30px;
 }
 
 .prettyprint .linenums code {
@@ -516,7 +536,15 @@ footer {
 
 /* Remove space between sibling code blocks, so that we can have different language blocks appear as one */
 .prettyprint + .prettyprint {
-  margin-top: -1em;
+  margin-top: calc(-1em - 5px);
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.prettyprint + .prettyprint {
+  margin-top: calc(-1em - 5px);
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
 
 table {
