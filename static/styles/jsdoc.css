@@ -172,6 +172,13 @@ tt, code, kbd, samp {
   width: 70%;
 }
 
+.anchor {
+  display: block;
+  position: relative;
+  top: -1.5em;
+  visibility: hidden;
+}
+
 header {
   display: block
 }
