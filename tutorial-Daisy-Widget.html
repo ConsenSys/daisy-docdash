@@ -35,7 +35,9 @@
 <article class="tutorial">
     <h1>Getting Started with Daisy Widget</h1>
 <p>Daisy Widget is a library of React components that makes interacting with the full lifecycle of payments and subscriptions super easy. It is designed to be used within your project's existing frontend. This guide will go through creating a subscription signup flow, token approval flow, and cancellation flow.</p>
-<img src="./img/signup_flow.png" alt="Placeholder for ApproveInput, ApproveButton, SubscribeButton, and StepIndicator" width="543"/>
+<div class="img-container" style="width: 543px">
+  <img src="./img/signup_flow.png" alt="Placeholder for ApproveInput, ApproveButton, SubscribeButton, and StepIndicator" />
+</div>
 <blockquote>
 <p>Daisy Widget is just one of three possible ways for your users to pay with Daisy. If you're looking for even more flexibility, you can build everything you need directly with <a href="https://docs.daisypayments.com/tutorial-Daisy-SDK.html">Daisy SDK</a>. If you're looking for an almost-no-code solution, check out Invitations (documentation coming soon).</p>
 </blockquote>
@@ -58,14 +60,18 @@ import { MetaMaskContext, DaisyContext } from &quot;@daisypayments/daisy-widget&
 &lt;/MetaMaskContext.Provider>
 </code></pre>
 <p>We recommend that you pass <code>MetaMaskContext.Provider</code> the <code>immediate</code> prop, otherwise you are responsible for calling  <code>react-metamask</code>'s <code>openMetaMask()</code> function to authorize web3 access where needed. <code>DaisyContext.Provider</code> requires an object for the <code>value</code> prop, with the <code>identifier</code> key set to your subscription service's globally unique <code>id</code>.</p>
-<img src="./img/subscription-service-id.png" alt="Where to find your subscription service's id in the dashboard" width="700"/>
+<div class="img-container" style="width: 700px">
+  <img src="./img/subscription-service-id.png" alt="Where to find your subscription service's id in the dashboard" />
+</div>
 <p>With that done, whenever you would like a component to access <a href="https://github.com/ConsenSys/react-metamask">MetaMask utilities</a> or the <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html">Daisy object</a>, you can provide them as props by simply wrapping the component with the <a href="https://reactjs.org/docs/higher-order-components.html">Higher-Order Components</a>, <code>withMetaMask()</code> and <code>withDaisy()</code>, in the order shown below:</p>
 <pre class="prettyprint source lang-js"><code>const EnhancedSubscriptionPage = withMetaMask(withDaisy(SubscriptionPage));
 </code></pre>
 <hr>
 <h2>Signing Up for a Subscription</h2>
 <p>Signing up for a subscription requires the <a href="/%5B#approve-button"><code>ApproveButton</code></a> and <a href="/#subscribe-button"><code>SubscribeButton</code></a> components, and the optional, but recommended <a href="/#approve-input"><code>ApproveInput</code></a>, <a href="/#step-indicator"><code>StepIndicator</code></a>, and <a href="/#toast"><code>Toast</code></a> components.</p>
-<img src="./img/signup_flow_parts.png" alt="Placeholder for ApproveInput boxed off as optional, ApproveButton and SubscribeButton boxed off as required, and StepIndicator boxed off as optional" width="621"/>
+<div class="img-container" style="width: 621px">
+  <img src="./img/signup_flow_parts.png" alt="Placeholder for ApproveInput boxed off as optional, ApproveButton and SubscribeButton boxed off as required, and StepIndicator boxed off as optional" />
+</div>
 <p><strong>Two buttons are needed because signing up is a two step process.</strong></p>
 <p>First, the user must make a transaction approving the subscription contract to transfer tokens from their wallet.</p>
 <p>Second, the user must sign the details of the subscription agreement using MetaMask.</p>
@@ -80,7 +86,9 @@ import { ApproveButton } from &quot;@daisypayments/daisy-widget&quot;;
 </code></pre>
 <p>Clicking the button will open MetaMask and prompt the user to approve the number of tokens that the subscription contract is allowed to transfer from their wallet. The number of tokens to approve can be defined in one of three ways.</p>
 <p>The first, recommended way is to use Daisy Widget's <code>ApproveInput</code> component. <code>ApproveInput</code> provides the user an intuitive way of defining the approval amount in terms of either tokens or billing periods. The component accepts an optional <code>periods</code> prop to define the initial number of billing currentlyAllowedPeriods; its default value is 12.</p>
-<img src="./img/approve_input.png" alt="Placeholder for ApproveInput" width="322"/>
+<div class="img-container" style="width: 322px">
+  <img src="./img/approve_input.png" alt="Placeholder for ApproveInput" />
+</div>
 <pre class="prettyprint source lang-js"><code>import { ApproveInput } from &quot;@daisypayments/daisy-widget&quot;;
 </code></pre>
 <pre class="prettyprint source lang-html"><code>&lt;ApproveInput plan=&quot;anvilMysteryBoxMonthly&quot; />
@@ -162,7 +170,9 @@ const subscriptionHandler = async subscription => {
 From here you will likely want to provide a way for existing subscribers to <a href="#token-approval">approve more tokens</a>, <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html#getSubscription">view their subscription details</a>, and <a href="#cancellation">cancel their subscription</a>.</p>
 <hr>
 <h2>Approving More Tokens for an Existing Subscription</h2>
-<img src="./img/approving_tokens.png" alt="Placeholder for ApproveInput and ApproveButton" width="350"/>
+<div class="img-container" style="width: 350px">
+  <img src="./img/approving_tokens.png" alt="Placeholder for ApproveInput and ApproveButton" />
+</div>
 <p>Every billing period, the price of the plan will be subtracted from the amount of tokens the user has approved. Once all approved tokens have been spent, the user will need to
 approve more to continue the subscription. Luckily, doing so is easy. Simply display the same <code>ApproveInput</code> and <code>ApproveButton</code> components to subscribed users somewhere within your app. We recommend still including the <code>Toast</code> component on this page unless you want to be in charge of error handling, but <code>SubscribeButton</code> and <code>StepIndicator</code> should be left out.</p>
 <pre class="prettyprint source lang-js"><code>// Subscriber account page of your React app
@@ -226,7 +236,7 @@ const subscription = await daisy.getSubscription(this.props.user.daisyId);
 </ul>
 <p>Luckily, if any of these requirements are not met, Daisy Widget can do the work of surfacing actionable error messages to the user for you with the optional <a href="/#toast">Toast component</a>.</p>
 <hr>
-<p>Still have questions after reading this guide? We encourage you to chat with us on Slack at #daisy-public (coming soon), or contact us at <a href="mailto:hello@daisypayments.com">hello@daisypayments.com</a>.</p>
+<p>Still have questions after reading this guide? We encourage you to chat with us on Slack at #daisy-public, or contact us at <a href="mailto:hello@daisypayments.com">hello@daisypayments.com</a>.</p>
 </article>
 
 </section>

@@ -48,7 +48,9 @@
 </code></pre>
 <p>Next, how you import the SDK depends on where you are using it.</p>
 <h3><a id="FrontendSetUp" class="anchor"></a>Frontend</h3>
-<img src="./img/subscription-service-id-and-key.png" alt="Where to find your subscription product's id and key in the dashboard" width="700"/>
+<div class="img-container" style="width: 700px">
+  <img src="./img/subscription-service-id-and-key.png" alt="Where to find your subscription product's id and key in the dashboard" />
+</div>
 <p>In your project's frontend, everything is done through the <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html"><code>DaisySDK</code></a> class. The <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html"><code>DaisySDK</code></a> constructor takes an object with the <code>identifier</code> key set to your subscription product's globally unique <code>id</code> as its first argument, and a <code>web3</code> instance as its second.</p>
 <p>Below is an example of getting <code>web3</code> from <code>react-metamask</code>, and using that to instantiate <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html"><code>DaisySDK</code></a> inside of a React component, <code>PageWithDaisy</code>. Note how <code>PageWithDaisy</code> is wrapped with the <a href="https://reactjs.org/docs/higher-order-components.html">Higher-Order Component</a>, <code>withMetaMask()</code>. This <code>withMetaMask()</code> function from <code>react-metamask</code> differs from the one provided by <code>daisy-widget</code>.</p>
 <pre class="prettyprint source lang-js"><code>// MetaMaskContext.js
@@ -352,7 +354,7 @@ app.post(&quot;/submit_cancel/&quot;, asyncHandler(async (req, res) => {
 </ul>
 <p>When using Daisy SDK, you are responsible for checking that these requirements are met and informing the user if they are not. An added benefit of using <a href="https://docs.daisypayments.com/tutorial-Daisy-Widget.html">Daisy Widget</a> is that handling and displaying errors is built-in!</p>
 <hr>
-<p>Still have questions after reading this guide? We encourage you to chat with us on Slack at #daisy-public (coming soon), or contact us at <a href="mailto:hello@daisypayments.com">hello@daisypayments.com</a>.</p>
+<p>Still have questions after reading this guide? We encourage you to chat with us on Slack at #daisy-public, or contact us at <a href="mailto:hello@daisypayments.com">hello@daisypayments.com</a>.</p>
 </article>
 
 </section>
