@@ -6,7 +6,7 @@ Daisy SDK is a library for interacting with all aspects of the Daisy product in 
 > Daisy SDK is just one of three possible ways for your users to pay with Daisy, and it is certainly the most involved way. If your project has a React frontend, most payment and subscription actions can be performed using the pre-built React components of [Daisy Widget](https://docs.daisypayments.com/tutorial-Daisy-Widget.html). If you're looking for an almost-no-code solution, check out Invitations (documentation coming soon). 
 
 ---
-## Installation and Set Up
+## <a id="Installation" class="anchor"></a>Installation and Set Up
 
 Begin by adding the `@daisypayments/daisy-sdk` package to your project.
 
