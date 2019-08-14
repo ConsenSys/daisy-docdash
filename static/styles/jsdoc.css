@@ -29,6 +29,12 @@ body {
 
 img {
   max-width: 100%;
+  height: auto;
+}
+
+.img-container {
+  padding: 0.5em;
+  max-width: 100%;
 }
 
 a,
@@ -172,6 +178,13 @@ tt, code, kbd, samp {
   width: 70%;
 }
 
+.anchor {
+  display: block;
+  position: relative;
+  top: -1.5em;
+  visibility: hidden;
+}
+
 header {
   display: block
 }
@@ -193,10 +206,6 @@ article.tutorial {
   padding-top: 3em;
 }
 
-article img {
-  margin: 1em 0;
-}
-
 .variation {
   display: none
 }
@@ -211,7 +220,7 @@ article img {
 nav {
   float: left;
   display: block;
-  width: 300px;;
+  width: 300px;
   background: #fff;
   overflow: auto;
   position: fixed;
@@ -810,12 +819,28 @@ html[data-search-mode] .level-hide {
   footer {
     margin-left: 0;
   }
+
+  blockquote {
+    width: 98%;
+  }
+
+  .prettyprint.source {
+    width: 98%;
+  }
 }
 
 @media only screen and (min-width: 680px) and (max-width: 1300px) {
   #main p,
   #main ul {
     width: 90%;
+  }
+
+  blockquote {
+    width: 80%;
+  }
+
+  .prettyprint.source {
+    width: 94%;
   }
 }
 

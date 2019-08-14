@@ -2,7 +2,6 @@
 
 module.exports = {
   plugins: ["plugins/markdown"],
-  readme: "README",
   sourceType: "module",
 
   source: {
@@ -17,15 +16,16 @@ module.exports = {
     template: "./",
     encoding: "utf8",
     destination: "docs/",
-    "tutorials": "../daisy-widget/docs/tutorials",
+    "tutorials": "./tutorials",
     recurse: true,
     verbose: true,
   },
   templates: {
     default: {
+      includeDate: false,
       staticFiles: {
         include: [
-            "../daisy-widget/docs/tutorials/assets"
+            "./tutorials/assets"
         ],
       }
     }
