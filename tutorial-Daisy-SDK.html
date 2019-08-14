@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>Tutorial: Daisy SDK - Documentation</title>
+    
+    
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    <header><a href="index.html" id="logo"><img src="https://s3.amazonaws.com/assets.daisypayments.com/white_logo.svg" alt="Home"/> DOCS</a></header><section><div class="daisy-input-container"><input type="text" id="nav-search" class="daisy-input" placeholder="Search" /><span class="label">Search</span></div><h3>Tutorials</h3><ul><li><a href="tutorial-Daisy-SDK.html">Daisy SDK</a></li><li><a href="tutorial-Daisy-Widget.html">Daisy Widget</a></li></ul><h3>Classes</h3><ul><li><a href="module-browser-DaisySDK.html">DaisySDK</a><ul class='methods'><li data-type='method'><a href="module-browser-DaisySDK.html#getData">getData</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#getPlans">getPlans</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#getReceipts">getReceipts</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#getSubscription">getSubscription</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#getSubscriptions">getSubscriptions</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#loadToken">loadToken</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#prepareToken">prepareToken</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#submit">submit</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#submitCancel">submitCancel</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#sync">sync</a></li></ul></li><li><a href="module-common-Client.html">Client</a></li><li><a href="module-common-SubscriptionProductClient.html">SubscriptionProductClient</a><ul class='methods'><li data-type='method'><a href="module-common-SubscriptionProductClient.html#getData">getData</a></li><li data-type='method'><a href="module-common-SubscriptionProductClient.html#getPlans">getPlans</a></li><li data-type='method'><a href="module-common-SubscriptionProductClient.html#getReceipts">getReceipts</a></li><li data-type='method'><a href="module-common-SubscriptionProductClient.html#getSubscription">getSubscription</a></li><li data-type='method'><a href="module-common-SubscriptionProductClient.html#getSubscriptions">getSubscriptions</a></li><li data-type='method'><a href="module-common-SubscriptionProductClient.html#submit">submit</a></li><li data-type='method'><a href="module-common-SubscriptionProductClient.html#submitCancel">submitCancel</a></li></ul></li><li><a href="module-private-ServiceSubscriptions.html">ServiceSubscriptions</a><ul class='methods'><li data-type='method'><a href="module-private-ServiceSubscriptions.html#authorize">authorize</a></li><li data-type='method'><a href="module-private-ServiceSubscriptions.html#createInvitation">createInvitation</a></li><li data-type='method'><a href="module-private-ServiceSubscriptions.html#getData">getData</a></li><li data-type='method'><a href="module-private-ServiceSubscriptions.html#getPlans">getPlans</a></li><li data-type='method'><a href="module-private-ServiceSubscriptions.html#getReceipts">getReceipts</a></li><li data-type='method'><a href="module-private-ServiceSubscriptions.html#getSubscription">getSubscription</a></li><li data-type='method'><a href="module-private-ServiceSubscriptions.html#getSubscriptions">getSubscriptions</a></li><li data-type='method'><a href="module-private-ServiceSubscriptions.html#submit">submit</a></li><li data-type='method'><a href="module-private-ServiceSubscriptions.html#submitCancel">submitCancel</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-browser.html">browser</a></li><li><a href="module-common.html">common</a></li><li></li><li></li><li><a href="module-private.html">private</a></li><li></li><li></li></ul><h3>Externals</h3><ul><li><a href="external-_web3.eth.Contract_.html">web3.eth.Contract</a></li><li><a href="external-PromiEvent.html">PromiEvent</a></li></ul></section>
+</nav>
+
+<div id="main">
+    
+
+    <section class="tutorial">
+
+<article class="tutorial">
+    <h1>Getting Started with Daisy SDK</h1>
+<p>Daisy SDK is a library for interacting with all aspects of the Daisy product in both a browser and Node environment. This guide will go through using the library to <a href="#SignUp">sign up for a new subscription</a>, <a href="#Access">access a subscription's current state and subscriber data</a>, <a href="#ApproveMore">approve tokens for an existing subscription</a>, and <a href="#Cancellation">cancel an existing subscription</a>.</p>
+<blockquote>
+<p>Daisy SDK is just one of three possible ways for your users to pay with Daisy, and it is certainly the most involved way. If your project has a React frontend, most payment and subscription actions can be performed using the pre-built React components of <a href="https://docs.daisypayments.com/tutorial-Daisy-Widget.html">Daisy Widget</a>. If you're looking for an almost-no-code solution, check out Invitations (documentation coming soon).</p>
+</blockquote>
+<hr>
+<h2>Installation and Set Up</h2>
+<p>Begin by adding the <code>@daisypayments/daisy-sdk</code> package to your project.</p>
+<pre class="prettyprint source lang-nocode"><code>yarn add @daisypayments/daisy-sdk
+</code></pre>
+<p>If you are using Daisy SDK within a React frontend, we strongly recommend that you also install <a href="https://github.com/ConsenSys/react-metamask"><code>react-metamask</code></a> to provide <a href="https://github.com/ethereum/web3.js/"><code>web3</code></a>. It is important to specifically install version <code>web3@=1.0.0-beta.37</code>.</p>
+<pre class="prettyprint source lang-nocode"><code>yarn add @daisypayments/react-metamask web3@=1.0.0-beta.37
+</code></pre>
+<p>Next, how you import the SDK depends on where you are using it.</p>
+<h3><a id="FrontendSetUp" class="anchor"></a>Frontend</h3>
+<img src="./img/subscription-service-id-and-key.png" alt="Where to find your subscription product's id and key in the dashboard" width="700"/>
+<p>In your project's frontend, everything is done through the <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html"><code>DaisySDK</code></a> class. The <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html"><code>DaisySDK</code></a> constructor takes an object with the <code>identifier</code> key set to your subscription product's globally unique <code>id</code> as its first argument, and a <code>web3</code> instance as its second.</p>
+<p>Below is an example of getting <code>web3</code> from <code>react-metamask</code>, and using that to instantiate <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html"><code>DaisySDK</code></a> inside of a React component, <code>PageWithDaisy</code>. Note how <code>PageWithDaisy</code> is wrapped with the <a href="https://reactjs.org/docs/higher-order-components.html">Higher-Order Component</a>, <code>withMetaMask()</code>. This <code>withMetaMask()</code> function from <code>react-metamask</code> differs from the one provided by <code>daisy-widget</code>.</p>
+<pre class="prettyprint source lang-js"><code>// MetaMaskContext.js
+
+import { createMetaMaskContext } from &quot;@daisypayments/react-metamask&quot;;
+const MetaMaskContext = createMetaMaskContext();
+export default MetaMaskContext;
+
+
+// PageWithDaisy.js
+
+import React, { Component } from &quot;react&quot;;
+import DaisySDK from &quot;@daisypayments/daisy-sdk&quot;;
+import { withMetaMask } from &quot;@daisypayments/react-metamask&quot;;
+import MetaMaskContext from &quot;./MetaMaskContext&quot;;
+
+class PageWithDaisy extends Component {
+
+  componentDidMount() {
+    const { web3 } = this.props.metamask;
+    if (web3) {
+      const daisy = new DaisySDK({ identifier: &quot;acme-co-subscription-service-id&quot; }, web3);
+      ...
+    }
+  }
+
+  ...
+}
+
+export default withMetaMask(MetaMaskContext)(PageWithDaisy);
+</code></pre>
+<p>An example of instantiating <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html"><code>DaisySDK</code></a> outside of a React project.</p>
+<pre class="prettyprint source lang-js"><code>import DaisySDK from &quot;@daisypayments/daisy-sdk&quot;;
+import Web3 from &quot;web3&quot;;
+
+const web3 = new Web3(...); // Replacing ... with a provider from the browser or MetaMask
+const daisy = new DaisySDK({ identifier: &quot;acme-co-subscription-service-id&quot; }, web3)
+</code></pre>
+<h3><a id="BackendSetUp" class="anchor"></a>Backend</h3>
+<p>In your project backend import <a href="https://docs.daisypayments.com/module-private-ServiceSubscriptions.html"><code>ServiceSubscriptions</code></a> instead of <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html"><code>DaisySDK</code></a>, and import it from the module <code>@daisypayments/daisy-sdk/private</code>, not <code>@daisypayments/daisy-sdk</code>. It is instantiated with your subscription product's <code>identifier</code> and <code>secretKey</code>, but not <code>web3</code> as it is not interacting with MetaMask or a dapp browser. <strong>The secret key should be stored as an environment variable on your server and not hard coded. Keep this value private and never use it in your frontend code!</strong></p>
+<pre class="prettyprint source lang-js"><code>const { ServiceSubscriptions } = require(&quot;@daisypayments/daisy-sdk/private&quot;);
+
+const subscriptionService = new ServiceSubscriptions({
+  identifier: &quot;acme-co-subscription-service-id&quot;,
+  secretKey: &quot;XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&quot;,
+});
+</code></pre>
+<p>Both <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html"><code>DaisySDK</code></a> and <a href="https://docs.daisypayments.com/module-private-ServiceSubscriptions.html"><code>ServiceSubscriptions</code></a> extend the <a href="https://docs.daisypayments.com/module-common-SubscriptionProductClient.html">SubscriptionProductClient</a> class.</p>
+<hr>
+<h2><a id="SignUp" class="anchor"></a>Signing Up for a Subscription</h2>
+<p>Signing up for a subscription is a two step process: First, the user must make a transaction approving the subscription contract to transfer tokens from their wallet. Second, the user must sign the details of the subscription agreement using MetaMask or a dapp browser and that signed agreement must be submitted to Daisy.</p>
+<hr>
+<h3><a id="ApprovalStep" class="anchor"></a>Approval Step</h3>
+<p>The approval step takes place entirely in your frontend. With <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html"><code>DaisySDK</code></a> instantiated the same way we saw above, the first step is to call <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html#sync"><code>sync()</code></a> to ensure that the subscription manager is up to date. We then call <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html#loadToken"><code>loadToken()</code></a> to fetch the contract of the token that the subscription is denominated in. The amount of tokens to approve can be defined by the application or by an input field; ideally it is many multiples of the plan price so that the user does not have to frequently approve more tokens. The amount must be defined as a string and in the smallest unit possible (18 decimal places for most ERC20 tokens). The user account (wallet address) should be defined by MetaMask or the dapp browser.</p>
+<pre class="prettyprint source lang-js"><code>const daisy = new DaisySDK({ identifier: &quot;acme-co-subscription-service-id&quot; }, web3);
+
+await daisy.sync();
+
+const token = daisy.loadToken();
+
+// Defined by the application or by the user, ideally much greater than the plan price
+const approvalAmount = &quot;12000000000000000000&quot;;
+
+// If using react-metamask, accessible from this.props.metamask.accounts[0]
+const account = &quot;0x47e4...&quot;;
+
+const eventemitter = daisy
+  .prepareToken(token)
+  .approve(approvalAmount, { from: account });
+</code></pre>
+<p><a href="https://docs.daisypayments.com/module-browser-DaisySDK.html#prepareToken"><code>prepareToken()</code></a> takes the token contract and wraps it with some simple error handling, but the call to <code>approve()</code> is essentially just sending the approve transaction with <a href="https://web3js.readthedocs.io/en/v1.2.0/web3-eth-contract.html#methods-mymethod-send"><code>web3</code></a> like so:</p>
+<pre class="prettyprint source lang-js"><code>// Roughly equivalent to approve() in the example above
+tokenContract.methods[&quot;approve&quot;](subscriptionContract, amount).send({
+  from: account
+});
+</code></pre>
+<p>The user is then prompted by MetaMask or their dapp browser to send the transaction. Upon doing so, a <a href="https://web3js.readthedocs.io/en/v1.2.0/callbacks-promises-events.html#promievent"><code>PromiEvent</code></a> is returned, on which you can optionally attach handlers.</p>
+<pre class="prettyprint source lang-js"><code>eventemitter
+  .on(&quot;transactionHash&quot;, handleApproveTransactionHash)
+  .on(&quot;confirmation&quot;, handleApproveConfirmation)
+  .on(&quot;receipt&quot;, handleApproveReceipt)
+  .on(&quot;error&quot;, handleApproveError);
+
+function handleApproveTransactionHash(transactionHash) { ... };
+function handleApproveConfirmation(confirmationNumber, receipt) { ... };
+function handleApproveReceipt(receipt) { ... };
+function handleApproveError(error) { ... };
+</code></pre>
+<hr>
+<h3><a id="SignAndSubmitStep" class="anchor"></a>Sign and Submit Step</h3>
+<p>With the subscription contract approved to transfer tokens from the user's wallet, the next and last step is signing the subscription agreement and submitting it to Daisy to be executed on the Ethereum blockchain. The first four lines of code below are the same as in the approval step. The additional piece of data needed is the specific <code>plan</code> object that the user is subscribing to. Plans can be accessed from either the frontend or backend (using <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html"><code>DaisySDK</code></a> or <a href="https://docs.daisypayments.com/module-private-ServiceSubscriptions.html"><code>ServiceSubscriptions</code></a>, respectively) with the same method, <a href="https://docs.daisypayments.com/module-common-SubscriptionProductClient.html#getData"><code>getData()</code></a>.</p>
+<pre class="prettyprint source lang-js"><code>const daisy = new DaisySDK({ identifier: &quot;acme-co-subscription-service-id&quot; }, web3);
+
+await daisy.sync();
+
+const token = daisy.loadToken();
+
+// If using react-metamask, accessible from this.props.metamask.accounts[0]
+const account = &quot;0x47e4...&quot;;
+
+// In practice probably not called immediately before sign()
+const { plans } = await daisy.getData();
+
+const { signature, agreement } = await daisy
+  .prepareToken(token)
+  .sign({ account, plan: plans[0] });
+</code></pre>
+<p>Then, instead of calling <code>approve()</code> we call the <code>sign()</code> function, prompting the user to sign the details of the subscription agreement with MetaMask or the dapp browser. Once signed, the agreement is sent to Daisy to be executed on the Ethereum blockchain by one of two ways.</p>
+<p><strong>Whether the agreement is submitted from your backend or frontend, it is very important to associate the returned <code>daisyId</code> with the user at this step!</strong></p>
+<p><strong>Backend Way:</strong> The first, recommended way is to provide an endpoint on your backend that is responsible for submitting the signed agreement with <a href="https://docs.daisypayments.com/module-private-ServiceSubscriptions.html#submit"><code>submit()</code></a> and then returning the server response.</p>
+<pre class="prettyprint source lang-js"><code>// Your frontend
+
+try {
+  const response = await fetch(&quot;/submit_agreement/&quot;, {
+    method: &quot;POST&quot;,
+    body: JSON.stringify({ signature, agreement }),
+    headers:{
+      &quot;Content-Type&quot;: &quot;application/json&quot;
+    }
+  });
+  const data = await response.json();
+} catch (error) {
+  ...
+}
+
+
+
+// Your backend
+
+const asyncHandler = require(&quot;express-async-handler&quot;);
+
+app.post(&quot;/submit_agreement/&quot;, asyncHandler(async (req, res) => {
+
+  const { agreement, signature } = req.body;
+
+  const { data: subscription } = await subscriptionService.submit({
+    agreement,
+    signature,
+  });
+
+  // Associate daisyId with the user
+  const daisyId = subscription[&quot;daisyId&quot;];
+  const { user } = req.session;
+  await user.patch({ daisyId });
+
+  res.send(subscription);
+}));
+</code></pre>
+<p>This example uses <a href="https://expressjs.com/">Express</a> and the middleware <a href="https://www.npmjs.com/package/express-async-handler">express-async-handler</a> for the sake of brevity, but of course you can use whatever backend you like as long as you are calling <a href="https://docs.daisypayments.com/module-private-ServiceSubscriptions.html#submit"><code>submit()</code></a> and associating the returned <code>daisyId</code> with the user.</p>
+<p>Additionally, if the user is attempting to subscribe to a private plan, the subscription agreement must also be signed with a private <code>Authorizer</code> key. Thus, if you are using private plans, you <em>must</em> utilize the <strong>Backend Way</strong> to avoid revealing this key.</p>
+<p>The previous example adapted for a private plan is shown below. The key difference is that <a href="https://docs.daisypayments.com/module-private-ServiceSubscriptions.html#authorize"><code>authorize()</code></a> is now called and the resulting <code>authSignature</code> is passed to <a href="https://docs.daisypayments.com/module-private-ServiceSubscriptions.html#submit"><code>submit()</code></a>.</p>
+<pre class="prettyprint source lang-js"><code>app.post(&quot;/submit_agreement/&quot;, asyncHandler(async (req, res) => {
+
+  const { agreement, signature } = req.body;
+
+  let authSignature = null;
+  if (plan.private) {
+
+    const authorizer = {
+      privateKey: Buffer.from(process.env.PRIVATE_KEYS, &quot;hex&quot;),
+    };
+    authSignature = await subscriptionService.authorize(
+      authorizer,
+      agreement,
+    );
+  }
+
+  const { data: subscription } = await subscriptionService.submit({
+    agreement,
+    authSignature,
+    signature,
+  });
+
+  ...
+</code></pre>
+<p><strong>Frontend Way:</strong> The <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html#submit"><code>submit()</code></a> function can also be called from the frontend with <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html"><code>DaisySDK</code></a>. However, we recommend the <strong>Backend Way</strong> as it avoids any risk of <code>daisyId</code> being lost when sent from the user's browser to your backend. If you still choose to do the agreement submission entirely from the frontend, <strong>be sure to then send the returned <code>daisyId</code> to your backend and associate it with the user!</strong></p>
+<pre class="prettyprint source lang-js"><code>// Your frontend
+// NOTE: Previous example preferred to this example!
+
+try {
+
+  const { data: subscription } = await daisy.submit({
+    agreement,
+    signature,
+  });
+
+  // Store user updated with daisyId on backend
+  const updatedUser = await fetch(&quot;/update_user/&quot;, {
+    method: &quot;PATCH&quot;,
+    body: JSON.stringify({
+      ...user, 
+      daisyId: subscription.daisyId
+    }),
+    headers:{
+      &quot;Content-Type&quot;: &quot;application/json&quot;
+    }
+  });
+  ...
+} catch (error) {
+  ...
+}
+</code></pre>
+<p>And that's it! You are now ready to accept subscribers!</p>
+<p>From here you will likely want to provide a way for existing subscribers to <a href="#Access">view their subscription details</a>, <a href="#ApproveMore">approve more tokens</a>, and <a href="#Cancellation">cancel their subscription</a>.</p>
+<hr>
+<h2><a id="Access" class="anchor"></a>Accessing Subscription State and Subscriber Data</h2>
+<p>A number of methods are provided for accessing data about your subscription products, as well as the status of a given subscription. Here we demonstrate how you might use them as API endpoints within an <a href="https://expressjs.com/">Express</a> app, but all of these methods can also be called from the frontend using <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html"><code>DaisySDK</code></a>.</p>
+<p>Setup and fetching plans with <a href="https://docs.daisypayments.com/module-private-ServiceSubscriptions.html#getData"><code>getData()</code></a>.</p>
+<pre class="prettyprint source lang-js"><code>const express = require(&quot;express&quot;);
+const asyncHandler = require(&quot;express-async-handler&quot;);
+const { ServiceSubscriptions } = require(&quot;@daisypayments/daisy-sdk/private&quot;);
+
+const app = express();
+
+const subscriptionService = new ServiceSubscriptions({
+  identifier: &quot;acme-co-subscription-service-id&quot;,
+  secretKey: &quot;XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&quot;,
+});
+
+app.get(&quot;/api/plans/&quot;, asyncHandler(async (req, res) => {
+  const { plans } = await subscriptionService.getData();
+  res.send(plans);
+}));
+</code></pre>
+<p>Fetching receipts with <a href="https://docs.daisypayments.com/module-private-ServiceSubscriptions.html#getReceipts"><code>getReceipts()</code></a>.</p>
+<pre class="prettyprint source lang-js"><code>app.get(&quot;/api/receipts/&quot;, asyncHandler(async (req, res) => {
+  const daisyId = req.query.id; // Or onChainId
+  const receipts = await subscriptionService.getReceipts({ daisyId });
+  res.send(receipts);
+}));
+</code></pre>
+<p>Fetching a subscription with <a href="https://docs.daisypayments.com/module-private-ServiceSubscriptions.html#getSubscription"><code>getSubscription()</code></a>.</p>
+<pre class="prettyprint source lang-js"><code>app.get(&quot;/api/subscription/&quot;, asyncHandler(async (req, res) => {
+  const daisyId = req.query.id; // Or onChainId
+  const subscription = await subscriptionService.getSubscription({ daisyId });
+  res.send(subscription);
+}));
+</code></pre>
+<p>To differentiate between active and inactive subscriptions, use <code>subscription.state</code> and <code>subscription.cancelState</code>. The full list of possible subscription states and their meanings is available here (coming soon).</p>
+<p>Fetching subscriptions that match a filtering criteria with <a href="https://docs.daisypayments.com/module-private-ServiceSubscriptions.html#getSubscriptions"><code>getSubscriptions()</code></a>. Valid properties to filter by are <code>account</code> (Ethereum address) and <code>state</code>.</p>
+<pre class="prettyprint source lang-js"><code>app.get(&quot;/api/subscriptions/&quot;, asyncHandler(async (req, res) => {
+  const filterKey = req.query.filterKey;
+  const filterValue = req.query.filterValue;
+  const subscriptions = await subscriptionService.getSubscriptions({
+    [filterKey]: filterValue
+  });
+  res.send(subscriptions);
+}));
+</code></pre>
+<hr>
+<h2><a id="ApproveMore" class="anchor"></a>Approving More Tokens for an Existing Subscription</h2>
+<p>Every billing period, the price of the plan will be subtracted from the amount of tokens the user has approved. Once all approved tokens have been spent, the user will need to
+approve more to continue the subscription. Luckily, doing so is easy. Simply expose the same <a href="#ApprovalStep">token approval flow</a> that we already created to subscribed users somewhere within your app. Leave out the second step of signing and submitting the subscription agreement, that doesn't need to be repeated.</p>
+<p>If you can use <a href="https://docs.daisypayments.com/tutorial-Daisy-Widget.html">Daisy Widget</a>, the <code>ApproveInput</code> and <code>ApproveButton</code> components <a href="https://docs.daisypayments.com/tutorial-Daisy-Widget.html#ApproveMore">accomplish this task perfectly</a>. If not, be sure to make it obvious to your users how many tokens they have approved and warn them when they are getting low.</p>
+<hr>
+<h2><a id="Cancellation" class="anchor"></a>Cancelling a Subscription</h2>
+<p>Occasionally a user will need to cancel their subscription. Similar to how a user is able to sign a subscription agreement from the frontend, they are also able to sign a cancellation. The arguments for cancelling differ slightly from those required for initiating a subscription; here we need the <code>subscription</code>'s <code>onChainId</code> instead of the <code>plan</code>. The <code>subscription</code> object can be obtained from <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html#getSubscription"><code>getSubscription()</code></a>.</p>
+<pre class="prettyprint source lang-js"><code>// Get subscription of current user
+const subscription = await daisy.getSubscription({ 
+  daisyId: this.props.user.daisyId
+});
+
+// Sign cancellation using MetaMask or browser
+const token = daisy.loadToken();
+const { agreement, signature } = await daisy
+  .prepareToken(token)
+  .signCancel({ account, onChainId: subscription.onChainId });
+
+// Send signed cancellation to Daisy
+const response = await daisy.submitCancel({ agreement, signature });
+</code></pre>
+<p>Calling <code>signCancel()</code> will open MetaMask and prompt the user to sign the details of the cancellation.  Similar to the <a href="#SignAndSubmitStep">sign and submit step</a>, the signed cancellation can be sent to Daisy from either your frontend or your backend. Neither way is strongly preferred over the other as there is no fear of data loss, so feel free to call <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html#submitCancel"><code>submitCancel()</code></a> wherever suits your needs best.</p>
+<pre class="prettyprint source lang-js"><code>// Either from your frontend,
+
+const { data: subscription } = await daisy.submitCancel({
+  agreement,
+  signature,
+});
+
+
+// Or from your backend
+
+app.post(&quot;/submit_cancel/&quot;, asyncHandler(async (req, res) => {
+
+  const { agreement, signature } = req.body;
+  const { data: subscription } = await subscriptionService.submitCancel({
+    agreement,
+    signature,
+  });
+
+  res.send(subscription);
+}));
+</code></pre>
+<hr>
+<h2><a id="UserRequirements" class="anchor"></a>What is Required of the User?</h2>
+<p>A user on your site is interested in subscribing to your service. There are some prerequisites to signing up for non-fiat denominated subscriptions. What do they need?  The user must:</p>
+<ul>
+<li>Have <a href="https://metamask.io/">MetaMask</a> installed or be using a dapp browser (for approving tokens and signing the subscription agreement).</li>
+<li>Have enough of one of the subscription's accepted ERC20 tokens to pay for at least one billing period.</li>
+<li>Have enough ETH to pay the gas fee of the approval step (a quite small amount).</li>
+</ul>
+<p>When using Daisy SDK, you are responsible for checking that these requirements are met and informing the user if they are not. An added benefit of using <a href="https://docs.daisypayments.com/tutorial-Daisy-Widget.html">Daisy Widget</a> is that handling and displaying errors is built-in!</p>
+<hr>
+<p>Still have questions after reading this guide? We encourage you to chat with us on Slack at #daisy-public, or contact us at <a href="mailto:hello@daisypayments.com">hello@daisypayments.com</a>.</p>
+</article>
+
+</section>
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+<script src="scripts/search.js" defer></script>
+
+
+</body>
+</html>

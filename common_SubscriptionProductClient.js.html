@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>common/SubscriptionProductClient.js - Documentation</title>
+    
+    
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    <header><a href="index.html" id="logo"><img src="https://s3.amazonaws.com/assets.daisypayments.com/white_logo.svg" alt="Home"/> DOCS</a></header><section><div class="daisy-input-container"><input type="text" id="nav-search" class="daisy-input" placeholder="Search" /><span class="label">Search</span></div><h3>Tutorials</h3><ul><li><a href="tutorial-Daisy-SDK.html">Daisy SDK</a></li><li><a href="tutorial-Daisy-Widget.html">Daisy Widget</a></li></ul><h3>Classes</h3><ul><li><a href="module-browser-DaisySDK.html">DaisySDK</a><ul class='methods'><li data-type='method'><a href="module-browser-DaisySDK.html#getData">getData</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#getPlans">getPlans</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#getReceipts">getReceipts</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#getSubscription">getSubscription</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#getSubscriptions">getSubscriptions</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#loadToken">loadToken</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#prepareToken">prepareToken</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#submit">submit</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#submitCancel">submitCancel</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#sync">sync</a></li></ul></li><li><a href="module-common-Client.html">Client</a></li><li><a href="module-common-SubscriptionProductClient.html">SubscriptionProductClient</a><ul class='methods'><li data-type='method'><a href="module-common-SubscriptionProductClient.html#getData">getData</a></li><li data-type='method'><a href="module-common-SubscriptionProductClient.html#getPlans">getPlans</a></li><li data-type='method'><a href="module-common-SubscriptionProductClient.html#getReceipts">getReceipts</a></li><li data-type='method'><a href="module-common-SubscriptionProductClient.html#getSubscription">getSubscription</a></li><li data-type='method'><a href="module-common-SubscriptionProductClient.html#getSubscriptions">getSubscriptions</a></li><li data-type='method'><a href="module-common-SubscriptionProductClient.html#submit">submit</a></li><li data-type='method'><a href="module-common-SubscriptionProductClient.html#submitCancel">submitCancel</a></li></ul></li><li><a href="module-private-ServiceSubscriptions.html">ServiceSubscriptions</a><ul class='methods'><li data-type='method'><a href="module-private-ServiceSubscriptions.html#authorize">authorize</a></li><li data-type='method'><a href="module-private-ServiceSubscriptions.html#createInvitation">createInvitation</a></li><li data-type='method'><a href="module-private-ServiceSubscriptions.html#getData">getData</a></li><li data-type='method'><a href="module-private-ServiceSubscriptions.html#getPlans">getPlans</a></li><li data-type='method'><a href="module-private-ServiceSubscriptions.html#getReceipts">getReceipts</a></li><li data-type='method'><a href="module-private-ServiceSubscriptions.html#getSubscription">getSubscription</a></li><li data-type='method'><a href="module-private-ServiceSubscriptions.html#getSubscriptions">getSubscriptions</a></li><li data-type='method'><a href="module-private-ServiceSubscriptions.html#submit">submit</a></li><li data-type='method'><a href="module-private-ServiceSubscriptions.html#submitCancel">submitCancel</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-browser.html">browser</a></li><li><a href="module-common.html">common</a></li><li></li><li></li><li><a href="module-private.html">private</a></li><li></li><li></li></ul><h3>Externals</h3><ul><li><a href="external-_web3.eth.Contract_.html">web3.eth.Contract</a></li><li><a href="external-PromiEvent.html">PromiEvent</a></li></ul></section>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">common/SubscriptionProductClient.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/** @module common */
+
+const querystring = require("querystring");
+
+const Client = require("./Client");
+
+/**
+ * @typedef {Object} Plan - Daisy's Plan object. Can be retrieved using {@link module:common~SubscriptionProductClient#getData}.
+ * @property {string} id - ID.
+ * @property {string} name - Plan name.
+ * @property {string} onChainId - Plan ID in the Ethereum blockchain (internal use of the SDK).
+ * @property {string} description - Plan description.
+ * @property {string} price - Plan price in tokens (stored as string).
+ * @property {number} periods - Number of periods in `periodUnit` between bill cycles.
+ * @property {string} periodUnit - Period unit: DAY, MONTH, YEAR.
+ * @property {string} maxExecutions - How many times the Plan is executed.
+ * @property {boolean} private - If a Plan is private it requires a signature (with a private key) from the `authorizer` defined in the Subscription Manager.
+ * @property {boolean} active - Is the plan enabled for subscriptions or disabled?.
+ * @property {string} [txHash] - Transaction hash when it was deployed.
+ * @property {Error|string} [error] - Error message (if any).
+ * @property {string} state - Enum: `DRAFT`, `PENDING`, `DEPLOYED`, `FAILED`.
+ * @property {string} removalState - Enum: `OK`, `PENDING`, `FAILED`.
+ * @property {Date|string} createdAt - Timestamp.
+ * @property {Date|string} updatedAt - Timestamp.
+ */
+
+/**
+ * @typedef {Object} Subscription
+ * @property {string} daisyId - Daisy ID.
+ * @property {string} account - Subscriber ethereum address.
+ * @property {string} token - Token address.
+ * @property {number|string} price - Approved tokens.
+ * @property {number} periodUnit
+ * @property {number} periods
+ * @property {string} [signature] - Created when user signs the agreement at {@link module:browser.DaisySDKToken#sign}.
+ * @property {string} signatureExpiresAt - UNIX Timestamp (in seconds for blockchain usage) when the `signature` field expires.
+ * @property {number|string} maxExecutions - How many periods the subscription is for.
+ * @property {string} [nextPayment] - UNIX Timestamp (in seconds for blockchain usage) when its the next billing cycle (approximation).
+ * @property {Date|string} [nextPaymentDate] - Normal Date object representing the next billing cycle.
+ * @property {string} [onChainId] - Identifier in the blockchain.
+ * @property {string} [txHash] - Transaction hash after deploying the subscription.
+ * @property {Error|string} [error] - Error message (if any).
+ * @property {Date|string} [errorAt] - When the error ocurred (if any).
+ * @property {string} state - Current subscription state. Enum: `NOT_STARTED`, `PENDING`, `ACTIVE`, `ACTIVE_CANCELLED`, `CANCELLED`, `EXPIRED`, `INVALID`, `NOT_ENOUGH_FUNDS`, `FAILED`.
+ * @property {string} cancelState - Enum: `OK`, `PENDING`, `FAILED`.
+ * @property {Date|string} [startedAt] - When the subscription started (off-chain value).
+ * @property {string} [endedAt] - When the subscription ended (off-chain value).
+ * @property {Date|string} updatedAt - Timestamp.
+ * @property {Date|string} createdAt -  Timestamp.
+ */
+
+/**
+ * @typedef {Object} Receipt
+ * @property {string} id - ID.
+ * @property {string} txHash - Transaction hash.
+ * @property {string} action - What happened in this billing cycle.
+ * @property {string} [nextPayment] - When is the next billing cycle.
+ * @property {Error|string} [reason] - If failed, this is the error message.
+ * @property {Date|string} createdAt - When was executed.
+ */
+
+/**
+ * @typedef {Object} SubscriptionManager
+ * @property {number|string} networkId - Ethereum network identifier.
+ * @property {string} name - Name.
+ * @property {string} wallet - Where the billed tokens are transferer.
+ * @property {string} publisher - Ethereum address of the publisher of this contract (can edit data and plans).
+ * @property {string} tokenAddress - ERC20 Token address.
+ * @property {Date|string} [deployedAt] - When the contract was deployed.
+ * @property {string} [address] - Contract address.
+ * @property {string} authorizer - Ethereum address of the manager of this contract.
+ * @property {string} [txHash] - Transaction hash when it was deployed.
+ * @property {string} state - Enum: `DRAFT`, `PENDING`, `DEPLOYED`, `FAILED`.
+ * @property {string} identifier - DAISY_ID.
+ * @property {string} [secretKey] - DAISY_SECRET_LEY.
+ * @property {Date|string} createdAt - Timestamp.
+ * @property {Date|string} updatedAt - Timestamp.
+ * @property {module:common~Plan[]} [plans] - Plans related to this manager.
+ */
+
+/**
+ * Create a instance of a Subscription manager based on the contract deployed at the Daisy Dashboard.
+ * The important data here is the `DAISY_ID`.
+ * @extends module:common~Client
+ */
+class SubscriptionProductClient extends Client {
+  /**
+   * Create an instance.
+   * @param {Object} manager - Object can be taken from `const manager = await instance.getData()` but only the `identifier` is the real important.
+   * @param {string} manager.identifier - Get it from the Daisy Dashboard as `DAISY_ID`.
+   * @param {string} manager.secretKey - Get it from the Daisy Dashboard as `DAISY_SECRET_KEY`. THIS SHOULD ONLY BE KEEP SECRET ON A SERVER. DO NOT USE ON BROWSERS.
+   * @param {Object} override - Override `axios` config. This is intended for development purposes.
+   */
+  constructor(manager, override) {
+    const { identifier, secretKey } = manager;
+    super({
+      ...Client.DEFAULT_CONFIG,
+      auth: {
+        username: identifier,
+        password: secretKey,
+      },
+      ...override,
+    });
+  }
+
+  /**
+   * Get Subscription Manager data and plans.
+   * @async
+   * @returns {Promise&lt;SubscriptionManager>} - Subscription Manager and Plans given the manager in the constructor.
+   *
+   * @example
+   *
+   * const subscriptionProduct = new SubscriptionProductClient({
+   *   identifier: process.env.DAISY_ID,
+   * });
+   * const { plans, ...manager } = await subscriptionProduct.getData();
+   */
+  getData() {
+    return this.request({
+      method: "get",
+      url: "/",
+    }).then(({ data: body }) => body.data);
+  }
+
+  /**
+   * @deprecated Renamed to {@link module:common~SubscriptionProductClient#getData}.
+   */
+  getPlans() {
+    // TODO: add deprecation warning.
+    return this.getData();
+  }
+
+  /**
+   * Get subscriptions.
+   * @async
+   * @param {Object} filter - Filtering criteria.
+   * @param {string} filter.account - Filter by Ethereum address.
+   * @param {string} filter.state - Filter by subscription state.
+   * @returns {Promise&lt;Subscription[]>} - Subscriptions based on the filtering criteria.
+   *
+   * @example
+   *
+   * const subscriptionProduct = new SubscriptionProductClient({
+   *   identifier: process.env.DAISY_ID,
+   * });
+   * const subscriptions = await subscriptionProduct.getSubscriptions({ account: "0x0..." });
+   */
+  getSubscriptions(filter = {}) {
+    return this.request({
+      method: "get",
+      url: `/subscriptions/?${querystring.stringify(filter)}`,
+    }).then(({ data: body }) => body.data);
+  }
+
+  /**
+   * Get single subscription.
+   * @async
+   * @param {Object} criteria - Filtering criteria, only one field is required.
+   * @param {string} criteria.daisyId - Find Subscription based on a Daisy ID.
+   * @param {string} criteria.onChainId - Find Subscription based on a `onChainId` in the blockchain.
+   * @returns {Promise&lt;?Subscription>} - Subscription found.
+   *
+   * @example
+   *
+   * const subscriptionProduct = new SubscriptionProductClient({
+   *   identifier: process.env.DAISY_ID,
+   * });
+   * const subscription = await subscriptionProduct.getSubscription({ id: "" });
+   */
+  getSubscription({ daisyId, onChainId }) {
+    if (daisyId) {
+      return this.request({
+        method: "get",
+        url: `/subscriptions/${daisyId}/`,
+      }).then(({ data: body }) => body.data);
+    } else if (onChainId) {
+      return this.request({
+        method: "get",
+        url: `/subscriptions/hash/${onChainId}/`,
+      }).then(({ data: body }) => body.data);
+    } else {
+      throw new Error("Missing arguments");
+    }
+  }
+
+  /**
+   * Get receipts from single subscription.
+   * @async
+   * @param {Object} criteria - Filtering criteria, only one field is required.
+   * @param {string} criteria.daisyId - Find Subscription based on a Daisy ID.
+   * @param {string} criteria.onChainId - Find Subscription based on a `onChainId` in the blockchain.
+   * @returns {Promise&lt;Receipt[]>} - Receipts.
+   */
+  getReceipts({ daisyId, onChainId }) {
+    if (daisyId) {
+      return this.request({
+        method: "get",
+        url: `/subscriptions/${daisyId}/receipts/`,
+      }).then(({ data: body }) => body.data);
+    } else if (onChainId) {
+      return this.request({
+        method: "get",
+        url: `/subscriptions/hash/${onChainId}/receipts/`,
+      }).then(({ data: body }) => body.data);
+    } else {
+      throw new Error("Missing arguments");
+    }
+  }
+
+  /**
+   * Create single subscription.
+   * @async
+   * @param {Object} input - Input arguments
+   * @param {Object} input.agreement - The `agreement` is the return of {@link module:browser.DaisySDKToken#sign}.
+   * @param {Object} [input.receipt] - Optional. The receipt is the return of {@link module:browser.DaisySDKToken#approve}.
+   * @param {string} input.signature - The signature is the return of {@link module:browser.DaisySDKToken#sign}.
+   * @returns {Promise&lt;Subscription>} - Created {@link module:common~Subscription}, its {@link module:common~Subscription#state} will be `PENDING`.
+   *
+   * @example
+   *
+   * const subscriptionProduct = new SubscriptionProductClient({
+   *   identifier: process.env.DAISY_ID,
+   * });
+   * const subscription = await subscriptionProduct.submit({ });
+   */
+  submit({ agreement, receipt, signature }) {
+    return this.request({
+      method: "post",
+      url: "/subscriptions/",
+      data: {
+        agreement,
+        receipt,
+        signature,
+      },
+    }).then(({ data: body }) => {
+      return body;
+    });
+  }
+
+  /**
+   * Submit signature and agreement from the beneficiary user to cancel a subscription.
+   * @async
+   * @param {Object} input - Input arguments
+   * @param {Object} input.agreement - The `agreement` is the return of {@link module:browser.DaisySDKToken#signCancel}.
+   * @param {string} input.signature - The signature is the return of {@link module:browser.DaisySDKToken#signCancel}.
+   * @returns {Promise&lt;Subscription>} - Pending for cancellation {@link module:common~Subscription} object.
+   */
+  submitCancel({ agreement, signature }) {
+    return this.request({
+      method: "post",
+      url: "/subscriptions/cancel/",
+      data: { agreement, signature },
+    }).then(({ data: body }) => {
+      return body;
+    });
+  }
+}
+
+SubscriptionProductClient.ZERO_ADDRESS =
+  "0x0000000000000000000000000000000000000000";
+
+module.exports = SubscriptionProductClient;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+<script src="scripts/search.js" defer></script>
+
+
+</body>
+</html>
