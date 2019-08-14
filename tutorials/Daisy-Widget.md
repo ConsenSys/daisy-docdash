@@ -4,7 +4,7 @@ Daisy Widget is a library of React components that makes interacting with the fu
 
 <img src="./img/signup_flow.png" alt="Placeholder for ApproveInput, ApproveButton, SubscribeButton, and StepIndicator" width="543"/>
 
-> Daisy Widget is just one of three possible ways for your users to pay with Daisy. If you're looking for even more flexibility, you can build everything you need directly with [Daisy SDK](https://docs.daisypayments.com/). If you're looking for an almost-no-code solution, check out Invitations (documentation coming soon). 
+> Daisy Widget is just one of three possible ways for your users to pay with Daisy. If you're looking for even more flexibility, you can build everything you need directly with [Daisy SDK](https://docs.daisypayments.com/tutorial-Daisy-SDK.html). If you're looking for an almost-no-code solution, check out Invitations (documentation coming soon). 
 
 ---
 ## Installation and Set Up
@@ -112,17 +112,17 @@ import { SubscribeButton } from "@daisypayments/daisy-widget";
 <SubscribeButton plan="anvilMysteryBoxMonthly" />
 ```
 
-Clicking the button will open MetaMask and prompt the user to sign the details of the subscription agreement. Once signed, the agreement is sent to Daisy to be executed on the ethereum blockchain by one of two ways. 
+Clicking the button will open MetaMask and prompt the user to sign the details of the subscription agreement. Once signed, the agreement is sent to Daisy to be executed on the Ethereum blockchain by one of two ways. 
 
-**Backend Way:** The first, recommended way is to pass a `handleSignedAgreement` prop to `SubscribeButton`. This handler is responsible for sending the signed agreement to your backend where it needs to be submitted with [`daisy.submit()`](https://docs.daisypayments.com/module-browser-DaisySDK.html#submit), and then returning the server response. 
+**Backend Way:** The first, recommended way is to pass a `handleSignedAgreement` prop to `SubscribeButton`. This handler is responsible for sending the signed agreement to your backend where it needs to be submitted with [`submit()`](https://docs.daisypayments.com/module-browser-DaisySDK.html#submit), and then returning the server response. 
 
 ```js
 const signedAgreementHandler = async submitArgs => {
 
   try {
     // Send signed agreement to backend which calls daisy.submit(), 
-    // stores the returned DaisyID, and then returns the response
-    const response = await fetch("/submit_agreement", {
+    // stores the returned daisyId, and then returns the response
+    const response = await fetch("/submit_agreement/", {
       method: "POST",
       body: JSON.stringify(submitArgs),
       headers:{
@@ -142,11 +142,11 @@ const signedAgreementHandler = async submitArgs => {
 />
 ```
 
-**Frontend Way:** If `handleSignedAgreement` is omitted, the agreement is submitted with [`daisy.submit()`](https://docs.daisypayments.com/module-browser-DaisySDK.html#submit) immediately and `SubscribeButton`'s `handleSubscriptionCreation` prop is called with the server response.
+**Frontend Way:** If `handleSignedAgreement` is omitted, the agreement is submitted with [`submit()`](https://docs.daisypayments.com/module-browser-DaisySDK.html#submit) immediately and `SubscribeButton`'s `handleSubscriptionCreation` prop is called with the server response.
 
-**Whether the agreement is submitted from your backend or frontend, it is very important to associate the returned `DaisyID` with the user at this step!**
+**Whether the agreement is submitted from your backend or frontend, it is very important to associate the returned `daisyId` with the user at this step!**
 
- We recommend the **Backend Way** as it avoids any risk of `DaisyID` being lost when sent from the user's browser to your backend. But, if you choose not to use `handleSignedAgreement` and do the agreement submission entirely from the frontend, **be sure to associate the response's `DaisyID` with the user in `handleSubscriptionCreation`!** 
+ We recommend the **Backend Way** as it avoids any risk of `daisyId` being lost when sent from the user's browser to your backend. But, if you choose not to use `handleSignedAgreement` and do the agreement submission entirely from the frontend, **be sure to associate the response's `daisyId` with the user in `handleSubscriptionCreation`!** 
 
 
 ```js
@@ -155,7 +155,7 @@ const subscriptionHandler = async subscription => {
 
   try {
     // Store user updated with daisyId on backend
-    const updatedUser = await fetch("/update_user", {
+    const updatedUser = await fetch("/update_user/", {
       method: "PATCH",
       body: JSON.stringify({
         ...this.props.user, 
@@ -202,7 +202,7 @@ import { ApproveButton, ApproveInput, Toast } from "@daisypayments/daisy-widget"
 ---
 ## Cancelling a Subscription
 
-Occasionally a user will need to cancel their subscription. Just as there are `ApproveButton` and `SubscribeButton` components, there is a `CancelButton` as well. Unlike the previous two buttons, `CancelButton` requires the `subscription` object as a prop in addition to the `plan` name. The `subscription` object can be obtained from [`daisy.getSubscription()`](https://docs.daisypayments.com/module-browser-DaisySDK.html#getSubscription).
+Occasionally a user will need to cancel their subscription. Just as there are `ApproveButton` and `SubscribeButton` components, there is a `CancelButton` as well. Unlike the previous two buttons, `CancelButton` requires the `subscription` object as a prop in addition to the `plan` name. The `subscription` object can be obtained from [`getSubscription()`](https://docs.daisypayments.com/module-browser-DaisySDK.html#getSubscription).
 ```js
 // Subscriber account page of your React app
 
@@ -219,7 +219,7 @@ const subscription = await daisy.getSubscription(this.props.user.daisyId);
 ```
 Clicking the button will open MetaMask and prompt the user to sign the details of the cancellation.  Similar to `SubscribeButton`, the signed cancellation is sent to Daisy by one of two ways. Neither way is strongly preferred over the other as there is no fear of data loss, so feel free to use whichever suits your needs best. 
 
-**Backend Way:**  If you would like to handle submitting the signed cancellation with [`daisy.submitCancel()`](https://docs.daisypayments.com/module-browser-DaisySDK.html#submitCancel) from your backend, a handler is exposed for you to do so, `handleSignedCancellation`. Once again, this handler is responsible for returning the server response. 
+**Backend Way:**  If you would like to handle submitting the signed cancellation with [`submitCancel()`](https://docs.daisypayments.com/module-browser-DaisySDK.html#submitCancel) from your backend, a handler is exposed for you to do so, `handleSignedCancellation`. Once again, this handler is responsible for returning the server response. 
 
 ```js
 const handleCancel = async submitArgs => {
@@ -227,7 +227,7 @@ const handleCancel = async submitArgs => {
   try {
     // Send signed cancellation to backend, which calls 
     // daisy.submitCancel(), and then returns the response
-    const response = await fetch("/submit_cancel", {
+    const response = await fetch("/submit_cancel/", {
       method: "POST",
       body: JSON.stringify(submitArgs),
       headers:{
@@ -248,7 +248,7 @@ const handleCancel = async submitArgs => {
 />
 ```
 
-**Frontend Way:** If `handleSignedCancellation` is omitted, the agreement is submitted with [`daisy.submitCancel()`](https://docs.daisypayments.com/module-browser-DaisySDK.html#submitCancel) immediately
+**Frontend Way:** If `handleSignedCancellation` is omitted, the agreement is submitted with [`submitCancel()`](https://docs.daisypayments.com/module-browser-DaisySDK.html#submitCancel) immediately
 
 In both the **Backend Way** and the **Frontend Way**, if the `handleSubscriptionCancellation` prop is passed to `CancelButton`, it is called with the server response.
 
@@ -257,12 +257,12 @@ In both the **Backend Way** and the **Frontend Way**, if the `handleSubscription
 
 A user on your site is interested in subscribing to your service. There are some prerequisites to signing up for non-fiat denominated subscriptions. What do they need?  The user must:
 
-- Have [MetaMask](https://metamask.io/) installed (for approving tokens and signing the subsciption agreement).
+- Have [MetaMask](https://metamask.io/) installed or be using a dapp browser (for approving tokens and signing the subscription agreement).
 - Have enough of one of the subscription's accepted ERC20 tokens to pay for at least one billing period.
-- Have enough ethereum to pay the gas fee of the approval step (a quite small amount).
+- Have enough ETH to pay the gas fee of the approval step (a quite small amount).
 
 Luckily, if any of these requirements are not met, Daisy Widget can do the work of surfacing actionable error messages to the user for you with the optional [Toast component](/#toast).
 
 ---
 
-Still have questions after reading this guide? We encourage you to chat with us on slack at [#daisy-public](), [contact support](), or [drop our sales team a line](). 
+Still have questions after reading this guide? We encourage you to chat with us on Slack at #daisy-public, or contact us at [hello@daisypayments.com](mailto:hello@daisypayments.com).
