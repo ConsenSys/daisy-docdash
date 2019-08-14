@@ -1,6 +1,6 @@
 # Getting Started with Daisy Widget
 
-Daisy Widget is a library of React components that makes interacting with the full lifecycle of payments and subscriptions super easy. It is designed to be used within your project's existing frontend. This guide will go through creating a subscription signup flow, token approval flow, and cancellation flow.
+Daisy Widget is a library of React components that makes interacting with the full lifecycle of payments and subscriptions super easy. It is designed to be used within your project's existing frontend. This guide will go through creating a [subscription signup flow](#SignUp), [token approval flow](#ApproveMore), and [cancellation flow](#Cancellation).
 
 <div class="img-container" style="width: 543px">
   <img src="./img/signup_flow.png" alt="Placeholder for ApproveInput, ApproveButton, SubscribeButton, and StepIndicator" />
@@ -9,7 +9,7 @@ Daisy Widget is a library of React components that makes interacting with the fu
 > Daisy Widget is just one of three possible ways for your users to pay with Daisy. If you're looking for even more flexibility, you can build everything you need directly with [Daisy SDK](https://docs.daisypayments.com/tutorial-Daisy-SDK.html). If you're looking for an almost-no-code solution, check out Invitations (documentation coming soon). 
 
 ---
-## Installation and Set Up
+## <a id="Installation" class="anchor"></a>Installation and Set Up
 
 Begin by adding the `@daisypayments/daisy-widget` package to your project. You must also add `web3@=1.0.0-beta.37` for the dependency [`react-metamask`](https://github.com/ConsenSys/react-metamask) to work (the specific version is important here).
 
@@ -47,7 +47,7 @@ With that done, whenever you would like a component to access [MetaMask utilitie
 const EnhancedSubscriptionPage = withMetaMask(withDaisy(SubscriptionPage));
 ```
 ---
-## Signing Up for a Subscription
+## <a id="SignUp" class="anchor"></a>Signing Up for a Subscription
 
 Signing up for a subscription requires the [`ApproveButton`](/[#approve-button) and [`SubscribeButton`](/#subscribe-button) components, and the optional, but recommended [`ApproveInput`](/#approve-input), [`StepIndicator`](/#step-indicator), and [`Toast`](/#toast) components.
 
@@ -62,7 +62,7 @@ First, the user must make a transaction approving the subscription contract to t
 Second, the user must sign the details of the subscription agreement using MetaMask.
 
 ---
-### Approval Step 
+### <a id="ApprovalStep" class="anchor"></a>Approval Step 
 
 Instantiate `ApproveButton`, passing the name of an existing plan within the subscription service as `plan`.
 
@@ -107,7 +107,7 @@ Finally, if neither `ApproveInput` is used nor the `approvalAmount` prop defined
 If more than one of these three ways is provided, Daisy Widget assigns priority in the order they are listed above (e.g. the value from `ApproveInput` would overrule the `approvalAmount` prop).
 
 ---
-### Sign and Submit Step 
+### <a id="SignAndSubmitStep" class="anchor"></a>Sign and Submit Step 
 
 Next, instantiate `SubscribeButton` and pass it the same `plan` name. 
 
@@ -190,7 +190,7 @@ And that's it! Your page is now ready to accept subscribers!
 From here you will likely want to provide a way for existing subscribers to [approve more tokens](#token-approval), [view their subscription details](https://docs.daisypayments.com/module-browser-DaisySDK.html#getSubscription), and [cancel their subscription](#cancellation).
 
 ---
-## Approving More Tokens for an Existing Subscription
+## <a id="ApproveMore" class="anchor"></a>Approving More Tokens for an Existing Subscription
 
 <div class="img-container" style="width: 350px">
   <img src="./img/approving_tokens.png" alt="Placeholder for ApproveInput and ApproveButton" />
@@ -210,7 +210,7 @@ import { ApproveButton, ApproveInput, Toast } from "@daisypayments/daisy-widget"
 <Toast />
 ```
 ---
-## Cancelling a Subscription
+## <a id="Cancellation" class="anchor"></a>Cancelling a Subscription
 
 Occasionally a user will need to cancel their subscription. Just as there are `ApproveButton` and `SubscribeButton` components, there is a `CancelButton` as well. Unlike the previous two buttons, `CancelButton` requires the `subscription` object as a prop in addition to the `plan` name. The `subscription` object can be obtained from [`getSubscription()`](https://docs.daisypayments.com/module-browser-DaisySDK.html#getSubscription).
 ```js
@@ -263,7 +263,7 @@ const handleCancel = async submitArgs => {
 In both the **Backend Way** and the **Frontend Way**, if the `handleSubscriptionCancellation` prop is passed to `CancelButton`, it is called with the server response.
 
 ---
-## What is Required of the User?
+## <a id="UserRequirements" class="anchor"></a>What is Required of the User?
 
 A user on your site is interested in subscribing to your service. There are some prerequisites to signing up for non-fiat denominated subscriptions. What do they need?  The user must:
 
