@@ -24,7 +24,9 @@ Next, how you import the SDK depends on where you are using it.
 
 ### <a id="FrontendSetUp" class="anchor"></a>Frontend
 
-<img src="./img/subscription-service-id-and-key.png" alt="Where to find your subscription product's id and key in the dashboard" width="700"/>
+<div class="img-container" style="width: 700px">
+  <img src="./img/subscription-service-id-and-key.png" alt="Where to find your subscription product's id and key in the dashboard" />
+</div>
 
 In your project's frontend, everything is done through the [`DaisySDK`](https://docs.daisypayments.com/module-browser-DaisySDK.html) class. The [`DaisySDK`](https://docs.daisypayments.com/module-browser-DaisySDK.html) constructor takes an object with the `identifier` key set to your subscription product's globally unique `id` as its first argument, and a `web3` instance as its second.
 

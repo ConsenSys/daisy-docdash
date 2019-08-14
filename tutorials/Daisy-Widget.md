@@ -2,7 +2,9 @@
 
 Daisy Widget is a library of React components that makes interacting with the full lifecycle of payments and subscriptions super easy. It is designed to be used within your project's existing frontend. This guide will go through creating a subscription signup flow, token approval flow, and cancellation flow.
 
-<img src="./img/signup_flow.png" alt="Placeholder for ApproveInput, ApproveButton, SubscribeButton, and StepIndicator" width="543"/>
+<div class="img-container" style="width: 543px">
+  <img src="./img/signup_flow.png" alt="Placeholder for ApproveInput, ApproveButton, SubscribeButton, and StepIndicator" />
+</div>
 
 > Daisy Widget is just one of three possible ways for your users to pay with Daisy. If you're looking for even more flexibility, you can build everything you need directly with [Daisy SDK](https://docs.daisypayments.com/tutorial-Daisy-SDK.html). If you're looking for an almost-no-code solution, check out Invitations (documentation coming soon). 
 
@@ -35,7 +37,9 @@ import { MetaMaskContext, DaisyContext } from "@daisypayments/daisy-widget";
 
 We recommend that you pass `MetaMaskContext.Provider` the `immediate` prop, otherwise you are responsible for calling  `react-metamask`'s `openMetaMask()` function to authorize web3 access where needed. `DaisyContext.Provider` requires an object for the `value` prop, with the `identifier` key set to your subscription service's globally unique `id`.
 
-<img src="./img/subscription-service-id.png" alt="Where to find your subscription service's id in the dashboard" width="700"/>
+<div class="img-container" style="width: 700px">
+  <img src="./img/subscription-service-id.png" alt="Where to find your subscription service's id in the dashboard" />
+</div>
 
 With that done, whenever you would like a component to access [MetaMask utilities](https://github.com/ConsenSys/react-metamask) or the [Daisy object](https://docs.daisypayments.com/module-browser-DaisySDK.html), you can provide them as props by simply wrapping the component with the [Higher-Order Components](https://reactjs.org/docs/higher-order-components.html), `withMetaMask()` and `withDaisy()`, in the order shown below:  
 
@@ -47,7 +51,9 @@ const EnhancedSubscriptionPage = withMetaMask(withDaisy(SubscriptionPage));
 
 Signing up for a subscription requires the [`ApproveButton`](/[#approve-button) and [`SubscribeButton`](/#subscribe-button) components, and the optional, but recommended [`ApproveInput`](/#approve-input), [`StepIndicator`](/#step-indicator), and [`Toast`](/#toast) components.
 
-<img src="./img/signup_flow_parts.png" alt="Placeholder for ApproveInput boxed off as optional, ApproveButton and SubscribeButton boxed off as required, and StepIndicator boxed off as optional" width="621"/>
+<div class="img-container" style="width: 621px">
+  <img src="./img/signup_flow_parts.png" alt="Placeholder for ApproveInput boxed off as optional, ApproveButton and SubscribeButton boxed off as required, and StepIndicator boxed off as optional" />
+</div>
 
 **Two buttons are needed because signing up is a two step process.**
 
@@ -73,7 +79,9 @@ Clicking the button will open MetaMask and prompt the user to approve the number
 
 The first, recommended way is to use Daisy Widget's `ApproveInput` component. `ApproveInput` provides the user an intuitive way of defining the approval amount in terms of either tokens or billing periods. The component accepts an optional `periods` prop to define the initial number of billing currentlyAllowedPeriods; its default value is 12.
 
-<img src="./img/approve_input.png" alt="Placeholder for ApproveInput" width="322"/>
+<div class="img-container" style="width: 322px">
+  <img src="./img/approve_input.png" alt="Placeholder for ApproveInput" />
+</div>
 
 ```js
 import { ApproveInput } from "@daisypayments/daisy-widget";
@@ -184,7 +192,9 @@ From here you will likely want to provide a way for existing subscribers to [app
 ---
 ## Approving More Tokens for an Existing Subscription
 
-<img src="./img/approving_tokens.png" alt="Placeholder for ApproveInput and ApproveButton" width="350"/>
+<div class="img-container" style="width: 350px">
+  <img src="./img/approving_tokens.png" alt="Placeholder for ApproveInput and ApproveButton" />
+</div>
 
 Every billing period, the price of the plan will be subtracted from the amount of tokens the user has approved. Once all approved tokens have been spent, the user will need to
 approve more to continue the subscription. Luckily, doing so is easy. Simply display the same `ApproveInput` and `ApproveButton` components to subscribed users somewhere within your app. We recommend still including the `Toast` component on this page unless you want to be in charge of error handling, but `SubscribeButton` and `StepIndicator` should be left out.
