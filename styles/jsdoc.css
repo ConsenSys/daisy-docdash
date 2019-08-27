@@ -178,6 +178,18 @@ tt, code, kbd, samp {
   width: 70%;
 }
 
+.tutorial > table {
+  width: 80%;
+  font-size: 16px;
+}
+.tutorial > table thead tr th:first-child,
+.tutorial > table tbody tr td:first-child {
+  width: 12em;
+  min-width: 12em;
+  max-width: 12em;
+  word-break: break-all;
+}
+
 .anchor {
   display: block;
   position: relative;
@@ -820,10 +832,8 @@ html[data-search-mode] .level-hide {
     margin-left: 0;
   }
 
-  blockquote {
-    width: 98%;
-  }
-
+  .tutorial > table,
+  blockquote,
   .prettyprint.source {
     width: 98%;
   }
@@ -839,6 +849,7 @@ html[data-search-mode] .level-hide {
     width: 80%;
   }
 
+  .tutorial > table,
   .prettyprint.source {
     width: 94%;
   }

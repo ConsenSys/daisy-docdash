@@ -34,12 +34,12 @@
 
 <article class="tutorial">
     <h1>Getting Started with Daisy Widget</h1>
-<p>Daisy Widget is a library of React components that makes interacting with the full lifecycle of payments and subscriptions super easy. It is designed to be used within your project's existing frontend. This guide will go through creating a <a href="#SignUp">subscription signup flow</a>, <a href="#ApproveMore">token approval flow</a>, and <a href="#Cancellation">cancellation flow</a>.</p>
+<p>Daisy Widget is a library of React components that makes interacting with the full lifecycle of payments and subscriptions convenient and straightforward. It is designed to be used within your project's existing frontend. This guide will go through creating a <a href="#SignUp">subscription signup flow</a>, <a href="#ApproveMore">token approval flow</a>, and <a href="#Cancellation">cancellation flow</a>.</p>
 <div class="img-container" style="width: 543px">
   <img src="./img/signup_flow.png" alt="Placeholder for ApproveInput, ApproveButton, SubscribeButton, and StepIndicator" />
 </div>
 <blockquote>
-<p>Daisy Widget is just one of three possible ways for your users to pay with Daisy. If you're looking for even more flexibility, you can build everything you need directly with <a href="https://docs.daisypayments.com/tutorial-Daisy-SDK.html">Daisy SDK</a>. If you're looking for an almost-no-code solution, check out Invitations (documentation coming soon).</p>
+<p>Daisy Widget is just one of three possible ways for your users to pay with Daisy. If you're looking for even more flexibility, you can build everything you need directly with <a href="https://docs.daisypayments.com/tutorial-Daisy-SDK.html">Daisy SDK</a>. If you're looking for an almost-no-code solution, check out <a href="https://docs.daisypayments.com/tutorial-Invitations.html">Invitations</a>.</p>
 </blockquote>
 <hr>
 <h2><a id="Installation" class="anchor"></a>Installation and Set Up</h2>
@@ -101,8 +101,13 @@ import { ApproveButton } from &quot;@daisypayments/daisy-widget&quot;;
   approvalAmount=&quot;200&quot; 
 />
 </code></pre>
-<p>Finally, if neither <code>ApproveInput</code> is used nor the <code>approvalAmount</code> prop defined, the number of tokens defaults to the amount needed to pay for 12 billing periods.</p>
-<p>If more than one of these three ways is provided, Daisy Widget assigns priority in the order they are listed above (e.g. the value from <code>ApproveInput</code> would overrule the <code>approvalAmount</code> prop).</p>
+<p>Finally, if neither <code>ApproveInput</code> is used nor the <code>approvalAmount</code> prop defined, the number of tokens defaults to the amount needed to pay for 12 billing periods. If more than one of these three ways is provided, Daisy Widget assigns priority in the order they are listed above (e.g. the value from <code>ApproveInput</code> would overrule the <code>approvalAmount</code> prop).</p>
+<p>If you would like to conditionally render any part of this flow based on the user's current allowance of approved tokens, use <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html">Daisy SDK's</a> <code>allowance()</code> function.</p>
+<pre class="prettyprint source lang-js"><code>const token = daisy.loadToken();
+const currentAllowance = await daisy
+  .prepareToken(token)
+  .allowance({ tokenOwner: account });
+</code></pre>
 <hr>
 <h3><a id="SignAndSubmitStep" class="anchor"></a>Sign and Submit Step</h3>
 <p>Next, instantiate <code>SubscribeButton</code> and pass it the same <code>plan</code> name.</p>
@@ -232,11 +237,11 @@ const subscription = await daisy.getSubscription(this.props.user.daisyId);
 <ul>
 <li>Have <a href="https://metamask.io/">MetaMask</a> installed or be using a dapp browser (for approving tokens and signing the subscription agreement).</li>
 <li>Have enough of one of the subscription's accepted ERC20 tokens to pay for at least one billing period.</li>
-<li>Have enough ETH to pay the gas fee of the approval step (a quite small amount).</li>
+<li>Have enough ETH to pay the gas fee of the approval step (almost always less than $0.10 USD).</li>
 </ul>
 <p>Luckily, if any of these requirements are not met, Daisy Widget can do the work of surfacing actionable error messages to the user for you with the optional <a href="/#toast">Toast component</a>.</p>
 <hr>
-<p>Still have questions after reading this guide? We encourage you to chat with us on Slack at #daisy-public, or contact us at <a href="mailto:hello@daisypayments.com">hello@daisypayments.com</a>.</p>
+<p>Still have questions after reading this guide? Feel free to contact us at <a href="mailto:hello@daisypayments.com">hello@daisypayments.com</a>.</p>
 </article>
 
 </section>

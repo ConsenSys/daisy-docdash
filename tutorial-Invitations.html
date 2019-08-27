@@ -34,7 +34,7 @@
 
 <article class="tutorial">
     <h1>Getting Started with Invitations</h1>
-<p>Need to send out payment requests or subscription invitations, with minimal initial code changes to your application? Look no further than Daisy Invitations. With the addition of X endpoints to your backend, non technical team members can generate and send invitations with a just a couple clicks from the <a href="https://app.daisypayments.com">Daisy Dashboard</a>.</p>
+<p>Need to send out payment requests or subscription invitations, with minimal initial code changes to your application? Look no further than Daisy Invitations. With the addition of just one endpoint to your backend, non-technical team members can generate and send invitations with just a couple clicks from the <a href="https://app.daisypayments.com">Daisy Dashboard</a>.</p>
 <div class="img-container" style="width: 700px">
   <img src="./img/invitation.png" alt="Placeholder for an example invitation generated for an end user" />
 </div>
@@ -116,7 +116,7 @@ app.post(&quot;/api/invitation_webhook/&quot;, asyncHandler(async (req, res) => 
 </code></pre>
 <hr>
 <h2><a id="GeneratingAndSending" class="anchor"></a>Generating and Sending an Invitation</h2>
-<p>With your backend ready to consume invitation webhooks, the most challenging part is out of the way. The remaining work takes place in the <a href="https://app.daisypayments.com">dashboard</a>, and the rest of the tutorial assumes you have have already created and deployed a subscription product so that you may follow along.</p>
+<p>With your backend ready to consume invitation webhooks, the most challenging part is out of the way. The remaining work takes place in the <a href="https://app.daisypayments.com">dashboard</a>, and the rest of the tutorial assumes you have already created and deployed a subscription product so that you may follow along.</p>
 <div class="img-container" style="width: 700px">
   <img src="./img/invitations_tab.png" alt="Where to find your subscription product's id and key in the dashboard" />
 </div>
@@ -134,7 +134,7 @@ app.post(&quot;/api/invitation_webhook/&quot;, asyncHandler(async (req, res) => 
 <hr>
 <h2><a id="NoWebhooks" class="anchor"></a>Invitations Without Webhooks</h2>
 <p>If no <a href="#WebhookURL">Webhook URL</a> is defined for an invitation, the new user is shown a screen stating that their subscription is pending approval and given the opportunity to enter their email address to sign up for email updates. The subscription will remain pending until it is approved from the invitation's page on the <a href="https://app.daisypayments.com">dashboard</a>.</p>
-<p>In the near future, an email notification will also be sent when a user completes an invitation.</p>
+<p>In the near future, you will also be sent an email notification when a user completes an invitation.</p>
 <hr>
 <h2><a id="Customization" class="anchor"></a>Customizing Invitations</h2>
 <p>In your <a href="https://app.daisypayments.com">organization settings</a>, you can customize the background color and font color of your invitations using hex color codes. You can also set your organization logo, which is displayed at the top of your invitations. A gray Daisy logo is used if your organization logo is unset.</p>
@@ -147,11 +147,11 @@ app.post(&quot;/api/invitation_webhook/&quot;, asyncHandler(async (req, res) => 
 <ul>
 <li>Have <a href="https://metamask.io/">MetaMask</a> installed or be using a dapp browser (for approving tokens and signing the subscription agreement).</li>
 <li>Have enough of one of the subscription's accepted ERC20 tokens to pay for at least one billing period.</li>
-<li>Have enough ETH to pay the gas fee of the approval step (a quite small amount).</li>
+<li>Have enough ETH to pay the gas fee of the approval step (almost always less than $0.10 USD).</li>
 </ul>
-<p>If any of these requirements are not met, the invitations page presents actionable error messages to the user. Still, it is a highly encouraged to make the user aware of these requirements before they open the invitation.</p>
+<p>If any of these requirements are not met, the invitations page presents actionable error messages to the user. Still, it is highly encouraged to make the user aware of these requirements before they open the invitation.</p>
 <hr>
-<p>Still have questions after reading this guide? We encourage you to chat with us on Slack at #daisy-public, or contact us at <a href="mailto:hello@daisypayments.com">hello@daisypayments.com</a>.</p>
+<p>Still have questions after reading this guide? Feel free to contact us at <a href="mailto:hello@daisypayments.com">hello@daisypayments.com</a>.</p>
 </article>
 
 </section>

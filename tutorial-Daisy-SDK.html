@@ -36,7 +36,7 @@
     <h1>Getting Started with Daisy SDK</h1>
 <p>Daisy SDK is a library for interacting with all aspects of the Daisy product in both a browser and Node environment. This guide will go through using the library to <a href="#SignUp">sign up for a new subscription</a>, <a href="#Access">access a subscription's current state and subscriber data</a>, <a href="#ApproveMore">approve tokens for an existing subscription</a>, and <a href="#Cancellation">cancel an existing subscription</a>.</p>
 <blockquote>
-<p>Daisy SDK is just one of three possible ways for your users to pay with Daisy, and it is certainly the most involved way. If your project has a React frontend, most payment and subscription actions can be performed using the pre-built React components of <a href="https://docs.daisypayments.com/tutorial-Daisy-Widget.html">Daisy Widget</a>. If you're looking for an almost-no-code solution, check out Invitations (documentation coming soon).</p>
+<p>Daisy SDK is just one of three possible ways for your users to pay with Daisy, and it is certainly the most involved way. If your project has a React frontend, most payment and subscription actions can be performed using the pre-built React components of <a href="https://docs.daisypayments.com/tutorial-Daisy-Widget.html">Daisy Widget</a>. If you're looking for an almost-no-code solution, check out <a href="https://docs.daisypayments.com/tutorial-Invitations.html">Invitations</a>.</p>
 </blockquote>
 <hr>
 <h2><a id="Installation" class="anchor"></a>Installation and Set Up</h2>
@@ -101,7 +101,7 @@ const subscriptionService = new ServiceSubscriptions({
 <p>Both <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html"><code>DaisySDK</code></a> and <a href="https://docs.daisypayments.com/module-private-ServiceSubscriptions.html"><code>ServiceSubscriptions</code></a> extend the <a href="https://docs.daisypayments.com/module-common-SubscriptionProductClient.html">SubscriptionProductClient</a> class.</p>
 <hr>
 <h2><a id="SignUp" class="anchor"></a>Signing Up for a Subscription</h2>
-<p>Signing up for a subscription is a two step process: First, the user must make a transaction approving the subscription contract to transfer tokens from their wallet. Second, the user must sign the details of the subscription agreement using MetaMask or a dapp browser and that signed agreement must be submitted to Daisy.</p>
+<p>Signing up for a subscription is a two-step process: First, the user must make a transaction approving the subscription contract to transfer tokens from their wallet. Second, the user must sign the details of the subscription agreement using MetaMask or a dapp browser and that signed agreement must be submitted to Daisy.</p>
 <hr>
 <h3><a id="ApprovalStep" class="anchor"></a>Approval Step</h3>
 <p>The approval step takes place entirely in your frontend. With <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html"><code>DaisySDK</code></a> instantiated the same way we saw above, the first step is to call <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html#sync"><code>sync()</code></a> to ensure that the subscription manager is up to date. We then call <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html#loadToken"><code>loadToken()</code></a> to fetch the contract of the token that the subscription is denominated in. The amount of tokens to approve can be defined by the application or by an input field; ideally it is many multiples of the plan price so that the user does not have to frequently approve more tokens. The amount must be defined as a string and in the smallest unit possible (18 decimal places for most ERC20 tokens). The user account (wallet address) should be defined by MetaMask or the dapp browser.</p>
@@ -138,6 +138,12 @@ function handleApproveTransactionHash(transactionHash) { ... };
 function handleApproveConfirmation(confirmationNumber, receipt) { ... };
 function handleApproveReceipt(receipt) { ... };
 function handleApproveError(error) { ... };
+</code></pre>
+<p>If at any point you would like to get the number of tokens currently approved by the user, call the <code>allowance()</code> function of the ERC20 token using Daisy.</p>
+<pre class="prettyprint source lang-js"><code>const token = daisy.loadToken();
+const currentAllowance = await daisy
+  .prepareToken(token)
+  .allowance({ tokenOwner: account });
 </code></pre>
 <hr>
 <h3><a id="SignAndSubmitStep" class="anchor"></a>Sign and Submit Step</h3>
@@ -289,7 +295,76 @@ app.get(&quot;/api/plans/&quot;, asyncHandler(async (req, res) => {
   res.send(subscription);
 }));
 </code></pre>
-<p>To differentiate between active and inactive subscriptions, use <code>subscription.state</code> and <code>subscription.cancelState</code>. The full list of possible subscription states and their meanings is available here (coming soon).</p>
+<p>To differentiate between active and inactive subscriptions, use <code>subscription.state</code> and <code>subscription.cancelState</code>. The possible values of <code>state</code> are:</p>
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>NOT_STARTED</code></strong></td>
+<td>The default value. For example, a subscription which was created from an <a href="https://docs.daisypayments.com/tutorial-Invitations.html">Invitation</a>, but is awaiting your approval in the Daisy dashboard, is in this state.</td>
+</tr>
+<tr>
+<td><strong><code>PENDING</code></strong></td>
+<td>The creation of the subscription has been initiated and the transaction is still being mined. Not yet active.</td>
+</tr>
+<tr>
+<td><strong><code>ACTIVE</code></strong></td>
+<td>The current billing period is paid for and the subscription is valid.</td>
+</tr>
+<tr>
+<td><strong><code>ACTIVE_CANCELLED</code></strong></td>
+<td>The current billing period is paid for and the subscription is valid, but the user has cancelled the subscription making this the last billing period.</td>
+</tr>
+<tr>
+<td><strong><code>CANCELLED</code></strong></td>
+<td>A subscription which is inactive because it has been cancelled and has reached the end of the last billing period.</td>
+</tr>
+<tr>
+<td><strong><code>EXPIRED</code></strong></td>
+<td>A subscription which is inactive because it has completed the maximum number of billing periods defined by the user.</td>
+</tr>
+<tr>
+<td><strong><code>INVALID</code></strong></td>
+<td>A subscription which is inactive because it was created with invalid parameters. It should be fixed and then reattempted.</td>
+</tr>
+<tr>
+<td><strong><code>NOT_ENOUGH_FUNDS</code></strong></td>
+<td>A subscription which is inactive because the user either does not have enough tokens or does not have enough tokens approved.</td>
+</tr>
+<tr>
+<td><strong><code>FAILED</code></strong></td>
+<td>A subscription which is inactive because the transaction creating it failed to be mined. Should be reattempted.</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>cancelState</code> variable signifies the current status of a cancellation attempt. The possible values of <code>cancelState</code> are:</p>
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>OK</code></strong></td>
+<td>The default value. Either the subscription is not currently being cancelled, or a cancellation attempt was successful and <code>subscription.state</code> reflects this.</td>
+</tr>
+<tr>
+<td><strong><code>PENDING</code></strong></td>
+<td>The cancellation of the subscription has been initiated and the transaction is still being mined.</td>
+</tr>
+<tr>
+<td><strong><code>FAILED</code></strong></td>
+<td>The transaction cancelling the subscription failed to be mined. Should be reattempted.</td>
+</tr>
+</tbody>
+</table>
 <p>Fetching subscriptions that match a filtering criteria with <a href="https://docs.daisypayments.com/module-private-ServiceSubscriptions.html#getSubscriptions"><code>getSubscriptions()</code></a>. Valid properties to filter by are <code>account</code> (Ethereum address) and <code>state</code>.</p>
 <pre class="prettyprint source lang-js"><code>app.get(&quot;/api/subscriptions/&quot;, asyncHandler(async (req, res) => {
   const filterKey = req.query.filterKey;
@@ -302,7 +377,13 @@ app.get(&quot;/api/plans/&quot;, asyncHandler(async (req, res) => {
 </code></pre>
 <hr>
 <h2><a id="ApproveMore" class="anchor"></a>Approving More Tokens for an Existing Subscription</h2>
-<p>Every billing period, the price of the plan will be subtracted from the amount of tokens the user has approved. Once all approved tokens have been spent, the user will need to
+<p>Every billing period, the price of the plan will be subtracted from the amount of tokens the user has approved. To get the remaining number of approved tokens, call the <code>allowance()</code> function of the ERC20 token using Daisy.</p>
+<pre class="prettyprint source lang-js"><code>const token = daisy.loadToken();
+const currentAllowance = await daisy
+  .prepareToken(token)
+  .allowance({ tokenOwner: account });
+</code></pre>
+<p>Once all approved tokens have been spent, the user will need to
 approve more to continue the subscription. Luckily, doing so is easy. Simply expose the same <a href="#ApprovalStep">token approval flow</a> that we already created to subscribed users somewhere within your app. Leave out the second step of signing and submitting the subscription agreement, that doesn't need to be repeated.</p>
 <p>If you can use <a href="https://docs.daisypayments.com/tutorial-Daisy-Widget.html">Daisy Widget</a>, the <code>ApproveInput</code> and <code>ApproveButton</code> components <a href="https://docs.daisypayments.com/tutorial-Daisy-Widget.html#ApproveMore">accomplish this task perfectly</a>. If not, be sure to make it obvious to your users how many tokens they have approved and warn them when they are getting low.</p>
 <hr>
@@ -350,11 +431,11 @@ app.post(&quot;/submit_cancel/&quot;, asyncHandler(async (req, res) => {
 <ul>
 <li>Have <a href="https://metamask.io/">MetaMask</a> installed or be using a dapp browser (for approving tokens and signing the subscription agreement).</li>
 <li>Have enough of one of the subscription's accepted ERC20 tokens to pay for at least one billing period.</li>
-<li>Have enough ETH to pay the gas fee of the approval step (a quite small amount).</li>
+<li>Have enough ETH to pay the gas fee of the approval step (almost always less than $0.10 USD).</li>
 </ul>
 <p>When using Daisy SDK, you are responsible for checking that these requirements are met and informing the user if they are not. An added benefit of using <a href="https://docs.daisypayments.com/tutorial-Daisy-Widget.html">Daisy Widget</a> is that handling and displaying errors is built-in!</p>
 <hr>
-<p>Still have questions after reading this guide? We encourage you to chat with us on Slack at #daisy-public, or contact us at <a href="mailto:hello@daisypayments.com">hello@daisypayments.com</a>.</p>
+<p>Still have questions after reading this guide? Feel free to contact us at <a href="mailto:hello@daisypayments.com">hello@daisypayments.com</a>.</p>
 </article>
 
 </section>
