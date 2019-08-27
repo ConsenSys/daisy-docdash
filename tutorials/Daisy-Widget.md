@@ -1,12 +1,12 @@
 # Getting Started with Daisy Widget
 
-Daisy Widget is a library of React components that makes interacting with the full lifecycle of payments and subscriptions super easy. It is designed to be used within your project's existing frontend. This guide will go through creating a [subscription signup flow](#SignUp), [token approval flow](#ApproveMore), and [cancellation flow](#Cancellation).
+Daisy Widget is a library of React components that makes interacting with the full lifecycle of payments and subscriptions convenient and straightforward. It is designed to be used within your project's existing frontend. This guide will go through creating a [subscription signup flow](#SignUp), [token approval flow](#ApproveMore), and [cancellation flow](#Cancellation).
 
 <div class="img-container" style="width: 543px">
   <img src="./img/signup_flow.png" alt="Placeholder for ApproveInput, ApproveButton, SubscribeButton, and StepIndicator" />
 </div>
 
-> Daisy Widget is just one of three possible ways for your users to pay with Daisy. If you're looking for even more flexibility, you can build everything you need directly with [Daisy SDK](https://docs.daisypayments.com/tutorial-Daisy-SDK.html). If you're looking for an almost-no-code solution, check out Invitations (documentation coming soon). 
+> Daisy Widget is just one of three possible ways for your users to pay with Daisy. If you're looking for even more flexibility, you can build everything you need directly with [Daisy SDK](https://docs.daisypayments.com/tutorial-Daisy-SDK.html). If you're looking for an almost-no-code solution, check out [Invitations](https://docs.daisypayments.com/tutorial-Invitations.html). 
 
 ---
 ## <a id="Installation" class="anchor"></a>Installation and Set Up
@@ -102,9 +102,16 @@ import { ApproveButton } from "@daisypayments/daisy-widget";
 />
 ```
 
-Finally, if neither `ApproveInput` is used nor the `approvalAmount` prop defined, the number of tokens defaults to the amount needed to pay for 12 billing periods. 
+Finally, if neither `ApproveInput` is used nor the `approvalAmount` prop defined, the number of tokens defaults to the amount needed to pay for 12 billing periods. If more than one of these three ways is provided, Daisy Widget assigns priority in the order they are listed above (e.g. the value from `ApproveInput` would overrule the `approvalAmount` prop).
 
-If more than one of these three ways is provided, Daisy Widget assigns priority in the order they are listed above (e.g. the value from `ApproveInput` would overrule the `approvalAmount` prop).
+If you would like to conditionally render any part of this flow based on the user's current allowance of approved tokens, use [Daisy SDK's](https://docs.daisypayments.com/module-browser-DaisySDK.html) `allowance()` function.
+
+```js
+const token = daisy.loadToken();
+const currentAllowance = await daisy
+  .prepareToken(token)
+  .allowance({ tokenOwner: account });
+```
 
 ---
 ### <a id="SignAndSubmitStep" class="anchor"></a>Sign and Submit Step 
@@ -122,7 +129,7 @@ import { SubscribeButton } from "@daisypayments/daisy-widget";
 
 Clicking the button will open MetaMask and prompt the user to sign the details of the subscription agreement. Once signed, the agreement is sent to Daisy to be executed on the Ethereum blockchain by one of two ways. 
 
-**Backend Way:** The first, recommended way is to pass a `handleSignedAgreement` prop to `SubscribeButton`. This handler is responsible for sending the signed agreement to your backend where it needs to be submitted with [`submit()`](https://docs.daisypayments.com/module-browser-DaisySDK.html#submit), and then returning the server response. 
+**Backend Way**: The first, recommended way is to pass a `handleSignedAgreement` prop to `SubscribeButton`. This handler is responsible for sending the signed agreement to your backend where it needs to be submitted with [`submit()`](https://docs.daisypayments.com/module-browser-DaisySDK.html#submit), and then returning the server response. 
 
 ```js
 const signedAgreementHandler = async submitArgs => {
@@ -150,7 +157,7 @@ const signedAgreementHandler = async submitArgs => {
 />
 ```
 
-**Frontend Way:** If `handleSignedAgreement` is omitted, the agreement is submitted with [`submit()`](https://docs.daisypayments.com/module-browser-DaisySDK.html#submit) immediately and `SubscribeButton`'s `handleSubscriptionCreation` prop is called with the server response.
+**Frontend Way**: If `handleSignedAgreement` is omitted, the agreement is submitted with [`submit()`](https://docs.daisypayments.com/module-browser-DaisySDK.html#submit) immediately and `SubscribeButton`'s `handleSubscriptionCreation` prop is called with the server response.
 
 **Whether the agreement is submitted from your backend or frontend, it is very important to associate the returned `daisyId` with the user at this step!**
 
@@ -229,7 +236,7 @@ const subscription = await daisy.getSubscription(this.props.user.daisyId);
 ```
 Clicking the button will open MetaMask and prompt the user to sign the details of the cancellation.  Similar to `SubscribeButton`, the signed cancellation is sent to Daisy by one of two ways. Neither way is strongly preferred over the other as there is no fear of data loss, so feel free to use whichever suits your needs best. 
 
-**Backend Way:**  If you would like to handle submitting the signed cancellation with [`submitCancel()`](https://docs.daisypayments.com/module-browser-DaisySDK.html#submitCancel) from your backend, a handler is exposed for you to do so, `handleSignedCancellation`. Once again, this handler is responsible for returning the server response. 
+**Backend Way**:  If you would like to handle submitting the signed cancellation with [`submitCancel()`](https://docs.daisypayments.com/module-browser-DaisySDK.html#submitCancel) from your backend, a handler is exposed for you to do so, `handleSignedCancellation`. Once again, this handler is responsible for returning the server response. 
 
 ```js
 const handleCancel = async submitArgs => {
@@ -258,7 +265,7 @@ const handleCancel = async submitArgs => {
 />
 ```
 
-**Frontend Way:** If `handleSignedCancellation` is omitted, the agreement is submitted with [`submitCancel()`](https://docs.daisypayments.com/module-browser-DaisySDK.html#submitCancel) immediately
+**Frontend Way**: If `handleSignedCancellation` is omitted, the agreement is submitted with [`submitCancel()`](https://docs.daisypayments.com/module-browser-DaisySDK.html#submitCancel) immediately
 
 In both the **Backend Way** and the **Frontend Way**, if the `handleSubscriptionCancellation` prop is passed to `CancelButton`, it is called with the server response.
 
@@ -269,10 +276,10 @@ A user on your site is interested in subscribing to your service. There are some
 
 - Have [MetaMask](https://metamask.io/) installed or be using a dapp browser (for approving tokens and signing the subscription agreement).
 - Have enough of one of the subscription's accepted ERC20 tokens to pay for at least one billing period.
-- Have enough ETH to pay the gas fee of the approval step (a quite small amount).
+- Have enough ETH to pay the gas fee of the approval step (almost always less than $0.10 USD).
 
 Luckily, if any of these requirements are not met, Daisy Widget can do the work of surfacing actionable error messages to the user for you with the optional [Toast component](/#toast).
 
 ---
 
-Still have questions after reading this guide? We encourage you to chat with us on Slack at #daisy-public, or contact us at [hello@daisypayments.com](mailto:hello@daisypayments.com).
+Still have questions after reading this guide? Feel free to contact us at [hello@daisypayments.com](mailto:hello@daisypayments.com).

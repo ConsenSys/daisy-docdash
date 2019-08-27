@@ -3,7 +3,7 @@
 Daisy SDK is a library for interacting with all aspects of the Daisy product in both a browser and Node environment. This guide will go through using the library to [sign up for a new subscription](#SignUp), [access a subscription's current state and subscriber data](#Access), [approve tokens for an existing subscription](#ApproveMore), and [cancel an existing subscription](#Cancellation).
 
 
-> Daisy SDK is just one of three possible ways for your users to pay with Daisy, and it is certainly the most involved way. If your project has a React frontend, most payment and subscription actions can be performed using the pre-built React components of [Daisy Widget](https://docs.daisypayments.com/tutorial-Daisy-Widget.html). If you're looking for an almost-no-code solution, check out Invitations (documentation coming soon). 
+> Daisy SDK is just one of three possible ways for your users to pay with Daisy, and it is certainly the most involved way. If your project has a React frontend, most payment and subscription actions can be performed using the pre-built React components of [Daisy Widget](https://docs.daisypayments.com/tutorial-Daisy-Widget.html). If you're looking for an almost-no-code solution, check out [Invitations](https://docs.daisypayments.com/tutorial-Invitations.html). 
 
 ---
 ## <a id="Installation" class="anchor"></a>Installation and Set Up
@@ -90,7 +90,7 @@ Both [`DaisySDK`](https://docs.daisypayments.com/module-browser-DaisySDK.html) a
 ## <a id="SignUp" class="anchor"></a>Signing Up for a Subscription
 
 
-Signing up for a subscription is a two step process: First, the user must make a transaction approving the subscription contract to transfer tokens from their wallet. Second, the user must sign the details of the subscription agreement using MetaMask or a dapp browser and that signed agreement must be submitted to Daisy.
+Signing up for a subscription is a two-step process: First, the user must make a transaction approving the subscription contract to transfer tokens from their wallet. Second, the user must sign the details of the subscription agreement using MetaMask or a dapp browser and that signed agreement must be submitted to Daisy.
 
 ---
 ### <a id="ApprovalStep" class="anchor"></a>Approval Step
@@ -140,6 +140,15 @@ function handleApproveReceipt(receipt) { ... };
 function handleApproveError(error) { ... };
 ```
 
+If at any point you would like to get the number of tokens currently approved by the user, call the `allowance()` function of the ERC20 token using Daisy.
+
+```js
+const token = daisy.loadToken();
+const currentAllowance = await daisy
+  .prepareToken(token)
+  .allowance({ tokenOwner: account });
+```
+
 ---
 ### <a id="SignAndSubmitStep" class="anchor"></a>Sign and Submit Step 
 
@@ -167,7 +176,7 @@ Then, instead of calling `approve()` we call the `sign()` function, prompting th
 
 **Whether the agreement is submitted from your backend or frontend, it is very important to associate the returned `daisyId` with the user at this step!**
 
-**Backend Way:** The first, recommended way is to provide an endpoint on your backend that is responsible for submitting the signed agreement with [`submit()`](https://docs.daisypayments.com/module-private-ServiceSubscriptions.html#submit) and then returning the server response. 
+**Backend Way**: The first, recommended way is to provide an endpoint on your backend that is responsible for submitting the signed agreement with [`submit()`](https://docs.daisypayments.com/module-private-ServiceSubscriptions.html#submit) and then returning the server response. 
 
 ```js
 // Your frontend
@@ -242,7 +251,7 @@ app.post("/submit_agreement/", asyncHandler(async (req, res) => {
 ```
 
 
-**Frontend Way:** The [`submit()`](https://docs.daisypayments.com/module-browser-DaisySDK.html#submit) function can also be called from the frontend with [`DaisySDK`](https://docs.daisypayments.com/module-browser-DaisySDK.html). However, we recommend the **Backend Way** as it avoids any risk of `daisyId` being lost when sent from the user's browser to your backend. If you still choose to do the agreement submission entirely from the frontend, **be sure to then send the returned `daisyId` to your backend and associate it with the user!** 
+**Frontend Way**: The [`submit()`](https://docs.daisypayments.com/module-browser-DaisySDK.html#submit) function can also be called from the frontend with [`DaisySDK`](https://docs.daisypayments.com/module-browser-DaisySDK.html). However, we recommend the **Backend Way** as it avoids any risk of `daisyId` being lost when sent from the user's browser to your backend. If you still choose to do the agreement submission entirely from the frontend, **be sure to then send the returned `daisyId` to your backend and associate it with the user!** 
 
 
 ```js
@@ -320,7 +329,27 @@ app.get("/api/subscription/", asyncHandler(async (req, res) => {
 }));
 ```
 
-To differentiate between active and inactive subscriptions, use `subscription.state` and `subscription.cancelState`. The full list of possible subscription states and their meanings is available here (coming soon).
+To differentiate between active and inactive subscriptions, use `subscription.state` and `subscription.cancelState`. The possible values of `state` are:
+
+| State       | Description |
+| ----------- | ----------- |
+| **`NOT_STARTED`** | The default value. For example, a subscription which was created from an [Invitation](https://docs.daisypayments.com/tutorial-Invitations.html), but is awaiting your approval in the Daisy dashboard, is in this state.|
+| **`PENDING`** | The creation of the subscription has been initiated and the transaction is still being mined. Not yet active.|
+| **`ACTIVE`** | The current billing period is paid for and the subscription is valid.|
+| **`ACTIVE_CANCELLED`** | The current billing period is paid for and the subscription is valid, but the user has cancelled the subscription making this the last billing period.|
+| **`CANCELLED`** | A subscription which is inactive because it has been cancelled and has reached the end of the last billing period.|
+| **`EXPIRED`** | A subscription which is inactive because it has completed the maximum number of billing periods defined by the user.|
+| **`INVALID`** | A subscription which is inactive because it was created with invalid parameters. It should be fixed and then reattempted.|
+| **`NOT_ENOUGH_FUNDS`** | A subscription which is inactive because the user either does not have enough tokens or does not have enough tokens approved.|
+| **`FAILED`** | A subscription which is inactive because the transaction creating it failed to be mined. Should be reattempted.|
+
+The `cancelState` variable signifies the current status of a cancellation attempt. The possible values of `cancelState` are:
+
+| State       | Description |
+| ----------- | ----------- |
+| **`OK`** | The default value. Either the subscription is not currently being cancelled, or a cancellation attempt was successful and `subscription.state` reflects this.|
+| **`PENDING`** | The cancellation of the subscription has been initiated and the transaction is still being mined.|
+| **`FAILED`** | The transaction cancelling the subscription failed to be mined. Should be reattempted.|
 
 Fetching subscriptions that match a filtering criteria with [`getSubscriptions()`](https://docs.daisypayments.com/module-private-ServiceSubscriptions.html#getSubscriptions). Valid properties to filter by are `account` (Ethereum address) and `state`.
 ```js
@@ -336,7 +365,16 @@ app.get("/api/subscriptions/", asyncHandler(async (req, res) => {
 ---
 ## <a id="ApproveMore" class="anchor"></a>Approving More Tokens for an Existing Subscription
 
-Every billing period, the price of the plan will be subtracted from the amount of tokens the user has approved. Once all approved tokens have been spent, the user will need to
+Every billing period, the price of the plan will be subtracted from the amount of tokens the user has approved. To get the remaining number of approved tokens, call the `allowance()` function of the ERC20 token using Daisy. 
+
+```js
+const token = daisy.loadToken();
+const currentAllowance = await daisy
+  .prepareToken(token)
+  .allowance({ tokenOwner: account });
+```
+
+Once all approved tokens have been spent, the user will need to
 approve more to continue the subscription. Luckily, doing so is easy. Simply expose the same [token approval flow](#ApprovalStep) that we already created to subscribed users somewhere within your app. Leave out the second step of signing and submitting the subscription agreement, that doesn't need to be repeated. 
 
 
@@ -395,10 +433,10 @@ A user on your site is interested in subscribing to your service. There are some
 
 - Have [MetaMask](https://metamask.io/) installed or be using a dapp browser (for approving tokens and signing the subscription agreement).
 - Have enough of one of the subscription's accepted ERC20 tokens to pay for at least one billing period.
-- Have enough ETH to pay the gas fee of the approval step (a quite small amount).
+- Have enough ETH to pay the gas fee of the approval step (almost always less than $0.10 USD).
 
 When using Daisy SDK, you are responsible for checking that these requirements are met and informing the user if they are not. An added benefit of using [Daisy Widget](https://docs.daisypayments.com/tutorial-Daisy-Widget.html) is that handling and displaying errors is built-in!
 
 ---
 
-Still have questions after reading this guide? We encourage you to chat with us on Slack at #daisy-public, or contact us at [hello@daisypayments.com](mailto:hello@daisypayments.com).
+Still have questions after reading this guide? Feel free to contact us at [hello@daisypayments.com](mailto:hello@daisypayments.com).
