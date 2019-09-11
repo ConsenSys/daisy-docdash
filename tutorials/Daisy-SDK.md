@@ -220,37 +220,6 @@ app.post("/submit_agreement/", asyncHandler(async (req, res) => {
 
 This example uses [Express](https://expressjs.com/) and the middleware [express-async-handler](https://www.npmjs.com/package/express-async-handler) for the sake of brevity, but of course you can use whatever backend you like as long as you are calling [`submit()`](https://docs.daisypayments.com/module-private-ServiceSubscriptions.html#submit) and associating the returned `daisyId` with the user.
 
-Additionally, if the user is attempting to subscribe to a private plan, the subscription agreement must also be signed with a private `Authorizer` key. Thus, if you are using private plans, you *must* utilize the **Backend Way** to avoid revealing this key. 
-
-The previous example adapted for a private plan is shown below. The key difference is that [`authorize()`](https://docs.daisypayments.com/module-private-ServiceSubscriptions.html#authorize) is now called and the resulting `authSignature` is passed to [`submit()`](https://docs.daisypayments.com/module-private-ServiceSubscriptions.html#submit).
-
-```js
-app.post("/submit_agreement/", asyncHandler(async (req, res) => {
-
-  const { agreement, signature } = req.body;
-
-  let authSignature = null;
-  if (plan.private) {
-
-    const authorizer = {
-      privateKey: Buffer.from(process.env.PRIVATE_KEYS, "hex"),
-    };
-    authSignature = await subscriptionService.authorize(
-      authorizer,
-      agreement,
-    );
-  }
-
-  const { data: subscription } = await subscriptionService.submit({
-    agreement,
-    authSignature,
-    signature,
-  });
-
-  ...
-```
-
-
 **Frontend Way**: The [`submit()`](https://docs.daisypayments.com/module-browser-DaisySDK.html#submit) function can also be called from the frontend with [`DaisySDK`](https://docs.daisypayments.com/module-browser-DaisySDK.html). However, we recommend the **Backend Way** as it avoids any risk of `daisyId` being lost when sent from the user's browser to your backend. If you still choose to do the agreement submission entirely from the frontend, **be sure to then send the returned `daisyId` to your backend and associate it with the user!** 
 
 
