@@ -13,10 +13,11 @@ module.exports = {
     ],
   },
   opts: {
+    readme: "./Integrating.md",
     template: "./",
     encoding: "utf8",
     destination: "docs/",
-    "tutorials": "./tutorials",
+    tutorials: "./tutorials",
     recurse: true,
     verbose: true,
   },

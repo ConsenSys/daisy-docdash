@@ -4,7 +4,8 @@
     "tutorials",
     "tmpl",
     "static",
-    "publish.js"
+    "publish.js",
+    "Integrating.md"
   ],
   "ext": "js,tmpl,css,md",
   "delay": "500",

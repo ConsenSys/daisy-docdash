@@ -37,6 +37,26 @@ img {
   max-width: 100%;
 }
 
+.blurb-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%
+}
+
+.blurb {
+  max-width: 400px;
+}
+
+.blurb-content {
+  flex: 1;
+  display: flex;
+  justify-content: center
+}
+.blurb-content .prettyprint.source {
+  width: 100%;
+}
+
 a,
 a:active {
   color: var(--daisy-purple);
@@ -144,7 +164,7 @@ h6 {
 }
 
 hr {
-  margin: 2em 0 0 0;
+  margin: 2em 0 1em 0;
   width: 90%;
   border-top: none;
   border-bottom-color: var(--light-gray);
@@ -837,6 +857,15 @@ html[data-search-mode] .level-hide {
   .prettyprint.source {
     width: 98%;
   }
+
+  .blurb-container {
+    width: 100%;
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
+  .blurb-content .prettyprint.source {
+    display: none;
+  }
 }
 
 @media only screen and (min-width: 680px) and (max-width: 1300px) {
@@ -852,6 +881,12 @@ html[data-search-mode] .level-hide {
   .tutorial > table,
   .prettyprint.source {
     width: 94%;
+  }
+  
+  .blurb-container {
+    width: 90%;
+    flex-direction: column-reverse;
+    align-items: flex-start;
   }
 }
 
