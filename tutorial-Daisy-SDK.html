@@ -206,32 +206,6 @@ app.post(&quot;/submit_agreement/&quot;, asyncHandler(async (req, res) => {
 }));
 </code></pre>
 <p>This example uses <a href="https://expressjs.com/">Express</a> and the middleware <a href="https://www.npmjs.com/package/express-async-handler">express-async-handler</a> for the sake of brevity, but of course you can use whatever backend you like as long as you are calling <a href="https://docs.daisypayments.com/module-private-ServiceSubscriptions.html#submit"><code>submit()</code></a> and associating the returned <code>daisyId</code> with the user.</p>
-<p>Additionally, if the user is attempting to subscribe to a private plan, the subscription agreement must also be signed with a private <code>Authorizer</code> key. Thus, if you are using private plans, you <em>must</em> utilize the <strong>Backend Way</strong> to avoid revealing this key.</p>
-<p>The previous example adapted for a private plan is shown below. The key difference is that <a href="https://docs.daisypayments.com/module-private-ServiceSubscriptions.html#authorize"><code>authorize()</code></a> is now called and the resulting <code>authSignature</code> is passed to <a href="https://docs.daisypayments.com/module-private-ServiceSubscriptions.html#submit"><code>submit()</code></a>.</p>
-<pre class="prettyprint source lang-js"><code>app.post(&quot;/submit_agreement/&quot;, asyncHandler(async (req, res) => {
-
-  const { agreement, signature } = req.body;
-
-  let authSignature = null;
-  if (plan.private) {
-
-    const authorizer = {
-      privateKey: Buffer.from(process.env.PRIVATE_KEYS, &quot;hex&quot;),
-    };
-    authSignature = await subscriptionService.authorize(
-      authorizer,
-      agreement,
-    );
-  }
-
-  const { data: subscription } = await subscriptionService.submit({
-    agreement,
-    authSignature,
-    signature,
-  });
-
-  ...
-</code></pre>
 <p><strong>Frontend Way</strong>: The <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html#submit"><code>submit()</code></a> function can also be called from the frontend with <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html"><code>DaisySDK</code></a>. However, we recommend the <strong>Backend Way</strong> as it avoids any risk of <code>daisyId</code> being lost when sent from the user's browser to your backend. If you still choose to do the agreement submission entirely from the frontend, <strong>be sure to then send the returned <code>daisyId</code> to your backend and associate it with the user!</strong></p>
 <pre class="prettyprint source lang-js"><code>// Your frontend
 // NOTE: Previous example preferred to this example!

@@ -54,330 +54,60 @@
 
 
     <section class="readme">
-        <article><h1>Daisy SDK &amp; Docs</h1>
-<h2>Install</h2>
-<blockquote>
-<p>You may also require some extra dependencies like <code>axios</code>, <code>web3</code>, <code>eventemitter3</code>, and <code>querystring</code>.</p>
-</blockquote>
-<pre class="prettyprint source lang-sh"><code>yarn add @daisypayments/daisy-sdk axios eventemitter3 querystring web3@1.0.0-beta.37
-</code></pre>
-<h2>MetaMask helper</h2>
-<p>To help you handle web3 instances and the current account we recommended <a href="https://github.com/daisypayments/react-metamask#readme">daisypayments/react-metamask</a>.</p>
-<h2>Usage</h2>
-<h3>1. Standard private and public plans with DaisySDK</h3>
-<p>This is the default flow with standardized plans. This requires the implementation of a front-end with integration of Daisy Widget or Daisy SDK (advanced).</p>
-<h4>1.1 Create a Subscription Product and Plans</h4>
-<p>After deploying a Subscription Product to the blockchain go to the <em>API Integration</em> tab and get the <code>DAISY_ID</code> and <code>DAISY_SECRET_KEY</code>.</p>
-<pre class="prettyprint source lang-txt"><code># Example values
-DAISY_ID=margarita
-DAISY_SECRET_KEY=key
-DAISY_CALLBACK_PUBLIC_KEY=key
-</code></pre>
-<h4>1.2 Integration in the server</h4>
-<p>Create an instance of <code>ServiceSubscriptions</code> from the <code>@daisypayments/daisy-sdk/private</code> sub-module.
-It is extremely important to keep <code>DAISY_SECRET_KEY</code> <strong>private</strong>.</p>
-<pre class="prettyprint source lang-js"><code>const { ServiceSubscriptions } = require(&quot;@daisypayments/daisy-sdk/private&quot;);
-
-const subscriptionService = new ServiceSubscriptions({
-  identifier: process.env.DAISY_ID,
-  secretKey: process.env.DAISY_SECRET_KEY,
-});
-</code></pre>
-<p>Create and endpoint to retrieve information from your servers back to the frontend.
-Here is an example using Express.js:</p>
-<pre class="prettyprint source lang-js"><code>const express = require(&quot;express&quot;);
-const h = require(&quot;express-async-handler&quot;);
-
-const app = express();
-
-// GET /api/plans/ -> Fetch plans from the frontend
-app.get(&quot;/api/plans/&quot;, h(async (req, res) => {
-  const { plans } = await subscriptionService.getData();
-  res.json({ plans });
-}));
-
-// POST /api/plan/:pid/subscriptions/ -> Submit a subscription to Daisy
-app.post(&quot;/api/plan/:pid/subscriptions/&quot;, h(async (req, res) => {
-  const user = req.session;
-  const { agreement, signature } = req.body;
-
-  const { plans } = await subscriptionService.getData();
-  const plan = plans.find(p => p[&quot;id&quot;] === req.params[&quot;pid&quot;]);
-  if (!plan) {
-    throw // ...
-  }
-
-  let authSignature = null; // not required for public plans.
-  if (plan.private) {
-    // TODO: Add conditions for `user` to use private plan.
-
-    const authorizer = {
-      privateKey: Buffer.from(process.env.PRIVATE_KEYS, &quot;hex&quot;),
-    };
-    authSignature = await subscriptionService.authorize(
-      authorizer,
-      agreement,
-    );
-  }
-
-  const { data: subscription } = await subscriptionService.submit({
-    agreement,
-    authSignature,
-    signature,
-  });
-
-  // Save and associate DaisyID from `subscription[&quot;daisyId&quot;]` to an user.
-  const daisyId = subscription[&quot;daisyId&quot;];
-  await user.patch({ daisyId });
-
-  res.send(&quot;ok&quot;);
-}));
-</code></pre>
-<h5>1.2.1 Get plans from the frontend (not recommended)</h5>
-<p>This will only expose <code>private: false</code> plans.</p>
+        <article><h1>Integrating with Daisy</h1>
+<div style="max-width: 575px">
+<h2>Daisy enables anyone to accept cryptocurrency for purchases, subscriptions, usage fees and other payments. How you want to integrate Daisy into your app is up to you.</h2>
+</div>
+<hr>
+<div class="blurb-container">
+<div class="blurb">
+<h2>Invitations</h2>
+<p>The quickest way to get started, Invitations are an almost-no-code solution, providing you a customizable UI built and hosted by Daisy.</p>
+<p><a href="https://docs.daisypayments.com/tutorial-Invitations.html">Get started with Invitations</a></p>
+</div>
+<div class="blurb-content">
+<div class="img-container" style="width: 300px; margin: 0 1em">
+  <img src="./img/invitation.png" alt="Placeholder for an example invitation generated for an end user" />
+</div>
+</div>
+</div>
+<hr>
+<div class="blurb-container">
+<div class="blurb">
+<h2>Daisy Widget</h2>
+<p>Building a React application? Daisy Widget is a library of React components that can be incorporated within your project's existing frontend.</p>
+<p><a href="https://docs.daisypayments.com/tutorial-Daisy-Widget.html">Get started with Daisy Widget</a></p>
+</div>
+<div class="blurb-content">
+<div class="img-container" style="width: 380px">
+  <img src="./img/signup_flow.png" alt="Placeholder for ApproveInput, ApproveButton, SubscribeButton, and StepIndicator" />
+</div>
+</div>
+</div>
+<hr>
+<div class="blurb-container">
+<div class="blurb">
+<h2>Daisy SDK</h2>
+<p>Daisy SDK is the entry point for interacting with payments and subscriptions programmatically. It can be used in both a browser and Node environment.</p>
+<p><a href="https://docs.daisypayments.com/tutorial-Daisy-SDK.html">Get started with Daisy SDK</a></p>
+</div>
+<div class="blurb-content">
+<div style="width: 500px; margin-left: 1em">
 <pre class="prettyprint source lang-js"><code>import DaisySDK from &quot;@daisypayments/daisy-sdk&quot;;
+import Web3 from &quot;web3&quot;;
 
-const daisy = new DaisySDK({ identifier: &quot;margarita&quot; }, web3)
-
-const { plans } = await daisy.getData();
+const web3 = new Web3(...);
+const daisy = new DaisySDK({ identifier: ... }, web3)
 </code></pre>
-<h4>1.3 Approving tokens</h4>
-<p>It is required to approve tokens before signing the subscription agreement.</p>
-<pre class="prettyprint source lang-js"><code>const daisy = new DaisySDK({ identifier: &quot;margarita&quot; }, web3)
-await daisy.sync();
-
-const token = daisy.loadToken(); // web3.js contract instance
-
-const approvalAmount = &quot;9000000000000000&quot;;
-const account = &quot;0x...&quot; // from MetaMask.
-
-const eventemitter = daisy
-  .prepareToken(token)
-  .approve(approvalAmount, { from: account });
-
-const eventemitter
-  .on(&quot;transactionHash&quot;, handleApprove_transactionHash)
-  .on(&quot;confirmation&quot;, handleApprove_confirmation)
-  .on(&quot;receipt&quot;, handleApprove_receipt)
-  .on(&quot;error&quot;, handleApprove_error);
-
-function handleApprove_transactionHash(transactionHash) {
-  // ...
-};
-function handleApprove_confirmation(confirmationNumber, receipt) {
-  // ...
-};
-function handleApprove_receipt(receipt) {
-  // Here you can assume this task is complete.
-  // If you want to resume this transaction, save the `receipt` object.
-};
-function handleApprove_error(error) {
-  // ...
-};
-</code></pre>
-<h4>1.4 Signing subscription agreement</h4>
-<pre class="prettyprint source lang-js"><code>const daisy = new DaisySDK({ identifier: &quot;margarita&quot; }, web3)
-await daisy.sync();
-
-const token = daisy.loadToken(); // web3.js contract instance
-
-const { signature, agreement } = await daisy
-  .prepareToken(token)
-  .sign({ account, plan });
-
-// Send `signature` and `agreement` back to the server
-// TODO: replace `:pid` with Plan ID.
-const response = await fetch(&quot;/api/plan/:pid/subscriptions/&quot;, {
-  method: &quot;post&quot;,
-  credentials: &quot;same-origin&quot;,
-  body: JSON.stringify({ signature, agreement }),
-});
-
-const data = await response.json();
-</code></pre>
-<h5>1.4.1 Submit subscription from the frontend (only for public plans) (not recommended)</h5>
-<pre class="prettyprint source lang-js"><code>const { data: subscription } = await daisy.submit({
-  agreement,
-  signature,
-});
-</code></pre>
-<h4>1.5 Verify Daisy subscription state</h4>
-<p>Verify subscription state with:</p>
-<pre class="prettyprint source lang-js"><code>const subscription = await subscriptionService.getSubscription({
-  id: daisyID,
-});
-console.log(subscription[&quot;state&quot;]);
-
-const subscriptions = await subscriptionService.getSubscriptions({
-  account: &quot;0x...&quot;,
-});
-</code></pre>
-<h3>2. Invitations</h3>
-<p>Daisy Invitation allows client to externalize the flow to Daisy's domain.</p>
-<h4>2.1 Recommended usage: WebHooks</h4>
-<p>Let's say you created a Daisy Invitation with the following id:</p>
-<pre class="prettyprint source lang-txt"><code>identifier: &quot;/i/af4cff8c&quot;
-callbackURL: https://myapp.com/api/callback/daisy-invitation/
-callbackExtra: {}
-
-</code></pre>
-<p>Then we need to route <code>callbackURL</code> to your server URL (with HTTPS) and a path.
-This route must handle a HTTP POST request and return a <code>2XX</code> status code.</p>
-<pre class="prettyprint source lang-ts"><code>// TypeScript typing
-
-type ID = string;
-
-/**
- * JSON Payload attached to the POST request to `callbackURL`
- */
-interface WebhookFromInvitation {
-  /**
-   * Semver string
-   * Current version: 1.0.0
-   */
-  version: string;
-  subscription: {
-    /**
-     * DaisyID
-     */
-    daisyId: ID;
-  };
-  plan: {
-    id: ID;
-    private: boolean;
-  };
-  invitation: {
-    id: ID;
-    automatic: boolean;
-  };
-  agreement: CreateSubscriptionAgreement;
-  /**
-   * When pre-signed (maybe because automatic was set to `true`) this field contains the authorizer signature.
-   * To void a pre-signed subscription, return `{ authSignature: null }` from the webhook.
-   */
-  authSignature: string | null;
-  extra: any;
-  /**
-   * Use SDK to verify this signature.
-   */
-  digest: string;
-}
-
-interface CreateSubscriptionAgreement {
-  subscription: SubscriptionAgreement;
-  /**
-   * Ignore. this is for future compatibility
-   */
-  previousSubscriptionId: string;
-  /**
-   * Ignore. this is for future compatibility
-   */
-  credits: string;
-  nonce: string;
-  signatureExpiresAt: string;
-};
-
-interface SubscriptionAgreement {
-  /**
-   * Ethereum address (subscriber)
-   */
-  subscriber: string;
-  /**
-   * Ethereum address (ERC20 Token)
-   */
-  token: string;
-  price: string;
-  /**
-   * DAY | MONTH | YEAR
-   */
-  periodUnit: string;
-  /**
-   * Number as string (blockchain stuff)
-   */
-  periods: string;
-  maxExecutions: string; // 0 = infinite
-  /**
-   * Plan's onChainId
-   */
-  plan: string;
-}
-</code></pre>
-<p>So a normal server should handle this POST request like:</p>
-<pre class="prettyprint source lang-js"><code>const express = require(&quot;express&quot;);
-const h = require(&quot;express-async-handler&quot;);
-
-const app = express();
-
-// POST /api/callback/daisy-invitation/ -> Daisy callback handler
-app.post(&quot;/api/callback/daisy-invitation/&quot;, h(async (req, res) => {
-  const { subscription, plan, authSignature } = req.body
-
-  // TODO: Identify the user
-  await user.patch({ daisyID: subscription[&quot;daisyId&quot;] });
-
-  // Optional redirect URL, may have custom tokens.
-  // Is not guaranteed the user is going to enter this URL.
-  const redirectURL = &quot;https://myapp.com/checkount/finish/&quot;;
-
-  res.json({ authSignature, redirectURL })
-}));
-</code></pre>
-<h4>2.2 Voiding a subscription</h4>
-<p>To void a subscription and prevent the blockchain transaction set <code>authSignature</code> to <code>null</code>.</p>
-<pre class="prettyprint source lang-js"><code>// POST /api/callback/daisy-invitation/ -> Daisy callback handler
-app.post(&quot;/api/callback/daisy-invitation/&quot;, h(async (req, res) => {
-  const { subscription, plan, authSignature } = req.body
-
-  /* Void logic */
-
-  res.json({ authSignature: null });
-}));
-</code></pre>
-<h4>2.3 Identifying the user</h4>
-<p>One way to identify an user after getting the callback is by knowing before-hand the user's Ethereum address.
-So it can be queried from <code>req.body[&quot;agreement&quot;][&quot;subscriber&quot;]</code></p>
-<p>A better way is setting the <code>callbackExtra</code> payload to something we can recognize in the backend.
-Example:</p>
-<pre class="prettyprint source lang-language"><code>identifier: &quot;/i/af4cff8c&quot;
-callbackURL: https://myapp.com/api/callback/daisy-invitation/
-callbackExtra: { &quot;email&quot;: &quot;user@daisypayments.com&quot; }
-</code></pre>
-<pre class="prettyprint source lang-js"><code>// POST /api/callback/daisy-invitation/ -> Daisy callback handler
-app.post(&quot;/api/callback/daisy-invitation/&quot;, h(async (req, res) => {
-  const { subscription, plan, extra } = req.body
-
-  // TODO: Identify the user
-  await user.findById({ email: extra[&quot;email&quot;] }).patch({ daisyId: subscription[&quot;daisyId&quot;] });
-
-  // ...
-
-  const redirectURL = `https://myapp.com/checkount/finish/?user=${user.id}`;
-
-  res.json({ authSignature, redirectURL })
-}
-</code></pre>
-<h4>2.4 Verify authenticity</h4>
-<p>To tell if the webhook POST actually came from Daisy servers you can verify its signature:</p>
-<pre class="prettyprint source lang-js"><code>const { verify } = require('@daisypayments/daisy-sdk/private/webhooks');
-
-// POST /api/callback/daisy-invitation/ -> Daisy callback handler
-app.post(&quot;/api/callback/daisy-invitation/&quot;, h(async (req, res) => {
-  const { digest, ...payload } = req.body
-
-  const isAuthentic = verify({
-    message: payload,
-    digest: digest,
-    publicKey: process.env.DAISY_CALLBACK_PUBLIC_KEY,
-  });
-
-  if (!isAuthentic) {
-    // ...
-    res.json({ authSignature: null });
-  }
-
-  // ...
-});
-</code></pre></article>
+</div>
+</div>
+</div>
+<hr>
+<div style="width: 80%">
+<h3>Still have questions?</h3>
+<p>While we have tried to make accepting cryptocurrency payments as simple as possible, we obviously understand if you still have outstanding questions. Feel free to reach out to us at <a href="mailto:hello@daisypayments.com">hello@daisypayments.com</a>.</p>
+</div>
+<hr></article>
     </section>
 
 

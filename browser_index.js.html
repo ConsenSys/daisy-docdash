@@ -231,7 +231,24 @@ export class DaisySDKToken {
    */
   allowance(sendArgs) {
     if (!sendArgs.tokenOwner) {
-      throw new Error("Missing `sendArgs.tokenOwner` argument");
+      throw new Error(`allowance() was called without a tokenOwner specified. Be sure to call allowance() like:
+      
+      daisy
+        .prepareToken(token)
+        .allowance({ tokenOwner: account })
+      
+      `);
+    }
+    if (!this.manager["address"]) {
+      throw new Error(
+        `You are attempting to check how many tokens the subscription product "${
+          this.manager["name"]
+        }" is allowed to spend on behalf of ${
+          sendArgs.tokenOwner
+        }, but the address of "${
+          this.manager["name"]
+        }" is null. Are you sure that this subscription product is deployed?`
+      );
     }
     return this.token.methods["allowance"](
       sendArgs.tokenOwner,
@@ -256,7 +273,13 @@ export class DaisySDKToken {
    */
   balanceOf(sendArgs) {
     if (!sendArgs.tokenOwner) {
-      throw new Error("Missing `sendArgs.tokenOwner` argument");
+      throw new Error(`balanceOf() was called without a tokenOwner specified. Be sure to call balanceOf() like:
+      
+      daisy
+        .prepareToken(token)
+        .balanceOf({ tokenOwner: account })
+      
+      `);
     }
     return this.token.methods["balanceOf"](sendArgs.tokenOwner).call();
   }
@@ -291,14 +314,14 @@ export class DaisySDKToken {
    */
   signCancel({ account, onChainId, signatureExpiresAt }) {
     const agreement = {
-      action: "cancel",
       subscriptionId: onChainId,
+      nonce: "0x0",
       signatureExpiresAt: getExpirationInSeconds(signatureExpiresAt),
     };
     const typedData = {
       types: TYPES,
       domain: { verifyingContract: this.manager["address"] },
-      primaryType: "SubscriptionAction",
+      primaryType: "CancelSubscription",
       message: agreement,
     };
 
@@ -324,6 +347,7 @@ export class DaisySDKToken {
 
     const agreement = {
       plan: plan["onChainId"],
+      nonce: "0x0",
       signatureExpiresAt: expiration,
     };
 
@@ -484,6 +508,52 @@ export class DaisySDKToken {
     return signTypedData(this.web3, account, typedData).then(signature => ({
       signature,
       agreement,
+    }));
+  }
+
+  /**
+   * Sign one time payment
+   * @async
+   * @param {Object} input - Input object
+   * @param {string} input.account - Ethereum address, beneficiary of the subscription.
+   * @param {string|number} [input.signatureExpiresAt=Date.now() + 600000] - Expiration date for the signature in milliseconds (internally it's converted to seconds for the blockchain). By default its 10 minutes from now.
+   * @returns {Promise&lt;Object>} Object with `signature` and `agreement` property.
+   */
+  signOneTimePayment({
+    uuid,
+    account,
+    token,
+    amount,
+    wallet,
+    signatureExpiresAt,
+    nonce,
+    pullPaymentAddress,
+  }) {
+    const requestId = this.web3.utils.soliditySha3(
+      { t: "bytes32", v: uuid },
+      { t: "address", v: token },
+      { t: "address", v: wallet }
+    );
+
+    const agreement = {
+      requestId,
+      token,
+      amount,
+      nonce: nonce || genNonce(this.web3),
+      signatureExpiresAt: getExpirationInSeconds(signatureExpiresAt),
+    };
+
+    const typedData = {
+      types: TYPES,
+      // TODO: set payment contract
+      domain: { verifyingContract: pullPaymentAddress },
+      primaryType: "Payment",
+      message: agreement,
+    };
+
+    return signTypedData(this.web3, account, typedData).then(signature => ({
+      agreement,
+      signature,
     }));
   }
 }
