@@ -1,11 +1,14 @@
 {
-  "Invitations": {
-    "title": "Invitations"
+  "Daisy-SDK": {
+      "title": "Daisy SDK"
   },
   "Daisy-Widget": {
     "title": "Daisy Widget"
   },
-  "Daisy-SDK": {
-      "title": "Daisy SDK"
+  "Invitations": {
+    "title": "Invitations"
+  },
+  "Programmatic-Payment-Links": {
+    "title": "Programmatically Creating and Querying Payment Links"
   }
 }

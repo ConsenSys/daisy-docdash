@@ -55,7 +55,7 @@ Signing up for a subscription requires the [`ApproveButton`](/[#approve-button) 
   <img src="./img/signup_flow_parts.png" alt="Placeholder for ApproveInput boxed off as optional, ApproveButton and SubscribeButton boxed off as required, and StepIndicator boxed off as optional" />
 </div>
 
-**Two buttons are needed because signing up is a two step process.**
+**Two buttons are needed because signing up is a two step process**.
 
 First, the user must make a transaction approving the subscription contract to transfer tokens from their wallet.
 
