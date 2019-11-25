@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>Tutorial: Payment Links - Documentation</title>
+    
+    
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    <header><a href="index.html" id="logo"><img src="https://s3.amazonaws.com/assets.daisypayments.com/white_logo.svg" alt="Home"/> DOCS</a></header><section><div class="daisy-input-container"><input type="text" id="nav-search" class="daisy-input" placeholder="Search" /><span class="label">Search</span></div><h3>Tutorials</h3><ul><li><a href="tutorial-Daisy-SDK.html">Daisy SDK</a></li><li><a href="tutorial-Daisy-Widget.html">Daisy Widget</a></li><li><a href="tutorial-Payment-Links.html">Payment Links</a></li></ul><h3>Classes</h3><ul><li><a href="module-browser-DaisySDK.html">DaisySDK</a><ul class='methods'><li data-type='method'><a href="module-browser-DaisySDK.html#getData">getData</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#getPlans">getPlans</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#getReceipts">getReceipts</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#getSubscription">getSubscription</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#getSubscriptions">getSubscriptions</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#loadToken">loadToken</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#prepareToken">prepareToken</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#submit">submit</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#submitCancel">submitCancel</a></li><li data-type='method'><a href="module-browser-DaisySDK.html#sync">sync</a></li></ul></li><li><a href="module-common-Client.html">Client</a></li><li><a href="module-common-SubscriptionProductClient.html">SubscriptionProductClient</a><ul class='methods'><li data-type='method'><a href="module-common-SubscriptionProductClient.html#getData">getData</a></li><li data-type='method'><a href="module-common-SubscriptionProductClient.html#getPlans">getPlans</a></li><li data-type='method'><a href="module-common-SubscriptionProductClient.html#getReceipts">getReceipts</a></li><li data-type='method'><a href="module-common-SubscriptionProductClient.html#getSubscription">getSubscription</a></li><li data-type='method'><a href="module-common-SubscriptionProductClient.html#getSubscriptions">getSubscriptions</a></li><li data-type='method'><a href="module-common-SubscriptionProductClient.html#submit">submit</a></li><li data-type='method'><a href="module-common-SubscriptionProductClient.html#submitCancel">submitCancel</a></li></ul></li><li><a href="module-private-ServiceSubscriptions.html">ServiceSubscriptions</a><ul class='methods'><li data-type='method'><a href="module-private-ServiceSubscriptions.html#authorize">authorize</a></li><li data-type='method'><a href="module-private-ServiceSubscriptions.html#createInvitation">createInvitation</a></li><li data-type='method'><a href="module-private-ServiceSubscriptions.html#getData">getData</a></li><li data-type='method'><a href="module-private-ServiceSubscriptions.html#getPlans">getPlans</a></li><li data-type='method'><a href="module-private-ServiceSubscriptions.html#getReceipts">getReceipts</a></li><li data-type='method'><a href="module-private-ServiceSubscriptions.html#getSubscription">getSubscription</a></li><li data-type='method'><a href="module-private-ServiceSubscriptions.html#getSubscriptions">getSubscriptions</a></li><li data-type='method'><a href="module-private-ServiceSubscriptions.html#submit">submit</a></li><li data-type='method'><a href="module-private-ServiceSubscriptions.html#submitCancel">submitCancel</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-browser.html">browser</a></li><li><a href="module-common.html">common</a></li><li></li><li></li><li><a href="module-private.html">private</a></li><li></li><li></li></ul><h3>Externals</h3><ul><li><a href="external-_web3.eth.Contract_.html">web3.eth.Contract</a></li><li><a href="external-PromiEvent.html">PromiEvent</a></li></ul></section>
+</nav>
+
+<div id="main">
+    
+
+    <section class="tutorial">
+
+<article class="tutorial">
+    <h1>Getting Started with Payment Links</h1>
+<p>Need to send out payment requests or subscription offers, with minimal initial code changes to your application? Look no further than Daisy Payment Links. With the addition of just one endpoint to your backend, non-technical team members can generate and send links with just a couple clicks from the <a href="https://app.daisypayments.com">Daisy Dashboard</a>.</p>
+<div class="img-container" style="width: 700px">
+  <img src="./img/payment_link.png" alt="Placeholder for an example Payment Link generated for an end user" />
+</div>
+<blockquote>
+<p>Payment Links provide the fastest, easiest way for you to get started with Daisy. However, if you are seeking to incorporate Daisy within your own application, you should use either the pre-built React components offered by <a href="https://docs.daisypayments.com/tutorial-Daisy-Widget.html">Daisy Widget</a> or the even more flexible library, <a href="https://docs.daisypayments.com/tutorial-Daisy-SDK.html">Daisy SDK</a>.</p>
+</blockquote>
+<hr>
+<h2><a id="SetUp" class="anchor"></a>Initial Set Up for Webhooks</h2>
+<p>Payment Links typically follow this path:</p>
+<ul>
+<li>A link to a specific plan has been generated and the link presented to a potential user.</li>
+<li>The user decides to subscribe and completes the quick 5-step signup flow.</li>
+<li>Daisy sends a POST request to an endpoint on your server containing, among other details, the user's <code>daisyId</code> and the subscription agreement signed by Daisy.</li>
+<li>After passing any validation rules you have set up, the signed subscription agreement is sent back to Daisy.</li>
+<li>The subscription becomes active and the billing period starts immediately.</li>
+</ul>
+<p>Payment Links can be used without making any changes to your application, however the experience for your team and for your end users will be greatly improved by using webhooks. Without them, you are responsible for <a href="#NoWebhooks">manually approving new subscribers</a> and associating their <code>daisyId</code> with them in your database. This may be appropriate for small-scale services, but generally is more laborious and error-prone.</p>
+<p>Below is an example endpoint set up to consume Payment Link webhooks. It is simple but it covers everything this endpoint ought to do: Validate the subscription object, associate the newly generated <code>daisyId</code> with the user, and send the signed subscription agreement back to Daisy to signal its correctness.</p>
+<pre class="prettyprint source lang-js"><code>const express = require(&quot;express&quot;);
+const asyncHandler = require(&quot;express-async-handler&quot;);
+
+const app = express();
+
+
+app.post(&quot;/api/payment_webhook/&quot;, asyncHandler(async (req, res) => {
+  const payload = req.body;
+  const { subscription, authSignature } = payload;
+
+  // Check subscription with isValid() custom validation rules
+  if ( !isValid( payload ) ) {
+    throw ...
+  }
+    
+  // Associate daisyId with the user
+  const daisyId = subscription[&quot;daisyId&quot;];
+  const { user } = req.session;
+  await user.patch({ daisyId });
+
+  res.send({ authSignature })
+  
+}));
+</code></pre>
+<p>This example uses <a href="https://expressjs.com/">Express</a> and the middleware <a href="https://www.npmjs.com/package/express-async-handler">express-async-handler</a> for the sake of brevity, but of course you can use whatever backend you like.</p>
+<p>The complete payload of the POST request looks like:</p>
+<pre class="prettyprint source lang-js"><code>{
+  // Semver of Daisy subscription service
+  version: string,
+  
+  subscription: {
+    // Off-chain identifier, primary means of referencing a subscription
+    daisyId: string,
+  },
+  
+  // Plan being subscribed to
+  plan: {
+    id: string,
+    private: boolean,
+  },
+  
+  // Payment Link that was used
+  paymentLink: {
+    id: string,
+    automatic: boolean,
+  },
+  
+  // Details of subscription including price, token, periods, periodUnits, etc.
+  agreement: object,
+  
+  /* When subscriptions are automatically signed (see &quot;Approval Method&quot; below), 
+    this field contains the authorizer signature */
+  authSignature: string | null, 
+  
+  // Project defined JSON, see &quot;Webhook POST Data&quot; below
+  extra: any,
+
+  // Hash of everything above
+  digest: string,
+}
+</code></pre>
+<hr>
+<h2><a id="GeneratingAndSending" class="anchor"></a>Generating and Sending a Payment Link</h2>
+<p>With your backend ready to consume Payment Link webhooks, the most challenging part is out of the way. The remaining work takes place in the <a href="https://app.daisypayments.com">dashboard</a>, and the rest of the tutorial assumes you have already created and deployed a subscription product so that you may follow along.</p>
+<div class="img-container" style="width: 700px">
+  <img src="./img/payment_link_tab.png" alt="Where to find your subscription product's id and key in the dashboard" />
+</div>
+<p>From the <a href="https://app.daisypayments.com">dashboard</a> landing page, go to a deployed subscription product and click on the <strong>Payment Links</strong> tab. Here you can find all active and inactive links, with the ability to filter by plan. Click <strong>New Payment Link</strong> and define the following:</p>
+<p><a id="Plan" class="anchor"></a><strong>Plan</strong>: A deployed subscription product has at least one plan associated with it. Select the plan to which users will be invited to.</p>
+<p><a id="NumberOfUses" class="anchor"></a><strong>Number of Uses</strong>: A link can be set to cease working after a certain number of uses. This can be useful when implementing things like limited quantity promotions. This value can be set after a link has already been deployed, but all uses over the lifetime of the link will be counted towards the maximum number of uses, not just future ones. By default, a link can be used an unlimited number of times.</p>
+<p><a id="ApprovalMethod" class="anchor"></a><strong>Approval Method</strong>:  By default, Daisy signs all subscriptions that are created with a link. If using webhooks and your webhook endpoint returns that same signed subscription agreement, the subscription becomes active and the billing period starts immediately. Alternatively, you can set links to require manual approval, meaning the subscription will remain pending <a href="#NoWebhooks">until it is approved</a> from the Payment Link's page on the <a href="https://app.daisypayments.com">dashboard</a>.</p>
+<p><a id="WebhookURL" class="anchor"></a><strong>Webhook URL</strong> (optional, strongly recommended): The URL of your webhook endpoint.</p>
+<p><a id="WebhookPostData" class="anchor"></a><strong>Webhook POST Data</strong> (optional): When a completed Payment Link makes a POST request to your webhook endpoint, you can use this field to include additional data in the <code>extra</code> key of the payload. This can be useful for custom validation rules. Any valid JSON is accepted; defaults to an empty object.</p>
+<p>Once you click <strong>Create</strong>, the window will display the details of the now-live Payment Link, including the randomly generated URL that it can be visited at:</p>
+<div class="img-container" style="width: 466px">
+  <img src="./img/payment_link_url.png" alt="Placeholder for the Payment Link URL field in Daisy Dashboard" />
+</div>
+<p>This link can be shared with your users however you like. It can be emailed out to specific enterprise customers with bespoke plans, it can be displayed within your application to a subset of targeted users, or it could be general-purpose and right on your landing page. Payment Links are intentionally flexible to fit many use cases.</p>
+<hr>
+<h2><a id="NoWebhooks" class="anchor"></a>Payment Links Without Webhooks</h2>
+<p>If no <a href="#WebhookURL">Webhook URL</a> is defined for a Payment Link, the new user is shown a screen stating that their subscription is pending approval and given the opportunity to enter their email address to sign up for email updates. The subscription will remain pending until it is approved from the Payment Links's page on the <a href="https://app.daisypayments.com">dashboard</a>.</p>
+<p>In the near future, you will also be sent an email notification when a user completes a Payment Link.</p>
+<hr>
+<h2><a id="Customization" class="anchor"></a>Customizing Payment Links</h2>
+<p>In your <a href="https://app.daisypayments.com">organization settings</a>, you can customize the background color and font color of your Payment Links. You can also set your organization logo, which is displayed at the top of your links. A gray Daisy logo is used if your organization logo is unset.</p>
+<div class="img-container" style="width: 900px">
+  <img src="./img/customized_payment_link.png" alt="Placeholder for examples of customized Payment Links" />
+</div>
+<hr>
+<h2><a id="UserRequirements" class="anchor"></a>What is Required of the User?</h2>
+<p>A user opens a Payment Link for your service. There are some prerequisites to signing up for non-fiat denominated subscriptions. What do they need?  The user must:</p>
+<ul>
+<li>Have <a href="https://metamask.io/">MetaMask</a> installed or be using a dapp browser (for approving tokens and signing the subscription agreement).</li>
+<li>Have enough of one of the subscription's accepted ERC20 tokens to pay for at least one billing period.</li>
+<li>Have enough ETH to pay the gas fee of the approval step (almost always less than $0.10 USD).</li>
+</ul>
+<p>If any of these requirements are not met, the Payment Link page presents actionable error messages to the user. Still, it is highly encouraged to make the user aware of these requirements before they open the link.</p>
+<hr>
+<p>Still have questions after reading this guide? Feel free to contact us at <a href="mailto:hello@daisypayments.com">hello@daisypayments.com</a>.</p>
+</article>
+
+</section>
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+<script src="scripts/search.js" defer></script>
+
+
+</body>
+</html>

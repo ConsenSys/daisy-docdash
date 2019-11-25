@@ -193,9 +193,14 @@ tt, code, kbd, samp {
   width: calc(100% - 300px);
 }
 
+.tutorial > h1,
 .tutorial > p,
 .tutorial > ul {
   width: 70%;
+}
+
+.tutorial > h1 {
+  text-align: center;
 }
 
 .tutorial > table {
@@ -852,6 +857,7 @@ html[data-search-mode] .level-hide {
     margin-left: 0;
   }
 
+  .tutorial > h1,
   .tutorial > table,
   blockquote,
   .prettyprint.source {
@@ -878,6 +884,7 @@ html[data-search-mode] .level-hide {
     width: 80%;
   }
 
+  .tutorial > h1,
   .tutorial > table,
   .prettyprint.source {
     width: 94%;
