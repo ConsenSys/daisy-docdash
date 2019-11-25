@@ -9,15 +9,15 @@
 <div class="blurb-container">
 <div class="blurb">
 
-## Invitations
+## Payment Links
 
-The quickest way to get started, Invitations are an almost-no-code solution, providing you a customizable UI built and hosted by Daisy.
+The quickest way to get started, Payment Links are an almost-no-code solution, providing you a customizable UI built and hosted by Daisy.
 
-[Get started with Invitations](https://docs.daisypayments.com/tutorial-Invitations.html)
+[Get started with Payment Links](https://docs.daisypayments.com/tutorial-Payment-Links.html)
 </div>
 <div class="blurb-content">
 <div class="img-container" style="width: 300px; margin: 0 1em">
-  <img src="./img/invitation.png" alt="Placeholder for an example invitation generated for an end user" />
+  <img src="./img/payment_link.png" alt="Placeholder for an example Payment Link generated for an end user" />
 </div>
 </div>
 </div>

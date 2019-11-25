@@ -6,7 +6,7 @@ Daisy Widget is a library of React components that makes interacting with the fu
   <img src="./img/signup_flow.png" alt="Placeholder for ApproveInput, ApproveButton, SubscribeButton, and StepIndicator" />
 </div>
 
-> Daisy Widget is just one of three possible ways for your users to pay with Daisy. If you're looking for even more flexibility, you can build everything you need directly with [Daisy SDK](https://docs.daisypayments.com/tutorial-Daisy-SDK.html). If you're looking for an almost-no-code solution, check out [Invitations](https://docs.daisypayments.com/tutorial-Invitations.html). 
+> Daisy Widget is just one of three possible ways for your users to pay with Daisy. If you're looking for even more flexibility, you can build everything you need directly with [Daisy SDK](https://docs.daisypayments.com/tutorial-Daisy-SDK.html). If you're looking for an almost-no-code solution, check out [Payment Links](https://docs.daisypayments.com/tutorial-Payment-Links.html). 
 
 ---
 ## <a id="Installation" class="anchor"></a>Installation and Set Up
@@ -38,7 +38,7 @@ import { MetaMaskContext, DaisyContext } from "@daisypayments/daisy-widget";
 We recommend that you pass `MetaMaskContext.Provider` the `immediate` prop, otherwise you are responsible for calling  `react-metamask`'s `openMetaMask()` function to authorize web3 access where needed. `DaisyContext.Provider` requires an object for the `value` prop, with the `identifier` key set to your subscription service's globally unique `id`.
 
 <div class="img-container" style="width: 700px">
-  <img src="./img/subscription-service-id.png" alt="Where to find your subscription service's id in the dashboard" />
+  <img src="./img/subscription_service_id.png" alt="Where to find your subscription service's id in the dashboard" />
 </div>
 
 With that done, whenever you would like a component to access [MetaMask utilities](https://github.com/ConsenSys/react-metamask) or the [Daisy object](https://docs.daisypayments.com/module-browser-DaisySDK.html), you can provide them as props by simply wrapping the component with the [Higher-Order Components](https://reactjs.org/docs/higher-order-components.html), `withMetaMask()` and `withDaisy()`, in the order shown below:  
