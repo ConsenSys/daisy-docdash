@@ -6,7 +6,8 @@
     "title": "Daisy Widget"
   },
   "Invitations": {
-    "title": "Invitations"
+    "title": "Invitations",
+    "children": ["Programmatic-Payment-Links"]
   },
   "Programmatic-Payment-Links": {
     "title": "Programmatically Creating and Querying Payment Links"
