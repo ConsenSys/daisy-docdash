@@ -1,11 +1,15 @@
 {
-  "Payment-Links": {
-    "title": "Payment Links"
+  "Daisy-SDK": {
+      "title": "Daisy SDK"
   },
   "Daisy-Widget": {
     "title": "Daisy Widget"
   },
-  "Daisy-SDK": {
-      "title": "Daisy SDK"
+  "Payment-Links": {
+    "title": "Payment Links",
+    "children": ["Programmatic-Payment-Links"]
+  },
+  "Programmatic-Payment-Links": {
+    "title": "Programmatically Creating and Querying Payment Links"
   }
 }
