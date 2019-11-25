@@ -3,7 +3,7 @@
 Daisy SDK is a library for interacting with all aspects of the Daisy product in both a browser and Node environment. This guide will go through using the library to [sign up for a new subscription](#SignUp), [access a subscription's current state and subscriber data](#Access), [approve tokens for an existing subscription](#ApproveMore), and [cancel an existing subscription](#Cancellation).
 
 
-> Daisy SDK is just one of three possible ways for your users to pay with Daisy, and it is certainly the most involved way. If your project has a React frontend, most payment and subscription actions can be performed using the pre-built React components of [Daisy Widget](https://docs.daisypayments.com/tutorial-Daisy-Widget.html). If you're looking for an almost-no-code solution, check out [Invitations](https://docs.daisypayments.com/tutorial-Invitations.html). 
+> Daisy SDK is just one of three possible ways for your users to pay with Daisy, and it is certainly the most involved way. If your project has a React frontend, most payment and subscription actions can be performed using the pre-built React components of [Daisy Widget](https://docs.daisypayments.com/tutorial-Daisy-Widget.html). If you're looking for an almost-no-code solution, check out [Payment Links](https://docs.daisypayments.com/tutorial-Payment-Links.html). 
 
 ---
 ## <a id="Installation" class="anchor"></a>Installation and Set Up
@@ -25,7 +25,7 @@ Next, how you import the SDK depends on where you are using it.
 ### <a id="FrontendSetUp" class="anchor"></a>Frontend
 
 <div class="img-container" style="width: 700px">
-  <img src="./img/subscription-service-id-and-key.png" alt="Where to find your subscription product's id and key in the dashboard" />
+  <img src="./img/subscription_service_id_and_key.png" alt="Where to find your subscription product's id and key in the dashboard" />
 </div>
 
 In your project's frontend, everything is done through the [`DaisySDK`](https://docs.daisypayments.com/module-browser-DaisySDK.html) class. The [`DaisySDK`](https://docs.daisypayments.com/module-browser-DaisySDK.html) constructor takes an object with the `identifier` key set to your subscription product's globally unique `id` as its first argument, and a `web3` instance as its second.
@@ -302,7 +302,7 @@ To differentiate between active and inactive subscriptions, use `subscription.st
 
 | State       | Description |
 | ----------- | ----------- |
-| **`NOT_STARTED`** | The default value. For example, a subscription which was created from an [Invitation](https://docs.daisypayments.com/tutorial-Invitations.html), but is awaiting your approval in the Daisy dashboard, is in this state.|
+| **`NOT_STARTED`** | The default value. For example, a subscription which was created from a [Payment Link](https://docs.daisypayments.com/tutorial-Payment-Links.html), but is awaiting your approval in the Daisy dashboard, is in this state.|
 | **`PENDING`** | The creation of the subscription has been initiated and the transaction is still being mined. Not yet active.|
 | **`ACTIVE`** | The current billing period is paid for and the subscription is valid.|
 | **`ACTIVE_CANCELLED`** | The current billing period is paid for and the subscription is valid, but the user has cancelled the subscription making this the last billing period.|

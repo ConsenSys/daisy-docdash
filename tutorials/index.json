@@ -5,8 +5,8 @@
   "Daisy-Widget": {
     "title": "Daisy Widget"
   },
-  "Invitations": {
-    "title": "Invitations",
+  "Payment-Links": {
+    "title": "Payment Links",
     "children": ["Programmatic-Payment-Links"]
   },
   "Programmatic-Payment-Links": {
