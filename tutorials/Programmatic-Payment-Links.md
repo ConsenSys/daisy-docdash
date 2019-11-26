@@ -62,7 +62,11 @@ app.get("/api/checkout/invoice/", asyncHandler(async (req, res) => {
 });
 ```
 
-Upon calling `createInvoice()`, a one time payment request was created. If `invoicedEmail` was provided, a Payment Link was delivered to the email address. The returned `invoice` object has the following shape:
+Upon calling `createInvoice()`, a one time payment request was created. Payment Links are not automatically sent to `invoicedEmail` currently, so you are responsible for delivering the payment request to your user. The Payment link for a request is hosted at: 
+<pre>
+  <code>https://pay.daisypayments.com/p/<b>{invoice.identifier}</b></code>
+</pre>
+The entire returned `invoice` object has the following shape:
 
 ```ts
 interface PaymentInvoice {
