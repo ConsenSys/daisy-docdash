@@ -6,10 +6,9 @@
     "title": "Daisy Widget"
   },
   "Payment-Links": {
-    "title": "Payment Links",
-    "children": ["Programmatic-Payment-Links"]
+    "title": "Payment Links"
   },
   "Programmatic-Payment-Links": {
-    "title": "Programmatically Creating and Querying Payment Links"
+    "title": "Programmatic One Time Payments"
   }
 }
