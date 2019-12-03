@@ -77,12 +77,12 @@ import { MetaMaskContext, DaisyContext } from &quot;@daisypayments/daisy-widget&
 <p>Second, the user must sign the details of the subscription agreement using MetaMask.</p>
 <hr>
 <h3><a id="ApprovalStep" class="anchor"></a>Approval Step</h3>
-<p>Instantiate <code>ApproveButton</code>, passing the name of an existing plan within the subscription service as <code>plan</code>.</p>
+<p>Instantiate <code>ApproveButton</code>, passing the <code>id</code> of an existing plan within the subscription service as <code>plan</code>.</p>
 <pre class="prettyprint source lang-js"><code>// Signup page of your React app
 
 import { ApproveButton } from &quot;@daisypayments/daisy-widget&quot;;
 </code></pre>
-<pre class="prettyprint source lang-html"><code>&lt;ApproveButton plan=&quot;anvilMysteryBoxMonthly&quot; />
+<pre class="prettyprint source lang-html"><code>&lt;ApproveButton plan=&quot;cGxhbjox&quot; />
 </code></pre>
 <p>Clicking the button will open MetaMask and prompt the user to approve the number of tokens that the subscription contract is allowed to transfer from their wallet. The number of tokens to approve can be defined in one of three ways.</p>
 <p>The first, recommended way is to use Daisy Widget's <code>ApproveInput</code> component. <code>ApproveInput</code> provides the user an intuitive way of defining the approval amount in terms of either tokens or billing periods. The component accepts an optional <code>periods</code> prop to define the initial number of billing currentlyAllowedPeriods; its default value is 12.</p>
@@ -91,13 +91,13 @@ import { ApproveButton } from &quot;@daisypayments/daisy-widget&quot;;
 </div>
 <pre class="prettyprint source lang-js"><code>import { ApproveInput } from &quot;@daisypayments/daisy-widget&quot;;
 </code></pre>
-<pre class="prettyprint source lang-html"><code>&lt;ApproveInput plan=&quot;anvilMysteryBoxMonthly&quot; />
+<pre class="prettyprint source lang-html"><code>&lt;ApproveInput plan=&quot;cGxhbjox&quot; />
 </code></pre>
 <p>Second, if <code>ApproveInput</code> is not used, <code>ApproveButton</code> accepts an <code>approvalAmount</code> prop which sets the number of tokens to approve.</p>
 <pre class="prettyprint source lang-js"><code>import { ApproveButton } from &quot;@daisypayments/daisy-widget&quot;;
 </code></pre>
 <pre class="prettyprint source lang-html"><code>&lt;ApproveButton 
-  plan=&quot;anvilMysteryBoxMonthly&quot; 
+  plan=&quot;cGxhbjox&quot; 
   approvalAmount=&quot;200&quot; 
 />
 </code></pre>
@@ -110,12 +110,12 @@ const currentAllowance = await daisy
 </code></pre>
 <hr>
 <h3><a id="SignAndSubmitStep" class="anchor"></a>Sign and Submit Step</h3>
-<p>Next, instantiate <code>SubscribeButton</code> and pass it the same <code>plan</code> name.</p>
+<p>Next, instantiate <code>SubscribeButton</code> and pass it the same plan <code>id</code> as the <code>plan</code> prop.</p>
 <pre class="prettyprint source lang-js"><code>// Signup page of your React app
 
 import { SubscribeButton } from &quot;@daisypayments/daisy-widget&quot;;
 </code></pre>
-<pre class="prettyprint source lang-html"><code>&lt;SubscribeButton plan=&quot;anvilMysteryBoxMonthly&quot; />
+<pre class="prettyprint source lang-html"><code>&lt;SubscribeButton plan=&quot;cGxhbjox&quot; />
 </code></pre>
 <p>Clicking the button will open MetaMask and prompt the user to sign the details of the subscription agreement. Once signed, the agreement is sent to Daisy to be executed on the Ethereum blockchain by one of two ways.</p>
 <p><strong>Backend Way</strong>: The first, recommended way is to pass a <code>handleSignedAgreement</code> prop to <code>SubscribeButton</code>. This handler is responsible for sending the signed agreement to your backend where it needs to be submitted with <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html#submit"><code>submit()</code></a>, and then returning the server response.</p>
@@ -138,13 +138,13 @@ import { SubscribeButton } from &quot;@daisypayments/daisy-widget&quot;;
 }
 </code></pre>
 <pre class="prettyprint source lang-html"><code>&lt;SubscribeButton
-  plan=&quot;anvilMysteryBoxMonthly&quot;
+  plan=&quot;cGxhbjox&quot;
   handleSignedAgreement={signedAgreementHandler}
 />
 </code></pre>
 <p><strong>Frontend Way</strong>: If <code>handleSignedAgreement</code> is omitted, the agreement is submitted with <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html#submit"><code>submit()</code></a> immediately and <code>SubscribeButton</code>'s <code>handleSubscriptionCreation</code> prop is called with the server response.</p>
 <p><strong>Whether the agreement is submitted from your backend or frontend, it is very important to associate the returned <code>daisyId</code> with the user at this step!</strong></p>
-<p>We recommend the <strong>Backend Way</strong> as it avoids any risk of <code>daisyId</code> being lost when sent from the user's browser to your backend. But, if you choose not to use <code>handleSignedAgreement</code> and do the agreement submission entirely from the frontend, <strong>be sure to associate the response's <code>daisyId</code> with the user in <code>handleSubscriptionCreation</code>!</strong></p>
+<p>We recommend the <strong>Backend Way</strong> as it avoids any risk of the subscription's <code>daisyId</code> being lost when sent from the user's browser to your backend. But, if you choose not to use <code>handleSignedAgreement</code> and do the agreement submission entirely from the frontend, <strong>be sure to associate the response's <code>daisyId</code> with the user in <code>handleSubscriptionCreation</code>!</strong></p>
 <pre class="prettyprint source lang-js"><code>// NOTE: Previous example preferred to this example!
 const subscriptionHandler = async subscription => {
 
@@ -167,7 +167,7 @@ const subscriptionHandler = async subscription => {
 }
 </code></pre>
 <pre class="prettyprint source lang-html"><code>&lt;SubscribeButton
-  plan=&quot;anvilMysteryBoxMonthly&quot;
+  plan=&quot;cGxhbjox&quot;
   handleSubscriptionCreation={subscriptionHandler}
 />
 </code></pre>
@@ -184,13 +184,13 @@ approve more to continue the subscription. Luckily, doing so is easy. Simply dis
 
 import { ApproveButton, ApproveInput, Toast } from &quot;@daisypayments/daisy-widget&quot;;
 </code></pre>
-<pre class="prettyprint source lang-html"><code>&lt;ApproveInput plan=&quot;anvilMysteryBoxMonthly&quot; />
-&lt;ApproveButton plan=&quot;anvilMysteryBoxMonthly&quot; />
+<pre class="prettyprint source lang-html"><code>&lt;ApproveInput plan=&quot;cGxhbjox&quot; />
+&lt;ApproveButton plan=&quot;cGxhbjox&quot; />
 &lt;Toast />
 </code></pre>
 <hr>
 <h2><a id="Cancellation" class="anchor"></a>Cancelling a Subscription</h2>
-<p>Occasionally a user will need to cancel their subscription. Just as there are <code>ApproveButton</code> and <code>SubscribeButton</code> components, there is a <code>CancelButton</code> as well. Unlike the previous two buttons, <code>CancelButton</code> requires the <code>subscription</code> object as a prop in addition to the <code>plan</code> name. The <code>subscription</code> object can be obtained from <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html#getSubscription"><code>getSubscription()</code></a>.</p>
+<p>Occasionally a user will need to cancel their subscription. Just as there are <code>ApproveButton</code> and <code>SubscribeButton</code> components, there is a <code>CancelButton</code> as well. Unlike the previous two buttons, <code>CancelButton</code> requires the <code>subscription</code> object as a prop in addition to the <code>plan</code> prop. The <code>subscription</code> object can be obtained from <a href="https://docs.daisypayments.com/module-browser-DaisySDK.html#getSubscription"><code>getSubscription()</code></a>.</p>
 <pre class="prettyprint source lang-js"><code>// Subscriber account page of your React app
 
 import { CancelButton } from &quot;@daisypayments/daisy-widget&quot;;
@@ -198,7 +198,7 @@ import { CancelButton } from &quot;@daisypayments/daisy-widget&quot;;
 const subscription = await daisy.getSubscription(this.props.user.daisyId);
 </code></pre>
 <pre class="prettyprint source lang-html"><code>&lt;CancelButton
-  plan=&quot;anvilMysteryBoxMonthly&quot;
+  plan=&quot;cGxhbjox&quot;
   subscription={subscription}
 />
 &lt;Toast />
@@ -224,7 +224,7 @@ const subscription = await daisy.getSubscription(this.props.user.daisyId);
 }
 </code></pre>
 <pre class="prettyprint source lang-html"><code>&lt;CancelButton
-  plan=&quot;anvilMysteryBoxMonthly&quot;
+  plan=&quot;cGxhbjox&quot;
   subscription={subscription}
   handleSignedCancellation={handleCancel}
 />
