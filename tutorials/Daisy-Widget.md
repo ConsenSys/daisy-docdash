@@ -64,7 +64,7 @@ Second, the user must sign the details of the subscription agreement using MetaM
 ---
 ### <a id="ApprovalStep" class="anchor"></a>Approval Step 
 
-Instantiate `ApproveButton`, passing the name of an existing plan within the subscription service as `plan`.
+Instantiate `ApproveButton`, passing the `id` of an existing plan within the subscription service as `plan`.
 
 ```js
 // Signup page of your React app
@@ -72,7 +72,7 @@ Instantiate `ApproveButton`, passing the name of an existing plan within the sub
 import { ApproveButton } from "@daisypayments/daisy-widget";
 ```
 ```html
-<ApproveButton plan="anvilMysteryBoxMonthly" />
+<ApproveButton plan="cGxhbjox" />
 ```
 
 Clicking the button will open MetaMask and prompt the user to approve the number of tokens that the subscription contract is allowed to transfer from their wallet. The number of tokens to approve can be defined in one of three ways.
@@ -87,7 +87,7 @@ The first, recommended way is to use Daisy Widget's `ApproveInput` component. `A
 import { ApproveInput } from "@daisypayments/daisy-widget";
 ```
 ```html
-<ApproveInput plan="anvilMysteryBoxMonthly" />
+<ApproveInput plan="cGxhbjox" />
 ```
 
 Second, if `ApproveInput` is not used, `ApproveButton` accepts an `approvalAmount` prop which sets the number of tokens to approve.
@@ -97,7 +97,7 @@ import { ApproveButton } from "@daisypayments/daisy-widget";
 ```
 ```html
 <ApproveButton 
-  plan="anvilMysteryBoxMonthly" 
+  plan="cGxhbjox" 
   approvalAmount="200" 
 />
 ```
@@ -116,7 +116,7 @@ const currentAllowance = await daisy
 ---
 ### <a id="SignAndSubmitStep" class="anchor"></a>Sign and Submit Step 
 
-Next, instantiate `SubscribeButton` and pass it the same `plan` name. 
+Next, instantiate `SubscribeButton` and pass it the same plan `id` as the `plan` prop. 
 
 ```js
 // Signup page of your React app
@@ -124,7 +124,7 @@ Next, instantiate `SubscribeButton` and pass it the same `plan` name.
 import { SubscribeButton } from "@daisypayments/daisy-widget";
 ```
 ```html
-<SubscribeButton plan="anvilMysteryBoxMonthly" />
+<SubscribeButton plan="cGxhbjox" />
 ```
 
 Clicking the button will open MetaMask and prompt the user to sign the details of the subscription agreement. Once signed, the agreement is sent to Daisy to be executed on the Ethereum blockchain by one of two ways. 
@@ -152,7 +152,7 @@ const signedAgreementHandler = async submitArgs => {
 ```
 ```html
 <SubscribeButton
-  plan="anvilMysteryBoxMonthly"
+  plan="cGxhbjox"
   handleSignedAgreement={signedAgreementHandler}
 />
 ```
@@ -161,7 +161,7 @@ const signedAgreementHandler = async submitArgs => {
 
 **Whether the agreement is submitted from your backend or frontend, it is very important to associate the returned `daisyId` with the user at this step!**
 
- We recommend the **Backend Way** as it avoids any risk of `daisyId` being lost when sent from the user's browser to your backend. But, if you choose not to use `handleSignedAgreement` and do the agreement submission entirely from the frontend, **be sure to associate the response's `daisyId` with the user in `handleSubscriptionCreation`!** 
+ We recommend the **Backend Way** as it avoids any risk of the subscription's `daisyId` being lost when sent from the user's browser to your backend. But, if you choose not to use `handleSignedAgreement` and do the agreement submission entirely from the frontend, **be sure to associate the response's `daisyId` with the user in `handleSubscriptionCreation`!** 
 
 
 ```js
@@ -188,7 +188,7 @@ const subscriptionHandler = async subscription => {
 ```
 ```html
 <SubscribeButton
-  plan="anvilMysteryBoxMonthly"
+  plan="cGxhbjox"
   handleSubscriptionCreation={subscriptionHandler}
 />
 ```
@@ -212,14 +212,14 @@ approve more to continue the subscription. Luckily, doing so is easy. Simply dis
 import { ApproveButton, ApproveInput, Toast } from "@daisypayments/daisy-widget";
 ```
 ```html
-<ApproveInput plan="anvilMysteryBoxMonthly" />
-<ApproveButton plan="anvilMysteryBoxMonthly" />
+<ApproveInput plan="cGxhbjox" />
+<ApproveButton plan="cGxhbjox" />
 <Toast />
 ```
 ---
 ## <a id="Cancellation" class="anchor"></a>Cancelling a Subscription
 
-Occasionally a user will need to cancel their subscription. Just as there are `ApproveButton` and `SubscribeButton` components, there is a `CancelButton` as well. Unlike the previous two buttons, `CancelButton` requires the `subscription` object as a prop in addition to the `plan` name. The `subscription` object can be obtained from [`getSubscription()`](https://docs.daisypayments.com/module-browser-DaisySDK.html#getSubscription).
+Occasionally a user will need to cancel their subscription. Just as there are `ApproveButton` and `SubscribeButton` components, there is a `CancelButton` as well. Unlike the previous two buttons, `CancelButton` requires the `subscription` object as a prop in addition to the `plan` prop. The `subscription` object can be obtained from [`getSubscription()`](https://docs.daisypayments.com/module-browser-DaisySDK.html#getSubscription).
 ```js
 // Subscriber account page of your React app
 
@@ -229,7 +229,7 @@ const subscription = await daisy.getSubscription(this.props.user.daisyId);
 ```
 ```html
 <CancelButton
-  plan="anvilMysteryBoxMonthly"
+  plan="cGxhbjox"
   subscription={subscription}
 />
 <Toast />
@@ -259,7 +259,7 @@ const handleCancel = async submitArgs => {
 ```
 ```html
 <CancelButton
-  plan="anvilMysteryBoxMonthly"
+  plan="cGxhbjox"
   subscription={subscription}
   handleSignedCancellation={handleCancel}
 />
